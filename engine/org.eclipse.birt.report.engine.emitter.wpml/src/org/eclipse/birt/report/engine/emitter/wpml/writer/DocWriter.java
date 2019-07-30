@@ -495,7 +495,7 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter
 
 	public void startTableRow( double height )
 	{
-		startTableRow( height, false, false, false );
+		startTableRow( height, false, false, false, false );
 	}
 
 	public void startPage( )
@@ -518,17 +518,18 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter
 	public void startHeader( boolean showHeaderOnFirst, int headerHeight,
 			int headerWidth )
 	{
-		writer.openTag( "w:hdr" );
-		if ( showHeaderOnFirst )
+		if ( !showHeaderOnFirst )
 		{
+			writer.openTag( "w:hdr" );
 			writer.attribute( "w:type", "first" );
 			writer.openTag( "w:p" );
 			writer.openTag( "w:r" );
 			writer.closeTag( "w:r" );
 			writer.closeTag( "w:p" );
+			writer.closeTag("w:hdr");
 		}
-		else
-			writer.attribute( "w:type", "odd" );
+		writer.openTag( "w:hdr" );
+		writer.attribute( "w:type", "odd" );
 		startHeaderFooterContainer( headerHeight, headerWidth );
 	}
 
@@ -538,10 +539,10 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter
 		writer.closeTag( "w:hdr" );
 	}
 
-	public void startFooter( int footerHeight, int footerWidth )
+	public void startFooter( String type, int footerHeight, int footerWidth )
 	{
 		writer.openTag( "w:ftr" );
-		writer.attribute( "w:type", "odd" );
+		writer.attribute( "w:type", type );
 		startHeaderFooterContainer( footerHeight, footerWidth );
 	}
 
@@ -666,5 +667,10 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter
 			writer.attribute( "w:first-line", textIndent );
 		}
 		writer.closeTag( "w:ind" );
+	}
+	
+	public void writeEmptyElement(String tag) {
+		writer.openTag(tag);
+		writer.closeTag(tag);
 	}
 }

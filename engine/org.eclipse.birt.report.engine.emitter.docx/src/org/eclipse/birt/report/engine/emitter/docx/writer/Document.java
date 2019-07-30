@@ -41,7 +41,7 @@ public class Document extends BasicComponent
 	private int headerId = 1;
 
 	private int footerId = 1;
-	
+
 	private int mhtId = 1;
 
 	Document( IPart part, String backgroundColor, String backgroundImageUrl,
@@ -345,5 +345,11 @@ public class Document extends BasicComponent
 		writeBorders( style, topMargin, bottomMargin, leftMargin,
 				rightMargin );
 		writer.closeTag( "w:pgBorders" );
+	}
+
+	void writeEmptyElement( String tag )
+	{
+		writer.openTag( tag );
+		writer.closeTag( tag );
 	}
 }

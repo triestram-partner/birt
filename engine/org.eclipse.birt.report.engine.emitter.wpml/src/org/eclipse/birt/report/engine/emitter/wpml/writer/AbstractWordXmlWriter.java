@@ -20,6 +20,7 @@ import org.eclipse.birt.report.engine.content.IStyle;
 import org.eclipse.birt.report.engine.css.engine.StyleConstants;
 import org.eclipse.birt.report.engine.css.engine.value.css.CSSConstants;
 import org.eclipse.birt.report.engine.emitter.XMLWriter;
+import org.eclipse.birt.report.engine.emitter.wpml.AbstractEmitterImpl;
 import org.eclipse.birt.report.engine.emitter.wpml.AbstractEmitterImpl.TextFlag;
 import org.eclipse.birt.report.engine.emitter.wpml.DiagonalLineInfo;
 import org.eclipse.birt.report.engine.emitter.wpml.DiagonalLineInfo.Line;
@@ -599,6 +600,14 @@ public abstract class AbstractWordXmlWriter
 		writer.closeTag( "w:instrText" );
 	}
 
+	protected void writeSimpleField( String fieldFunction){
+		if (fieldFunction != null){
+			writer.openTag( "w:instrText" );
+			writer.text( fieldFunction );
+			writer.closeTag( "w:instrText" );
+		}
+	}
+
 	private void writeString( String txt, IStyle style )
 	{
 		if ( txt == null )
@@ -746,6 +755,16 @@ public abstract class AbstractWordXmlWriter
 		writer.closeTag( "w:r" );
 	}
 
+	protected void writeFieldSeparator( IStyle style, String fontName )
+	{
+		writer.openTag( "w:r" );
+		writeFieldRunProperties( style, fontName );
+		writer.openTag( "w:fldChar" );
+		writer.attribute( "w:fldCharType", "separate" );
+		writer.closeTag( "w:fldChar" );
+		writer.closeTag( "w:r" );
+	}
+
 	public void writeColumn( int[] cols )
 	{
 		// unit: twips
@@ -769,7 +788,7 @@ public abstract class AbstractWordXmlWriter
 	 */
 
 	public void startTableRow( double height, boolean isHeader,
-			boolean repeatHeader, boolean fixedLayout )
+			boolean repeatHeader, boolean fixedLayout, boolean cantSplit )
 	{
 		writer.openTag( "w:tr" );
 
@@ -792,6 +811,11 @@ public abstract class AbstractWordXmlWriter
 		{
 			String headerOnOff = repeatHeader ? "on" : "off";
 			writeAttrTag( "w:tblHeader", headerOnOff );
+		}
+		
+		if (cantSplit) {
+			writer.openTag("w:cantSplit");
+			writer.closeTag("w:cantSplit");
 		}
 		writer.closeTag( "w:trPr" );
 	}
@@ -862,7 +886,13 @@ public abstract class AbstractWordXmlWriter
 
 	public void endTableCell( boolean empty )
 	{
-		endTableCell( empty, false );
+		// The resulting doc looks more sane than with the original code
+		// endTableCell( empty, false );
+		// because an empty table cell now contains the "cell marker" (a bit like a small o).
+		// and enables the user to tab into the cell and enter text directly;
+		// whereas with the old code, the cell was completely empty and the text caret
+		// could only be placed into the cell using a mouse double-click.
+		endTableCell( empty, true );
 	}
 	
 	public void endTableCell( boolean empty, boolean inForeign )
@@ -1154,7 +1184,31 @@ public abstract class AbstractWordXmlWriter
 
 		if ( isField )
 		{
-			writeAutoText( type );
+			if (!(type == AbstractEmitterImpl.CUSTOM_FIELD))
+				writeAutoText( type );
+			else{
+				writeSimpleField( txt );
+				writer.closeTag( "w:r" );
+				writeFieldSeparator(style, fontFamily);
+				writer.openTag( "w:r" );
+				writer.openTag( "w:rPr" );
+				writeRunProperties( style, fontFamily, info );
+				if ( isInline )
+				{
+					writeAlign( style.getTextAlign( ), direction );
+					writeBackgroundColor( style.getBackgroundColor( ) );
+					writePosition( style.getVerticalAlign( ), style
+								.getProperty( StyleConstants.STYLE_FONT_SIZE ) );
+						writeRunBorders( style );
+				}
+				if ( !isField && runIsRtl )
+				{
+					writer.openTag( "w:rtl" );
+					writer.closeTag( "w:rtl" );
+				}
+				writer.closeTag( "w:rPr" );
+				writeString( txt, style );
+			}
 		}
 		else
 		{
@@ -1287,7 +1341,32 @@ public abstract class AbstractWordXmlWriter
 
 		if ( isField )
 		{
-			writeAutoText( type );
+			if (!(type == AbstractEmitterImpl.CUSTOM_FIELD))
+				writeAutoText( type );
+			else{
+				writeSimpleField( txt );
+				writer.closeTag( "w:r" );
+				writeFieldSeparator(style, fontFamily);
+				writer.openTag( "w:r" );
+				writer.openTag( "w:rPr" );
+				writeRunProperties( style, fontFamily, info );
+				if ( isInline )
+				{
+					writeAlign( textAlign, direction );
+					writeBackgroundColor( style.getBackgroundColor( ) );
+					writePosition( style.getVerticalAlign( ), style
+								.getProperty( StyleConstants.STYLE_FONT_SIZE ) );
+						writeRunBorders( style );
+				}
+				if ( !isField && runIsRtl )
+				{
+					writer.openTag( "w:rtl" );
+					writer.closeTag( "w:rtl" );
+				}
+				writer.closeTag( "w:rPr" );
+				writeString( txt, style );
+			}
+				
 		}
 		else
 		{

@@ -60,7 +60,7 @@ public interface IWordWriter
 	void writeColumn( int[] cols );
 
 	void startTableRow( double height, boolean isHeader, boolean repeatHeader,
-			boolean fixedLayout );
+			boolean fixedLayout, boolean cantSplit );
 
 	void startTableRow( double height );
 
@@ -101,7 +101,7 @@ public interface IWordWriter
 
 	void endHeader( );
 
-	void startFooter( int footerHeight, int footerWidth ) throws IOException;
+	void startFooter( String type, int footerHeight, int footerWidth ) throws IOException;
 
 	void endFooter( );
 
@@ -115,4 +115,7 @@ public interface IWordWriter
 	void startPage( );
 
 	void endPage( );
+	
+	void writeEmptyElement(String tag);
+	
 }

@@ -159,9 +159,10 @@ public class DocxWriter implements IWordWriter
 		currentComponent = document;
 	}
 
-	public void startFooter( int footerHeight, int footerWidth )
+	public void startFooter( String type, int footerHeight, int footerWidth )
 			throws IOException
 	{
+		// FIXME argument type is unused - in the WPML emitter it is used to control visibility on the first page.
 		currentComponent = document.createFooter( footerHeight, footerWidth );
 		currentComponent.start( );
 	}
@@ -194,7 +195,7 @@ public class DocxWriter implements IWordWriter
 	{
 		currentComponent.startTable( style, tableWidth, false );
 	}
-	
+
 	public void startTable( IStyle style, int tableWidth, boolean inForeign )
 	{
 		currentComponent.startTable( style, tableWidth, inForeign );
@@ -211,15 +212,15 @@ public class DocxWriter implements IWordWriter
 	}
 
 	public void startTableRow( double height, boolean isHeader,
-			boolean repeatHeader, boolean fixedLayout )
+			boolean repeatHeader, boolean fixedLayout, boolean cantSplit )
 	{
 		currentComponent.startTableRow( height, isHeader, repeatHeader,
-				fixedLayout );
+				fixedLayout, cantSplit );
 	}
 
 	public void startTableRow( double height )
 	{
-		currentComponent.startTableRow( height, false, false, false );
+		currentComponent.startTableRow( height, false, false, false, false );
 	}
 
 	public void endTableRow( )
@@ -236,7 +237,7 @@ public class DocxWriter implements IWordWriter
 	{
 		currentComponent.endTableCell( needEmptyP );
 	}
-	
+
 	public void endTableCell( boolean needEmptyp, boolean inForeign )
 	{
 		currentComponent.endTableCell( needEmptyp, inForeign );
@@ -280,7 +281,7 @@ public class DocxWriter implements IWordWriter
 	{
 		currentComponent.writeTOC( toc, tocLevel );
 	}
-	
+
 	public void writeTOC( String toc, String color, int tocLevel,
 			boolean middleInline )
 	{
@@ -291,7 +292,7 @@ public class DocxWriter implements IWordWriter
 	{
 		currentComponent.insertHiddenParagraph( );
 	}
-	
+
 	public void insertEmptyParagraph( )
 	{
 		currentComponent.insertEmptyParagraph( );
@@ -346,5 +347,10 @@ public class DocxWriter implements IWordWriter
 				backgroundImageUrl, backgroundHeight, backgroundWidth,
 				topMargin, leftMargin, pageHeight, pageWidth );
 
+	}
+
+	public void writeEmptyElement(String tag)
+	{
+		document.writeEmptyElement(tag);
 	}
 }

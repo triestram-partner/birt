@@ -195,7 +195,7 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter
 	}
 
 	/**
-	 * 
+	 *
 	 * @param data
 	 *            image data
 	 * @param height
@@ -371,7 +371,7 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter
 		writer.attribute( "w:cs", fontFamily );
 		writer.closeTag( "w:rFonts" );
 	}
-	
+
 	protected void writeFontStyle( IStyle style )
 	{
 		String val = WordUtil.removeQuote( style.getFontStyle( ) );
@@ -539,10 +539,14 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter
 		writer.closeTag( "w:hdr" );
 	}
 
-	public void startFooter( String type, int footerHeight, int footerWidth )
+	public boolean mustCloneFooter( ) {
+		return true;
+	}
+
+	public void startFooter( boolean isFirstPage, int footerHeight, int footerWidth )
 	{
 		writer.openTag( "w:ftr" );
-		writer.attribute( "w:type", type );
+		writer.attribute( "w:type", (isFirstPage ? "first" : "odd") );
 		startHeaderFooterContainer( footerHeight, footerWidth );
 	}
 
@@ -556,7 +560,7 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter
 	{
 		writeTOC( tocText, null, level, false );
 	}
-	
+
 	public void writeTOC( String tocText, String color, int level,
 			boolean middleInline )
 	{
@@ -644,7 +648,7 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter
 		writer.attribute( "w:first-line", textIndent );
 		writer.closeTag( "w:ind" );
 	}
-	
+
 	protected void writeIndent( int leftMargin, int rightMargin, int textIndent )
 	{
 		if ( leftMargin == 0 && rightMargin == 0 && textIndent == 0 )
@@ -656,21 +660,17 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter
 		{
 			writer.attribute( "w:left", leftMargin );
 		}
-		
+
 		if ( rightMargin != 0 )
 		{
 			writer.attribute( "w:right", rightMargin );
 		}
-		
+
 		if ( textIndent != 0 )
 		{
 			writer.attribute( "w:first-line", textIndent );
 		}
 		writer.closeTag( "w:ind" );
 	}
-	
-	public void writeEmptyElement(String tag) {
-		writer.openTag(tag);
-		writer.closeTag(tag);
-	}
+
 }

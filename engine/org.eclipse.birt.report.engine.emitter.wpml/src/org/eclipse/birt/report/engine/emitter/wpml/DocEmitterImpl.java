@@ -82,7 +82,7 @@ public class DocEmitterImpl extends AbstractEmitterImpl
 					inlineStyles.pop( );
 				}
 			}
-			
+
 			if ( !CSSConstants.CSS_INLINE_VALUE.equalsIgnoreCase( container
 					.getComputedStyle( ).getDisplay( ) ) )
 			{
@@ -156,7 +156,7 @@ public class DocEmitterImpl extends AbstractEmitterImpl
 			// store the inline state before the HTML foreign.
 			boolean inlineBrother = !context.isFirstInline( );
 			// the inline state needs be recalculated in the HTML foreign.
-			
+
 			// if the foreign itself is not inline
 			if ( !"inline".equalsIgnoreCase( foreign.getComputedStyle( ) //$NON-NLS-1$
 					.getDisplay( ) ) )
@@ -192,34 +192,33 @@ public class DocEmitterImpl extends AbstractEmitterImpl
 			}
 			
 			if (createNestedTable) {
-			context.startCell( );
+				context.startCell( );
+				if ( context.isAfterTable( ) )
+				{
+					wordWriter.insertHiddenParagraph( );
+					context.setIsAfterTable( false );
+				}
+				int width = WordUtil.convertTo( foreign.getWidth( ),
+						context.getCurrentWidth( ), reportDpi );
+				width = Math.min( width, context.getCurrentWidth( ) );
+				wordWriter.startTable( foreign.getComputedStyle( ), width, inForeign );
+				wordWriter.startTableRow( -1 );
+				wordWriter
+						.startTableCell( width, foreign.getComputedStyle( ), null );
+				writeBookmark(foreign);
+				writeToc( foreign );
+				contentVisitor.visitChildren( foreign, null );
 
-			if ( context.isAfterTable( ) )
-			{
-				wordWriter.insertHiddenParagraph( );
-				context.setIsAfterTable( false );
-			}
-			int width = WordUtil.convertTo( foreign.getWidth( ),
-					context.getCurrentWidth( ), reportDpi );
-			width = Math.min( width, context.getCurrentWidth( ) );
-			wordWriter.startTable( foreign.getComputedStyle( ), width, inForeign );
-			wordWriter.startTableRow( -1 );
-			wordWriter
-					.startTableCell( width, foreign.getComputedStyle( ), null );
-			writeBookmark(foreign);
-			writeToc( foreign );
-			contentVisitor.visitChildren( foreign, null );
+				adjustInline( );
 
-			adjustInline( );
+				wordWriter.endTableCell( context.needEmptyP( ) );
 
-			wordWriter.endTableCell( context.needEmptyP( ) );
-
-			context.endCell( );
-			wordWriter.endTableRow( );
-			wordWriter.endTable( );
-			context.setIsAfterTable( true );
-			context.addContainer( true );
-			hasPInside = false;
+				context.endCell( );
+				wordWriter.endTableRow( );
+				wordWriter.endTable( );
+				context.setIsAfterTable( true );
+				context.addContainer( true );
+				hasPInside = false;
 			} else {
 				writeBookmark(foreign);
 				writeToc( foreign );

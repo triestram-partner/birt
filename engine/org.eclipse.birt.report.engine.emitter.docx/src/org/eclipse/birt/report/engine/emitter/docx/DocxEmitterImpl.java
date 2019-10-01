@@ -34,7 +34,7 @@ public class DocxEmitterImpl extends AbstractEmitterImpl
 {
 
 	private static final String OUTPUT_FORMAT = "docx";
-	
+
 	private boolean embedHtml = true;
 
 	public DocxEmitterImpl( ContentEmitterVisitor contentVisitor )
@@ -105,7 +105,7 @@ public class DocxEmitterImpl extends AbstractEmitterImpl
 				wordWriter.writeForeign( foreign );
 				if ( isInSpannedCell( foreign ) )
 				{
-					//insert empty line after embed html 
+					//insert empty line after embed html
 					wordWriter.endTableCell( true, true );
 				}
 				else

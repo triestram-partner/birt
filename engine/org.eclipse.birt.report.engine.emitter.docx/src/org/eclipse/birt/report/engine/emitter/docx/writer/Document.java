@@ -291,16 +291,29 @@ public class Document extends BasicComponent
 		writer.closeTag( "w:headerReference" );
 	}
 
-	void writeFooterReference( BasicComponent footer )
+	void writeFooterReference( BasicComponent footer, boolean showHeaderOnFirst )
 	{
+		String type = showHeaderOnFirst ? "first" : "default";
 		writer.openTag( "w:footerReference" );
+		writer.attribute( "w:type", type );
 		writer.attribute( "r:id", footer.getRelationshipId( ) );
 		writer.closeTag( "w:footerReference" );
 	}
 
-	Header createHeader( int headerHeight, int headerWidth ) throws IOException
+	Header createHeader( boolean showHeaderOnFirst, int headerHeight, int headerWidth ) throws IOException
 	{
-		String uri = "header" + getHeaderID( ) + ".xml";
+		if (showHeaderOnFirst) {
+			String uri = "header" + nextHeaderID( ) + ".xml";
+			String type = ContentTypes.WORD_HEADER;
+			String relationshipType = RelationshipTypes.HEADER;
+			IPart headerPart = part.getPart( uri, type, relationshipType );
+			Header firstPageHeader = new Header( headerPart, this, headerHeight, headerWidth );
+			firstPageHeader.start();
+			firstPageHeader.end();
+			writeHeaderReference( firstPageHeader, true );
+
+		}
+		String uri = "header" + nextHeaderID( ) + ".xml";
 		String type = ContentTypes.WORD_HEADER;
 		String relationshipType = RelationshipTypes.HEADER;
 		IPart headerPart = part.getPart( uri, type, relationshipType );
@@ -309,19 +322,19 @@ public class Document extends BasicComponent
 
 	Footer createFooter( int footerHeight, int footerWidth ) throws IOException
 	{
-		String uri = "footer" + getFooterID( ) + ".xml";
+		String uri = "footer" + nextFooterID( ) + ".xml";
 		String type = ContentTypes.WORD_FOOTER;
 		String relationshipType = RelationshipTypes.FOOTER;
 		IPart footerPart = part.getPart( uri, type, relationshipType );
 		return new Footer( footerPart, this, footerHeight, footerWidth );
 	}
 
-	private int getHeaderID( )
+	private int nextHeaderID( )
 	{
 		return headerId++;
 	}
 
-	private int getFooterID( )
+	private int nextFooterID( )
 	{
 		return footerId++;
 	}
@@ -347,7 +360,8 @@ public class Document extends BasicComponent
 		writer.closeTag( "w:pgBorders" );
 	}
 
-	void writeEmptyElement( String tag )
+	@Override
+	public void writeEmptyElement( String tag )
 	{
 		writer.openTag( tag );
 		writer.closeTag( tag );

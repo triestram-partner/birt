@@ -68,6 +68,8 @@ import org.eclipse.birt.report.engine.i18n.EngineResourceHandle;
 import org.eclipse.birt.report.engine.i18n.MessageConstants;
 import org.eclipse.birt.report.engine.ir.DimensionType;
 import org.eclipse.birt.report.engine.ir.EngineIRConstants;
+import org.eclipse.birt.report.engine.ir.Expression;
+import org.eclipse.birt.report.engine.ir.ReportItemDesign;
 import org.eclipse.birt.report.engine.ir.SimpleMasterPageDesign;
 import org.eclipse.birt.report.engine.layout.emitter.Image;
 import org.eclipse.birt.report.engine.layout.pdf.font.FontMappingManager;
@@ -81,7 +83,6 @@ import org.eclipse.birt.report.engine.presentation.ContentEmitterVisitor;
 import org.eclipse.birt.report.engine.util.FlashFile;
 import org.eclipse.birt.report.model.api.ReportDesignHandle;
 import org.eclipse.birt.report.model.api.elements.DesignChoiceConstants;
-
 import org.w3c.dom.css.CSSValue;
 import org.w3c.dom.css.CSSValueList;
 
@@ -123,7 +124,7 @@ public abstract class AbstractEmitterImpl
 		nonInherityStyles.add( IStyle.STYLE_BORDER_RIGHT_STYLE );
 		nonInherityStyles.add( IStyle.STYLE_BORDER_RIGHT_WIDTH );
 	}
-	
+
 	private static final HashMap<String, String> genericFontMapping = new HashMap<String, String>( );
 
 	static
@@ -171,13 +172,13 @@ public abstract class AbstractEmitterImpl
 	private int leftMargin = 0;
 
 	private int rightMargin = 0;
-	
+
 	private int pageTopBorderWidth = 0;
-	
+
 	private int pageBottomBorderWidth = 0;
-	
+
 	private int pageLeftBorderWidth = 0;
-	
+
 	private int pageRightBorderWidth = 0;
 
 	private String orientation = "portrait";
@@ -197,9 +198,9 @@ public abstract class AbstractEmitterImpl
 	private IHTMLActionHandler actionHandler;
 
 	private IReportContext reportContext;
-	
+
 	private String messageFlashObjectNotSupported;
-	
+
 	private String messageReportItemNotSupported;
 
 	private String layoutPreference = null;
@@ -374,23 +375,23 @@ public abstract class AbstractEmitterImpl
 
 		leftMargin = WordUtil.convertTo( page.getMarginLeft( ), 0, reportDpi );
 		rightMargin = WordUtil.convertTo( page.getMarginRight( ), 0, reportDpi );
-		
+
 		pageTopBorderWidth = WordUtil.parseBorderSize( PropertyUtil
 				.getDimensionValue( page.getComputedStyle( ).getProperty(
-						StyleConstants.STYLE_BORDER_TOP_WIDTH ) ) );	
-		
+						StyleConstants.STYLE_BORDER_TOP_WIDTH ) ) );
+
 		pageBottomBorderWidth = WordUtil.parseBorderSize( PropertyUtil
 				.getDimensionValue( page.getComputedStyle( ).getProperty(
 						StyleConstants.STYLE_BORDER_BOTTOM_WIDTH ) ) );
-		
+
 		pageLeftBorderWidth = WordUtil.parseBorderSize( PropertyUtil
 				.getDimensionValue( page.getComputedStyle( ).getProperty(
 						StyleConstants.STYLE_BORDER_LEFT_WIDTH ) ) );
-		
+
 		pageRightBorderWidth = WordUtil.parseBorderSize( PropertyUtil
 				.getDimensionValue( page.getComputedStyle( ).getProperty(
 						StyleConstants.STYLE_BORDER_RIGHT_WIDTH ) ) );
-		
+
 		contentWidth = pageWidth - leftMargin - rightMargin
 				- pageLeftBorderWidth - pageRightBorderWidth;
 
@@ -406,27 +407,27 @@ public abstract class AbstractEmitterImpl
 		Object val = null;
 		Map<String, Object> userprops = elem.getUserProperties();
 		if (userprops != null) {
-			val = (String)userprops.get(propName);
+			val = userprops.get(propName);
 		}
-//		if (val == null) {
-//			// Necessary for BIRT 4.2.1:
-//			// This version does not promote automatically the user-properties
-//			// from the design Element to the runtime element (4.3 does!).
-//			ReportItemDesign designElem = (ReportItemDesign )elem.getGenerateBy();
-//			if (designElem != null) {
-//				Map<String,Expression> designUserprops = designElem.getUserProperties();
-//				if (designUserprops != null) {
-//					Expression expression = designUserprops.get(propName);
-//					if( expression instanceof Expression.Constant ) {
-//						Expression.Constant constant = (Expression.Constant)expression;
-//						val = constant.getValue();
-//					}
-//				}
-//			}
-//		}
+		if (val == null) {
+			// Necessary for BIRT 4.2.1:
+			// This version does not promote automatically the user-properties
+			// from the design Element to the runtime element (4.3 does!).
+			ReportItemDesign designElem = (ReportItemDesign )elem.getGenerateBy();
+			if (designElem != null) {
+				Map<String,Expression> designUserprops = designElem.getUserProperties();
+				if (designUserprops != null) {
+					Expression expression = designUserprops.get(propName);
+					if( expression instanceof Expression.Constant ) {
+						Expression.Constant constant = (Expression.Constant)expression;
+						val = constant.getValue();
+					}
+				}
+			}
+		}
 		return val;
 	}
-	
+
 	public void startAutoText( IAutoTextContent autoText )
 	{
 		writeContent( autoText.getType( ), autoText.getText( ), autoText );
@@ -446,6 +447,7 @@ public abstract class AbstractEmitterImpl
 		String fieldFunction = (String) getUserProperty(label, PROP_NAME_FIELDFUNCTION);
 		if (fieldFunction != null && !(fieldFunction.isEmpty())){
 			type = AbstractEmitterImpl.CUSTOM_FIELD;
+			// TODO It would be nice to use fieldFunction as the the Word field funtion and output the label text as a placeholder.
 		}
 		writeContent( type, txt, label );
 	}
@@ -471,7 +473,7 @@ public abstract class AbstractEmitterImpl
 				tableTocs.add( new TocInfo( listToc.toString( ), tocLevel ) );
 			}
 			increaseTOCLevel( list );
-	
+
 			if ( context.isAfterTable( ) )
 			{
 				wordWriter.insertHiddenParagraph( );
@@ -484,7 +486,7 @@ public abstract class AbstractEmitterImpl
 			if (LAYOUTMODE_NONE.equals(layoutMode)) {
 				;
 			} else {
-			wordWriter.startTable( list.getComputedStyle( ), width );
+				wordWriter.startTable( list.getComputedStyle( ), width );
 			}
 		}
 	}
@@ -494,13 +496,13 @@ public abstract class AbstractEmitterImpl
 		if (!listLayouts.empty() && LAYOUTMODE_NONE.equals(listLayouts.peek())) {
 			;
 		} else {
-		context.startCell( );
-		wordWriter.startTableRow( -1 );
+			context.startCell( );
+			wordWriter.startTableRow( -1 );
 
 			IStyle style = computeStyle( listBand.getComputedStyle( ) );
-		wordWriter.startTableCell( context.getCurrentWidth( ), style, null );
-		writeTableToc( );
-	}
+			wordWriter.startTableCell( context.getCurrentWidth( ), style, null );
+			writeTableToc( );
+		}
 	}
 
 	public void startListGroup( IListGroupContent group )
@@ -565,7 +567,7 @@ public abstract class AbstractEmitterImpl
 		int cellWidth = context.getCellWidth( columnId, columnSpan );
 
 		IStyle style = computeStyle( cell.getComputedStyle( ) );
-			
+
 		if ( rowSpan > 1 )
 		{
 			context.addSpan( columnId, columnSpan, cellWidth, rowSpan, style );
@@ -743,12 +745,11 @@ public abstract class AbstractEmitterImpl
 		{
 			styles.pop( );
 		}
-
 		context.addContainer( true );
 		if (LAYOUTMODE_NONE.equals(layoutMode)) {
 			;
 		} else {
-			wordWriter.endTable( ); 
+			wordWriter.endTable( );
 			context.setIsAfterTable( true );
 			decreaseTOCLevel( list );
 		}
@@ -980,7 +981,7 @@ public abstract class AbstractEmitterImpl
 	{
 		writeToc( content, false );
 	}
-	
+
 	protected void writeToc( IContent content, boolean middleInline )
 	{
 		if ( content != null )
@@ -1242,7 +1243,7 @@ public abstract class AbstractEmitterImpl
 
 	/**
 	 * if the content is hidden
-	 * 
+	 *
 	 * @return
 	 */
 	private boolean isHiddenByVisibility( IContent content )
@@ -1325,9 +1326,9 @@ public abstract class AbstractEmitterImpl
 
 		SimpleMasterPageDesign master = (SimpleMasterPageDesign) previousPage
 				.getGenerateBy( );
-		
+
 		boolean showHeaderOnFirst = true;
-		
+
 		if ( previousPage.getPageHeader( ) != null || backgroundHeight != null
 				|| backgroundWidth != null )
 		{
@@ -1352,56 +1353,47 @@ public abstract class AbstractEmitterImpl
 		}
 		if ( previousPage.getPageFooter( ) != null )
 		{
-			// HVB: I don't think that MS word does support this.
-			// At least not with RunAndRenderTask
-			if ( !master.isShowFooterOnLast( )
-					&& previousPage.getPageNumber( ) == reportContent
-							.getTotalPage( ) )
+			// MS word does not support hiding the footer on the last page.
+			// The only option would be to create a different section just
+			// for the last page.
+			// This in turn could only work with separate RunTask and RenderTask
+			// and it would prevent the user from making page-breaking changes.
+			// Thus supporting showFooterOnLast is more dangerous than useful.
+			if ( !master.isShowFooterOnLast( ) )
 			{
-				IContent footer = previousPage.getPageFooter( );
-				ILabelContent emptyContent = footer.getReportContent( )
-						.createLabelContent( );
-				emptyContent.setText( this.EMPTY_FOOTER );
-				wordWriter.startFooter( "odd", footerHeight, contentWidth );
-				contentVisitor.visit( emptyContent, null );
-				wordWriter.endFooter( );
+				logger.warning("Hiding the footer on the last page is not supported for MS Word output.");
 			}
-			else
-			{
-				if (!showHeaderOnFirst) {
-					wordWriter.startFooter("first", footerHeight, contentWidth);
+			wordWriter.startFooter( false, footerHeight, contentWidth );
+			contentVisitor.visitChildren( previousPage.getPageFooter( ),
+					null );
+			wordWriter.endFooter( );
+			if (!showHeaderOnFirst) {
+				wordWriter.startFooter( true, footerHeight, contentWidth);
+				if (wordWriter.mustCloneFooter()) {
 					contentVisitor.visitChildren( previousPage.getPageFooter( ),
 							null );
-					wordWriter.endFooter( );
 				}
-				wordWriter.startFooter( "odd", footerHeight, contentWidth );
-				contentVisitor.visitChildren( previousPage.getPageFooter( ),
-						null );
 				wordWriter.endFooter( );
 			}
 		}
-		
-		if ( previousPage.getPageHeader( ) != null || backgroundHeight != null
-				|| backgroundWidth != null )
-		{
-			if (!showHeaderOnFirst) {
-				wordWriter.writeEmptyElement("w:titlePg");
-			}
+
+		if (!showHeaderOnFirst) {
+			wordWriter.writeEmptyElement("w:titlePg");
 		}
-		
+
 	}
 
 	/**
 	 * Transfer background for current page to Doc format. Now, the exported
 	 * file will apply the first background properties, and followed background
 	 * will ignore.
-	 * 
+	 *
 	 * In addition, Since the Word only support fill-in background, the
 	 * background attach, pos, posX, posY and repeat are not mapped to Word
 	 * easyly. At present, ignore those properties.
-	 * 
+	 *
 	 * @throws IOException
-	 * 
+	 *
 	 * @TODO support background properties. attach, pos, posx, posy and repeat.
 	 */
 

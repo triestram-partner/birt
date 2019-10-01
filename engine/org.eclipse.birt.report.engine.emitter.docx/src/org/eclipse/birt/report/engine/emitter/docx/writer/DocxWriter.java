@@ -147,7 +147,7 @@ public class DocxWriter implements IWordWriter
 	public void startHeader( boolean showHeaderOnFirst, int headerHeight,
 			int headerWidth ) throws IOException
 	{
-		currentComponent = document.createHeader( headerHeight, headerWidth );
+		currentComponent = document.createHeader( showHeaderOnFirst, headerHeight, headerWidth );
 		currentComponent.start( );
 		this.showHeaderOnFirst = showHeaderOnFirst;
 	}
@@ -155,22 +155,36 @@ public class DocxWriter implements IWordWriter
 	public void endHeader( )
 	{
 		currentComponent.end( );
-		document.writeHeaderReference( currentComponent, showHeaderOnFirst );
+		document.writeHeaderReference( currentComponent, false );
 		currentComponent = document;
 	}
 
-	public void startFooter( String type, int footerHeight, int footerWidth )
+	public boolean mustCloneFooter( ) {
+		return false;
+	}
+
+	public void startFooter( boolean isFirstPage, int footerHeight, int footerWidth )
 			throws IOException
 	{
-		// FIXME argument type is unused - in the WPML emitter it is used to control visibility on the first page.
-		currentComponent = document.createFooter( footerHeight, footerWidth );
-		currentComponent.start( );
+		if ( !isFirstPage ) {
+			currentComponent = document.createFooter( footerHeight, footerWidth );
+			currentComponent.start( );
+		} else {
+			currentComponent = null;
+		}
 	}
 
 	public void endFooter( )
 	{
-		currentComponent.end( );
-		document.writeFooterReference( currentComponent );
+		if ( currentComponent == null ) {
+			; // nothing to do.
+		} else {
+			currentComponent.end( );
+			if (!this.showHeaderOnFirst) {
+				document.writeFooterReference( currentComponent, true );
+			}
+			document.writeFooterReference( currentComponent, false );
+		}
 		currentComponent = document;
 	}
 
@@ -220,7 +234,7 @@ public class DocxWriter implements IWordWriter
 
 	public void startTableRow( double height )
 	{
-		currentComponent.startTableRow( height, false, false, false, false );
+		currentComponent.startTableRow( height, false, false, false );
 	}
 
 	public void endTableRow( )
@@ -349,8 +363,8 @@ public class DocxWriter implements IWordWriter
 
 	}
 
-	public void writeEmptyElement(String tag)
-	{
-		document.writeEmptyElement(tag);
+	public void writeEmptyElement(String tag) {
+		currentComponent.writeEmptyElement(tag);
 	}
+
 }

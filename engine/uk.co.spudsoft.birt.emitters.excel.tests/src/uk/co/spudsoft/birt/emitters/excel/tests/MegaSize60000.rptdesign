@@ -10999,7 +10999,7 @@ from
                     <property name="dataType">string</property>
                 </structure>
             </list-property>
-            <property name="pageBreakInterval">0</property>
+            <property name="pageBreakInterval">60000</property>
             <column id="18280"/>
             <column id="18281"/>
             <column id="18282"/>

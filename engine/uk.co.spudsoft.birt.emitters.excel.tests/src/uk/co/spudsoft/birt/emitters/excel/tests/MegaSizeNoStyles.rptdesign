@@ -10999,6 +10999,7 @@ from
                     <property name="dataType">string</property>
                 </structure>
             </list-property>
+            <method name="onCreate"><![CDATA[reportContext.setPageVariable( reportContext.PAGE_VAR_PAGE_LABEL, "Number Formats Test Report" );]]></method>
             <property name="pageBreakInterval">0</property>
             <column id="18280"/>
             <column id="18281"/>
@@ -11090,6 +11091,13 @@ from
             </header>
             <detail>
                 <row id="18236">
+                    <list-property name="userProperties">
+                        <structure>
+                            <property name="name">ExcelEmitter.NoStyles</property>
+                            <property name="type">boolean</property>
+                        </structure>
+                    </list-property>
+                    <property name="ExcelEmitter.NoStyles">true</property>
                     <cell id="18237">
                         <data id="18238">
                             <property name="resultSetColumn">COL1</property>

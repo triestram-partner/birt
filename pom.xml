@@ -15,7 +15,7 @@
 		<tycho.scmUrl>scm:git:https://github.com/eclipse/birt.git</tycho.scmUrl>
 		
 		<tycho.version>1.4.0</tycho.version>
-		<eclipse.release.name>photon</eclipse.release.name>
+		<eclipse.release.name>2019-03</eclipse.release.name>
 		
 		<!-- Dependency Versions -->
 		<jetty.version>9.4.15.v20190215</jetty.version>
@@ -432,9 +432,6 @@
 				</executions>
 				<configuration>
 					<toolchains>
-						<jdk>
-							<id>JavaSE-1.7</id>
-						</jdk>
 						<jdk>
 							<id>JavaSE-1.8</id>
 						</jdk>

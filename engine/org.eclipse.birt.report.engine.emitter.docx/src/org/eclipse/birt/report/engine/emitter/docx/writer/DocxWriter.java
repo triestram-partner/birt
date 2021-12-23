@@ -16,13 +16,12 @@ import java.io.OutputStream;
 
 import org.eclipse.birt.report.engine.content.IForeignContent;
 import org.eclipse.birt.report.engine.content.IStyle;
+import org.eclipse.birt.report.engine.emitter.wpml.AbstractEmitterImpl.InlineFlag;
+import org.eclipse.birt.report.engine.emitter.wpml.AbstractEmitterImpl.TextFlag;
 import org.eclipse.birt.report.engine.emitter.wpml.DiagonalLineInfo;
 import org.eclipse.birt.report.engine.emitter.wpml.HyperlinkInfo;
 import org.eclipse.birt.report.engine.emitter.wpml.IWordWriter;
 import org.eclipse.birt.report.engine.emitter.wpml.SpanInfo;
-import org.eclipse.birt.report.engine.emitter.wpml.AbstractEmitterImpl.InlineFlag;
-import org.eclipse.birt.report.engine.emitter.wpml.AbstractEmitterImpl.TextFlag;
-
 import org.eclipse.birt.report.engine.ooxml.IPart;
 import org.eclipse.birt.report.engine.ooxml.ImageManager;
 import org.eclipse.birt.report.engine.ooxml.Package;
@@ -70,7 +69,7 @@ public class DocxWriter implements IWordWriter {
 	}
 
 	private void writeCorePart(String creator, String title, String description, String subject) throws IOException {
-		String uri = "docProps/core.xml";
+		String uri = "docProps/core.xml"; //$NON-NLS-1$
 		String type = ContentTypes.CORE;
 		String relationshipType = RelationshipTypes.CORE;
 		IPart corePart = pkg.getPart(uri, type, relationshipType);
@@ -78,23 +77,23 @@ public class DocxWriter implements IWordWriter {
 		try {
 			corePartWriter = corePart.getWriter();
 			corePartWriter.startWriter();
-			corePartWriter.openTag("cp:coreProperties");
-			corePartWriter.nameSpace("cp", NameSpaces.CORE);
-			corePartWriter.nameSpace("dc", NameSpaces.DC);
+			corePartWriter.openTag("cp:coreProperties"); //$NON-NLS-1$
+			corePartWriter.nameSpace("cp", NameSpaces.CORE); //$NON-NLS-1$
+			corePartWriter.nameSpace("dc", NameSpaces.DC); //$NON-NLS-1$
 
-			corePartWriter.openTag("dc:creator");
+			corePartWriter.openTag("dc:creator"); //$NON-NLS-1$
 			corePartWriter.text(creator);
-			corePartWriter.closeTag("dc:creator");
-			corePartWriter.openTag("dc:title ");
+			corePartWriter.closeTag("dc:creator"); //$NON-NLS-1$
+			corePartWriter.openTag("dc:title "); //$NON-NLS-1$
 			corePartWriter.text(title);
-			corePartWriter.closeTag("dc:title");
-			corePartWriter.openTag("dc:description");
+			corePartWriter.closeTag("dc:title"); //$NON-NLS-1$
+			corePartWriter.openTag("dc:description"); //$NON-NLS-1$
 			corePartWriter.text(description);
-			corePartWriter.closeTag("dc:description");
-			corePartWriter.openTag("dc:subject");
+			corePartWriter.closeTag("dc:description"); //$NON-NLS-1$
+			corePartWriter.openTag("dc:subject"); //$NON-NLS-1$
 			corePartWriter.text(subject);
-			corePartWriter.closeTag("dc:subject");
-			corePartWriter.closeTag("cp:coreProperties");
+			corePartWriter.closeTag("dc:subject"); //$NON-NLS-1$
+			corePartWriter.closeTag("cp:coreProperties"); //$NON-NLS-1$
 			corePartWriter.endWriter();
 		} finally {
 			if (corePartWriter != null)
@@ -104,7 +103,7 @@ public class DocxWriter implements IWordWriter {
 
 	private void initializeDocumentPart(String backgroundColor, String backgroundImageUrl, String backgroundHeight,
 			String backgroundWidth) throws IOException {
-		String uri = "word/document.xml";
+		String uri = "word/document.xml"; //$NON-NLS-1$
 		String type = ContentTypes.WORD_PROCESSINGML;
 		String relationshipType = RelationshipTypes.DOCUMENT;
 		IPart documentPart = pkg.getPart( uri, type, relationshipType );
@@ -131,7 +130,7 @@ public class DocxWriter implements IWordWriter {
 	}
 
 	public void startHeader(boolean showHeaderOnFirst, int headerHeight, int headerWidth) throws IOException {
-		currentComponent = document.createHeader(headerHeight, headerWidth);
+		currentComponent = document.createHeader(showHeaderOnFirst, headerHeight, headerWidth);
 		currentComponent.start();
 		this.showHeaderOnFirst = showHeaderOnFirst;
 	}

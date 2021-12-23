@@ -30,23 +30,23 @@ public class Footer extends BasicComponent {
 
 	void start() {
 		writer.startWriter();
-		writer.openTag("w:ftr");
+		writer.openTag("w:ftr"); //$NON-NLS-1$
 		writeXmlns();
 		startHeaderFooterContainer(footerHeight, footerWidth);
 	}
 
 	void end() {
 		endHeaderFooterContainer();
-		writer.closeTag("w:ftr");
+		writer.closeTag("w:ftr"); //$NON-NLS-1$
 		writer.endWriter();
 		writer.close();
 	}
 
 	protected int getImageID() {
-		return document.getImageID();
+		return document.nextImageID();
 	}
 
-	protected int getMhtTextId() {
-		return document.getMhtTextId();
+	protected int nextMhtTextId() {
+		return document.nextMhtTextId();
 	}
 }

@@ -84,17 +84,15 @@ public interface IWordWriter {
 	void drawImage(byte[] data, double height, double width, HyperlinkInfo hyper, IStyle style, InlineFlag inlineFlag,
 			String altText, String uri);
 
-	boolean mustCloneFooter();
-
-	void startFooter(boolean isFirstPage, int footerHeight, int footerWidth) throws IOException;
-
 	void drawDiagonalLine(DiagonalLineInfo diagonalLineInfo);
 
 	void startHeader(boolean showHeaderOnFirst, int headerHeight, int headerWidth) throws IOException;
 
 	void endHeader();
 
-	void startFooter(int footerHeight, int footerWidth) throws IOException;
+	boolean mustCloneFooter();
+
+	void startFooter(boolean isFirstPage, int footerHeight, int footerWidth) throws IOException;
 
 	void endFooter();
 
@@ -106,4 +104,6 @@ public interface IWordWriter {
 	void startPage();
 
 	void endPage();
+
+	void writeEmptyElement(String tag);
 }

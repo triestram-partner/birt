@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.birt.chart.osgi.runtime"
       label="%featureName"
-      version="4.11.0.qualifier"
+      version="4.9.0.qualifier"
       provider-name="%providerName"
       image="eclipse_update_120.jpg">
 
@@ -19,8 +19,8 @@
    </license>
 
    <url>
-      <update label="%updateSiteName" url="http://download.eclipse.org/birt/update-site/4.4"/>
-      <discovery label="%updateSiteName" url="http://download.eclipse.org/birt/update-site/4.4"/>
+      <update label="%updateSiteName" url="http://download.eclipse.org/birt/update-site/4.9"/>
+      <discovery label="%updateSiteName" url="http://download.eclipse.org/birt/update-site/4.9"/>
    </url>
 
    <requires>
@@ -40,38 +40,38 @@
          id="javax.xml.rpc"
          download-size="0"
          install-size="0"
-         version="1.1.0.qualifier"/>
+         version="0.0.0"/>
 
    <plugin
          id="javax.xml.soap"
          download-size="0"
          install-size="0"
-         version="1.2.0.qualifier"/>
+         version="0.0.0"/>
 
    <plugin
          id="org.apache.axis"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"/>
+         version="0.0.0"/>
 
    <plugin
          id="org.apache.commons.discovery"
          download-size="0"
          install-size="0"
-         version="0.2.0.qualifier"/>
+         version="0.0.0"/>
 
    <plugin
          id="javax.wsdl"
          download-size="0"
          install-size="0"
-         version="1.5.1.qualifier"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="javax.xml"
          download-size="0"
          install-size="0"
-         version="1.3.4.qualifier"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
@@ -103,13 +103,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.apache.batik.ext.awt"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.apache.batik.parser"
          download-size="0"
          install-size="0"
@@ -131,13 +124,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.apache.batik.util.gui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.apache.batik.util"
          download-size="0"
          install-size="0"
@@ -146,6 +132,13 @@
 
    <plugin
          id="org.apache.batik.xml"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.batik.ext"
          download-size="0"
          install-size="0"
          version="0.0.0"

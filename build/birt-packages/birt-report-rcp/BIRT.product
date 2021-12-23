@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="BIRT Report Designer RCP" uid="org.eclipse.birt.report.designer.rcp" application="org.eclipse.birt.report.designer.ui.rcp.DesignerApplication" version="4.11.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="BIRT Report Designer RCP" uid="org.eclipse.birt.report.designer.rcp" application="org.eclipse.birt.report.designer.ui.rcp.DesignerApplication" version="4.9.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
 
    <launcherArgs>
-      <vmArgs>-Xms40m
--Xmx256m
--XX:MaxPermSize=128m
+      <vmArgs>-Xms512m
+-Xmx1024m
       </vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
       </vmArgsMac>
    </launcherArgs>
 
-   <launcher name="BIRT">
-      <solaris/>
+   <launcher name="birt">
       <win useIco="false">
          <bmp/>
       </win>
@@ -33,11 +31,10 @@
    </features>
 
    <configurations>
+      <plugin id="org.apache.felix.scr" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
-      <plugin id="org.apache.felix.scr" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="2" />
-      <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
       <property name="org.eclipse.update.reconcile" value="false" />
    </configurations>

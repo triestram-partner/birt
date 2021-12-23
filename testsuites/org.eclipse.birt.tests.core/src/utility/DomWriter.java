@@ -569,7 +569,7 @@ public class DomWriter
 		// is there anything to do?
 		if ( argv.length == 0 )
 		{
-			printUsage( );
+			// printUsage( );
 			System.exit( 1 );
 		}
 
@@ -689,7 +689,7 @@ public class DomWriter
 				}
 				if ( option.equals( "h" ) )
 				{
-					printUsage( );
+					// printUsage( );
 					continue;
 				}
 			}
@@ -893,90 +893,90 @@ public class DomWriter
 	//
 
 	/** Prints the usage. */
-	private static void printUsage( )
-	{
-
-		System.err.println( "usage: java dom.Writer (options) uri ..." );
-		System.err.println( );
-
-		System.err.println( "options:" );
-		System.err.println( "  -p name     Select parser by name." );
-		System.err.println( "  -n | -N     Turn on/off namespace processing." );
-		System.err.println( "  -v | -V     Turn on/off validation." );
-		System.err
-				.println( "  -xd | -XD   Turn on/off loading of external DTDs." );
-		System.err
-				.println( "              NOTE: Always on when -v in use and not supported by all parsers." );
-		System.err
-				.println( "  -s | -S     Turn on/off Schema validation support." );
-		System.err
-				.println( "              NOTE: Not supported by all parsers." );
-		System.err.println( "  -f  | -F    Turn on/off Schema full checking." );
-		System.err
-				.println( "              NOTE: Requires use of -s and not supported by all parsers." );
-		System.err
-				.println( "  -hs | -HS   Turn on/off honouring of all schema locations." );
-		System.err
-				.println( "              NOTE: Requires use of -s and not supported by all parsers." );
-		System.err
-				.println( "  -va | -VA   Turn on/off validation of schema annotations." );
-		System.err
-				.println( "              NOTE: Requires use of -s and not supported by all parsers." );
-		System.err
-				.println( "  -ga | -GA   Turn on/off generation of synthetic schema annotations." );
-		System.err
-				.println( "              NOTE: Requires use of -s and not supported by all parsers." );
-		System.err.println( "  -dv | -DV   Turn on/off dynamic validation." );
-		System.err
-				.println( "              NOTE: Not supported by all parsers." );
-		System.err.println( "  -xi | -XI   Turn on/off XInclude processing." );
-		System.err
-				.println( "              NOTE: Not supported by all parsers." );
-		System.err
-				.println( "  -xb | -XB   Turn on/off base URI fixup during XInclude processing." );
-		System.err
-				.println( "              NOTE: Requires use of -xi and not supported by all parsers." );
-		System.err
-				.println( "  -xl | -XL   Turn on/off language fixup during XInclude processing." );
-		System.err
-				.println( "              NOTE: Requires use of -xi and not supported by all parsers." );
-		System.err.println( "  -c | -C     Turn on/off Canonical XML output." );
-		System.err
-				.println( "              NOTE: This is not W3C canonical output." );
-		System.err.println( "  -h          This help screen." );
-		System.err.println( );
-
-		System.err.println( "defaults:" );
-		System.err.println( "  Parser:     " + DEFAULT_PARSER_NAME );
-		System.err.print( "  Namespaces: " );
-		System.err.println( DEFAULT_NAMESPACES ? "on" : "off" );
-		System.err.print( "  Validation: " );
-		System.err.println( DEFAULT_VALIDATION ? "on" : "off" );
-		System.err.print( "  Load External DTD: " );
-		System.err.println( DEFAULT_LOAD_EXTERNAL_DTD ? "on" : "off" );
-		System.err.print( "  Schema:     " );
-		System.err.println( DEFAULT_SCHEMA_VALIDATION ? "on" : "off" );
-		System.err.print( "  Schema full checking:     " );
-		System.err.println( DEFAULT_SCHEMA_FULL_CHECKING ? "on" : "off" );
-		System.err.print( "  Dynamic:    " );
-		System.err.println( DEFAULT_DYNAMIC_VALIDATION ? "on" : "off" );
-		System.err.print( "  Canonical:  " );
-		System.err.println( DEFAULT_CANONICAL ? "on" : "off" );
-		System.err.print( "  Honour all schema locations:       " );
-		System.err.println( DEFAULT_HONOUR_ALL_SCHEMA_LOCATIONS ? "on" : "off" );
-		System.err.print( "  Validate Annotations:              " );
-		System.err.println( DEFAULT_VALIDATE_ANNOTATIONS ? "on" : "off" );
-		System.err.print( "  Generate Synthetic Annotations:    " );
-		System.err.println( DEFAULT_GENERATE_SYNTHETIC_ANNOTATIONS
-				? "on"
-				: "off" );
-		System.err.print( "  XInclude:   " );
-		System.err.println( DEFAULT_XINCLUDE ? "on" : "off" );
-		System.err.print( "  XInclude base URI fixup:  " );
-		System.err.println( DEFAULT_XINCLUDE_FIXUP_BASE_URIS ? "on" : "off" );
-		System.err.print( "  XInclude language fixup:  " );
-		System.err.println( DEFAULT_XINCLUDE_FIXUP_LANGUAGE ? "on" : "off" );
-
-	} // printUsage()
+//	private static void printUsage( )
+//	{
+//
+//		System.err.println( "usage: java dom.Writer (options) uri ..." );
+//		System.err.println( );
+//
+//		System.err.println( "options:" );
+//		System.err.println( "  -p name     Select parser by name." );
+//		System.err.println( "  -n | -N     Turn on/off namespace processing." );
+//		System.err.println( "  -v | -V     Turn on/off validation." );
+//		System.err
+//				.println( "  -xd | -XD   Turn on/off loading of external DTDs." );
+//		System.err
+//				.println( "              NOTE: Always on when -v in use and not supported by all parsers." );
+//		System.err
+//				.println( "  -s | -S     Turn on/off Schema validation support." );
+//		System.err
+//				.println( "              NOTE: Not supported by all parsers." );
+//		System.err.println( "  -f  | -F    Turn on/off Schema full checking." );
+//		System.err
+//				.println( "              NOTE: Requires use of -s and not supported by all parsers." );
+//		System.err
+//				.println( "  -hs | -HS   Turn on/off honouring of all schema locations." );
+//		System.err
+//				.println( "              NOTE: Requires use of -s and not supported by all parsers." );
+//		System.err
+//				.println( "  -va | -VA   Turn on/off validation of schema annotations." );
+//		System.err
+//				.println( "              NOTE: Requires use of -s and not supported by all parsers." );
+//		System.err
+//				.println( "  -ga | -GA   Turn on/off generation of synthetic schema annotations." );
+//		System.err
+//				.println( "              NOTE: Requires use of -s and not supported by all parsers." );
+//		System.err.println( "  -dv | -DV   Turn on/off dynamic validation." );
+//		System.err
+//				.println( "              NOTE: Not supported by all parsers." );
+//		System.err.println( "  -xi | -XI   Turn on/off XInclude processing." );
+//		System.err
+//				.println( "              NOTE: Not supported by all parsers." );
+//		System.err
+//				.println( "  -xb | -XB   Turn on/off base URI fixup during XInclude processing." );
+//		System.err
+//				.println( "              NOTE: Requires use of -xi and not supported by all parsers." );
+//		System.err
+//				.println( "  -xl | -XL   Turn on/off language fixup during XInclude processing." );
+//		System.err
+//				.println( "              NOTE: Requires use of -xi and not supported by all parsers." );
+//		System.err.println( "  -c | -C     Turn on/off Canonical XML output." );
+//		System.err
+//				.println( "              NOTE: This is not W3C canonical output." );
+//		System.err.println( "  -h          This help screen." );
+//		System.err.println( );
+//
+//		System.err.println( "defaults:" );
+//		System.err.println( "  Parser:     " + DEFAULT_PARSER_NAME );
+//		System.err.print( "  Namespaces: " );
+//		System.err.println( DEFAULT_NAMESPACES ? "on" : "off" );
+//		System.err.print( "  Validation: " );
+//		System.err.println( DEFAULT_VALIDATION ? "on" : "off" );
+//		System.err.print( "  Load External DTD: " );
+//		System.err.println( DEFAULT_LOAD_EXTERNAL_DTD ? "on" : "off" );
+//		System.err.print( "  Schema:     " );
+//		System.err.println( DEFAULT_SCHEMA_VALIDATION ? "on" : "off" );
+//		System.err.print( "  Schema full checking:     " );
+//		System.err.println( DEFAULT_SCHEMA_FULL_CHECKING ? "on" : "off" );
+//		System.err.print( "  Dynamic:    " );
+//		System.err.println( DEFAULT_DYNAMIC_VALIDATION ? "on" : "off" );
+//		System.err.print( "  Canonical:  " );
+//		System.err.println( DEFAULT_CANONICAL ? "on" : "off" );
+//		System.err.print( "  Honour all schema locations:       " );
+//		System.err.println( DEFAULT_HONOUR_ALL_SCHEMA_LOCATIONS ? "on" : "off" );
+//		System.err.print( "  Validate Annotations:              " );
+//		System.err.println( DEFAULT_VALIDATE_ANNOTATIONS ? "on" : "off" );
+//		System.err.print( "  Generate Synthetic Annotations:    " );
+//		System.err.println( DEFAULT_GENERATE_SYNTHETIC_ANNOTATIONS
+//				? "on"
+//				: "off" );
+//		System.err.print( "  XInclude:   " );
+//		System.err.println( DEFAULT_XINCLUDE ? "on" : "off" );
+//		System.err.print( "  XInclude base URI fixup:  " );
+//		System.err.println( DEFAULT_XINCLUDE_FIXUP_BASE_URIS ? "on" : "off" );
+//		System.err.print( "  XInclude language fixup:  " );
+//		System.err.println( DEFAULT_XINCLUDE_FIXUP_LANGUAGE ? "on" : "off" );
+//
+//	} // printUsage()
 
 } // class Writer

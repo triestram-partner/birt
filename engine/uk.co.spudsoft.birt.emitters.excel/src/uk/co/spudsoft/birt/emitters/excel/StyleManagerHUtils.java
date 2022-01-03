@@ -1,12 +1,12 @@
 /*************************************************************************************
  * Copyright (c) 2011, 2012, 2013 James Talbut.
  *  jim-emitters@spudsoft.co.uk
- *  
- * All rights reserved. This program and the accompanying materials 
+ *
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     James Talbut - Initial implementation.
  ************************************************************************************/
@@ -19,7 +19,10 @@ import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.hssf.util.HSSFColor.HSSFColorPredefined;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.RichTextString;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -46,12 +49,12 @@ public class StyleManagerHUtils extends StyleManagerUtils {
 			return new StyleManagerHUtils(log);
 		}
 	};
-	
+
 	public static Factory getFactory() {
 		return factory;
 	}
 
-	
+
 	/**
 	 * @param log
 	 * Logger used by StyleManagerHUtils to record anything of interest.
@@ -59,7 +62,7 @@ public class StyleManagerHUtils extends StyleManagerUtils {
 	public StyleManagerHUtils(Logger log) {
 		super(log);
 	}
-	
+
 	@Override
 	public RichTextString createRichTextString(String value) {
 		return new HSSFRichTextString(value);
@@ -74,9 +77,9 @@ public class StyleManagerHUtils extends StyleManagerUtils {
 	 * @return
 	 * One of the CellStyle BORDER constants.
 	 */
-	private short poiBorderStyleFromBirt( String birtBorder, String width ) {
+	private BorderStyle poiBorderStyleFromBirt(String birtBorder, String width) {
 		if( "none".equals(birtBorder) ) {
-			return CellStyle.BORDER_NONE;
+			return BorderStyle.NONE;
 		}
 		DimensionType dim = DimensionType.parserUnit( width );
 		double pxWidth = 3.0;
@@ -85,30 +88,30 @@ public class StyleManagerHUtils extends StyleManagerUtils {
 		}
 		if( "solid".equals(birtBorder) ) {
 			if( pxWidth < 2.9 ) {
-				return CellStyle.BORDER_THIN;
+				return BorderStyle.THIN;
 			} else if( pxWidth < 3.1 ) {
-				return CellStyle.BORDER_MEDIUM;
+				return BorderStyle.MEDIUM;
 			} else {
-				return CellStyle.BORDER_THICK;
+				return BorderStyle.THICK;
 			}
 		} else if( "dashed".equals(birtBorder) ) {
 			if( pxWidth < 2.9 ) {
-				return CellStyle.BORDER_DASHED;
+				return BorderStyle.DASHED;
 			} else {
-				return CellStyle.BORDER_MEDIUM_DASHED;
+				return BorderStyle.MEDIUM_DASHED;
 			}
 		} else if( "dotted".equals(birtBorder) ) {
-			return CellStyle.BORDER_DOTTED;
+			return BorderStyle.DOTTED;
 		} else if( "double".equals(birtBorder) ) {
-			return CellStyle.BORDER_DOUBLE;
+			return BorderStyle.DOUBLE;
 		} else if( "none".equals(birtBorder) ) {
-			return CellStyle.BORDER_NONE;
+			return BorderStyle.NONE;
 		}
 
 		log.debug( "Border style \"", birtBorder, "\" is not recognised" );
-		return CellStyle.BORDER_NONE;
+		return BorderStyle.NONE;
 	}
-	
+
 	/**
 	 * Get an HSSFPalette index for a workbook that closely approximates the passed in colour.
 	 * @param workbook
@@ -123,10 +126,10 @@ public class StyleManagerHUtils extends StyleManagerUtils {
 		if( rgbInt == null ) {
 			return 0;
 		}
-		
+
 		byte[] rgbByte = new byte[] { (byte)rgbInt[0], (byte)rgbInt[1], (byte)rgbInt[2] };
 		HSSFPalette palette = workbook.getCustomPalette();
-		
+
 		HSSFColor result = palette.findColor(rgbByte[0], rgbByte[1], rgbByte[2]);
 		if( result == null) {
 			if( paletteIndex > minPaletteIndex ) {
@@ -149,11 +152,11 @@ public class StyleManagerHUtils extends StyleManagerUtils {
 
 			if( style instanceof HSSFCellStyle ) {
 				HSSFCellStyle hStyle = (HSSFCellStyle)style;
-				
-				short hBorderStyle = poiBorderStyleFromBirt(borderStyleString, widthString);
+
+				BorderStyle hBorderStyle = poiBorderStyleFromBirt(borderStyleString, widthString);
 				short colourIndex = getHColour((HSSFWorkbook)workbook, colourString);
 				if( colourIndex > 0 ) {
-					if(hBorderStyle != CellStyle.BORDER_NONE) {
+					if (hBorderStyle != BorderStyle.NONE) {
 						switch( side ) {
 						case TOP:
 							hStyle.setBorderTop(hBorderStyle);
@@ -180,7 +183,7 @@ public class StyleManagerHUtils extends StyleManagerUtils {
 				}
 			}
 		}
-	}	
+	}
 
 	@Override
 	public void addColourToFont(Workbook workbook, Font font, String colour) {
@@ -212,19 +215,19 @@ public class StyleManagerHUtils extends StyleManagerUtils {
 			short colourIndex = getHColour((HSSFWorkbook)workbook, colour);
 			if( colourIndex > 0 ) {
 				cellStyle.setFillForegroundColor(colourIndex);
-				cellStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+				cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 			}
 		}
 	}
 
 	@Override
 	public Font correctFontColorIfBackground(FontManager fm, Workbook wb, BirtStyle birtStyle, Font font) {
-		HSSFPalette palette = ((HSSFWorkbook)wb).getCustomPalette();		
-		
+		HSSFPalette palette = ((HSSFWorkbook)wb).getCustomPalette();
+
 		CSSValue bgColour = birtStyle.getProperty( StylePropertyIndexes.STYLE_BACKGROUND_COLOR );
 		int bgRgb[] = parseColour( bgColour == null ? null : bgColour.getCssText(), "white" );
 
-		short fgRgb[] = HSSFColor.BLACK.triplet;
+		short fgRgb[] = HSSFColorPredefined.BLACK.getTriplet();
 		if( ( font != null ) && ( font.getColor() != Short.MAX_VALUE ) ) {
 			fgRgb = palette.getColor(font.getColor()).getTriplet();
 		}
@@ -235,10 +238,10 @@ public class StyleManagerHUtils extends StyleManagerUtils {
 		}
 
 		if( ( bgRgb[ 0 ] == fgRgb[ 0 ] ) && ( bgRgb[ 1 ] == fgRgb[ 1 ] ) && ( bgRgb[ 2 ] == fgRgb[ 2 ] ) ) {
-			
+
 			IStyle addedStyle = new AreaStyle( fm.getCssEngine() );
 			addedStyle.setColor( contrastColour( bgRgb ) );
-			
+
 			return fm.getFontWithExtraStyle( font, addedStyle );
 		} else {
 			return font;
@@ -249,7 +252,7 @@ public class StyleManagerHUtils extends StyleManagerUtils {
 	public int anchorDxFromMM( double widthMM, double colWidthMM ) {
         return (int)( 1023.0 * widthMM / colWidthMM );
 	}
-	
+
 	@Override
 	public int anchorDyFromPoints( float height, float rowHeight ) {
         return (int)( 255.0 * height / rowHeight );

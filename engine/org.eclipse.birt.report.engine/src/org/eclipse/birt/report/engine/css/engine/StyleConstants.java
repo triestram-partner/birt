@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.birt.report.engine.css.engine;
 
+@SuppressWarnings("javadoc")
 public interface StyleConstants {
 	// bidi_hcg: As a result of a new style added ("direction"), align the
 	// constants with org.eclipse.birt.report.engine.css.engine.PerfectHash

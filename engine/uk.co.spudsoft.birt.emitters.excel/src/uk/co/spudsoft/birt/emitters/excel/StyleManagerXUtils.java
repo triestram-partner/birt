@@ -1,12 +1,12 @@
 /*************************************************************************************
  * Copyright (c) 2011, 2012, 2013 James Talbut.
  *  jim-emitters@spudsoft.co.uk
- *  
- * All rights reserved. This program and the accompanying materials 
+ *
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     James Talbut - Initial implementation.
  ************************************************************************************/
@@ -19,11 +19,12 @@ import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.RichTextString;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.util.Units;
+import org.apache.poi.xssf.usermodel.DefaultIndexedColorMap;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
-import org.apache.poi.xssf.usermodel.XSSFShape;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder.BorderSide;
 import org.eclipse.birt.report.engine.content.IStyle;
 import org.eclipse.birt.report.engine.css.dom.AreaStyle;
@@ -46,7 +47,7 @@ public class StyleManagerXUtils extends StyleManagerUtils {
 			return new StyleManagerXUtils(log);
 		}
 	};
-	
+
 	public static Factory getFactory() {
 		return factory;
 	}
@@ -91,7 +92,7 @@ public class StyleManagerXUtils extends StyleManagerUtils {
 				if( "px".equals(dim.getUnits()) ) {
 					pxWidth = dim.getMeasure();
 				}
-			} 
+			}
 		}
 		if( "solid".equals(birtBorder) ) {
 			if( pxWidth < 2.9 ) {
@@ -123,10 +124,10 @@ public class StyleManagerXUtils extends StyleManagerUtils {
 			String colourString = colour == null ? "rgb(0,0,0)" : colour.getCssText();
 			String borderStyleString = borderStyle == null ? "solid" : borderStyle.getCssText();
 			String widthString = width == null ? "medium" : width.getCssText();
-			
+
 			if( style instanceof XSSFCellStyle ) {
 				XSSFCellStyle xStyle = (XSSFCellStyle)style;
-				
+
 				BorderStyle xBorderStyle = poiBorderStyleFromBirt(borderStyleString, widthString);
 				XSSFColor xBorderColour = getXColour(colourString);
 				if(xBorderStyle != BorderStyle.NONE) {
@@ -156,7 +157,7 @@ public class StyleManagerXUtils extends StyleManagerUtils {
 			}
 		}
 	}
-	
+
 	private XSSFColor getXColour(String colour) {
 		int[] rgbInt = ColorUtil.getRGBs(colour);
 		if( rgbInt == null ) {
@@ -164,8 +165,10 @@ public class StyleManagerXUtils extends StyleManagerUtils {
 		}
 		byte[] rgbByte = { (byte)-1, (byte)rgbInt[0], (byte)rgbInt[1], (byte)rgbInt[2] };
 		// System.out.println( "The X colour for " + colour + " is [ " + rgbByte[0] + "," + rgbByte[1] + "," + rgbByte[2] + "," + rgbByte[3] + "]" );
-		XSSFColor result = new XSSFColor( rgbByte );
-		return result;		
+		XSSFColor result = new XSSFColor(rgbByte, new DefaultIndexedColorMap()); // @TODO is it OK to do it that way or
+																					// do we have to manage our own
+																					// ColorMap?
+		return result;
 	}
 
 	@Override
@@ -179,13 +182,13 @@ public class StyleManagerXUtils extends StyleManagerUtils {
 		if(font instanceof XSSFFont) {
 			XSSFFont xFont = (XSSFFont)font;
 			XSSFColor xColour = getXColour(colour);
-			
+
 			if(xColour != null) {
 				xFont.setColor(xColour);
 			}
 		}
 	}
-	
+
 	@Override
 	public void addBackgroundColourToStyle(Workbook workbook, CellStyle style, String colour) {
 		if(colour == null) {
@@ -203,14 +206,14 @@ public class StyleManagerXUtils extends StyleManagerUtils {
 			}
 		}
 	}
-	
+
 	@Override
 	public Font correctFontColorIfBackground( FontManager fm, Workbook wb, BirtStyle birtStyle, Font font ) {
 		CSSValue bgColour = birtStyle.getProperty( StylePropertyIndexes.STYLE_BACKGROUND_COLOR );
 		int bgRgb[] = parseColour( bgColour == null ? null : bgColour.getCssText(), "white" );
 
 		XSSFColor colour = ((XSSFFont)font).getXSSFColor();
-		int fgRgb[] = rgbOnly( colour.getARgb() );
+		int fgRgb[] = rgbOnly(colour.getARGB());
 		if( ( fgRgb[0] == 255 ) && ( fgRgb[1] == 255 ) && ( fgRgb[2] == 255 ) ) {
 			fgRgb[0]=fgRgb[1]=fgRgb[2]=0;
 		} else if( ( fgRgb[0] == 0 ) && ( fgRgb[1] == 0 ) && ( fgRgb[2] == 0 ) ) {
@@ -218,10 +221,10 @@ public class StyleManagerXUtils extends StyleManagerUtils {
 		}
 
 		if( ( bgRgb[ 0 ] == fgRgb[ 0 ] ) && ( bgRgb[ 1 ] == fgRgb[ 1 ] ) && ( bgRgb[ 2 ] == fgRgb[ 2 ] ) ) {
-			
+
 			IStyle addedStyle = new AreaStyle( fm.getCssEngine() );
 			addedStyle.setColor( contrastColour( bgRgb ) );
-			
+
 			return fm.getFontWithExtraStyle( font, addedStyle );
 		} else {
 			return font;
@@ -230,12 +233,12 @@ public class StyleManagerXUtils extends StyleManagerUtils {
 
 	@Override
 	public int anchorDxFromMM( double widthMM, double colWidthMM ) {
-        return (int)(widthMM * 36000); 
+        return (int)(widthMM * 36000);
 	}
-	
+
 	@Override
 	public int anchorDyFromPoints( float height, float rowHeight ) {
-		return (int)( height * XSSFShape.EMU_PER_POINT );
+		return (int) (height * Units.EMU_PER_POINT);
 	}
-	
+
 }

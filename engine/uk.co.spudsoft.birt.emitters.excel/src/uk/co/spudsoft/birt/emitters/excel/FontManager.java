@@ -1,12 +1,12 @@
 /*************************************************************************************
  * Copyright (c) 2011, 2012, 2013 James Talbut.
  *  jim-emitters@spudsoft.co.uk
- *  
- * All rights reserved. This program and the accompanying materials 
+ *
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     James Talbut - Initial implementation.
  ************************************************************************************/
@@ -33,7 +33,7 @@ import org.w3c.dom.css.CSSValue;
  *
  */
 public class FontManager {
-	
+
 	/**
 	 * FontPair maintains the relationship between a BIRT style and a POI font.
 	 * @author Jim Talbut
@@ -42,13 +42,13 @@ public class FontManager {
 	private class FontPair {
 		public BirtStyle birtStyle;
 		public Font poiFont;
-		
+
 		public FontPair(BirtStyle birtStyle, Font poiFont) {
 			this.birtStyle = birtStyle;
 			this.poiFont = poiFont;
 		}
 	}
-	
+
 	private Workbook workbook;
 	private StyleManagerUtils smu;
 	private List<FontPair> fonts = new ArrayList<FontPair>();
@@ -73,7 +73,7 @@ public class FontManager {
 	CSSEngine getCssEngine() {
 		return cssEngine;
 	}
-	
+
 	/**
 	 * Remove quotes surrounding a string.
 	 * @param family
@@ -84,7 +84,7 @@ public class FontManager {
 	private static String cleanupQuotes( CSSValue value ) {
 		if( value == null ) {
 			return null;
-		} 
+		}
 
 		if( value instanceof ListValue ){
 			ListValue listValue = (ListValue)value;
@@ -92,7 +92,7 @@ public class FontManager {
 				value = listValue.item(0);
 			}
 		}
-		
+
 		String stringValue = ( value instanceof StringValue ? ((StringValue)value).getStringValue() : value.getCssText() );
 		if( ( stringValue == null ) || stringValue.isEmpty() ) {
 			return stringValue;
@@ -103,7 +103,7 @@ public class FontManager {
 		}
 		return stringValue;
 	}
-	
+
 	static int COMPARE_CSS_PROPERTIES[] = {
 		StylePropertyIndexes.STYLE_FONT_FAMILY,
 		StylePropertyIndexes.STYLE_FONT_SIZE,
@@ -133,20 +133,20 @@ public class FontManager {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Create a new POI Font based upon a BIRT style.
 	 * @param birtStyle
 	 * The BIRT style to base the Font upon.
 	 * @return
-	 * The Font whose attributes are described by the BIRT style. 
+	 * The Font whose attributes are described by the BIRT style.
 	 */
 	private Font createFont(BirtStyle birtStyle) {
 		Font font = workbook.createFont();
-		
+
 		// Family
 		String fontName = smu.poiFontNameFromBirt(cleanupQuotes(birtStyle.getProperty( StylePropertyIndexes.STYLE_FONT_FAMILY )));
 		if( fontName == null ) {
@@ -159,9 +159,10 @@ public class FontManager {
 			font.setFontHeightInPoints(fontSize);
 		}
 		// Weight
-		short fontWeight = smu.poiFontWeightFromBirt(cleanupQuotes(birtStyle.getProperty( StylePropertyIndexes.STYLE_FONT_WEIGHT )));
-		if(fontWeight > 0) {
-			font.setBoldweight(fontWeight);
+		boolean fontWeight = smu
+				.poiFontWeightFromBirt(cleanupQuotes(birtStyle.getProperty(StylePropertyIndexes.STYLE_FONT_WEIGHT)));
+		if (fontWeight) {
+			font.setBold(fontWeight);
 		}
 		// Style
 		String fontStyle = cleanupQuotes(birtStyle.getProperty( StylePropertyIndexes.STYLE_FONT_STYLE ) );
@@ -175,11 +176,11 @@ public class FontManager {
 		}
 		// Colour
 		smu.addColourToFont( workbook, font, cleanupQuotes( birtStyle.getProperty( StylePropertyIndexes.STYLE_COLOR ) ) );
-						
+
 		fonts.add(new FontPair(birtStyle, font));
 		return font;
 	}
-	
+
 	/**
 	 * <p>
 	 * Return the default font for the workbook.
@@ -196,20 +197,20 @@ public class FontManager {
 			defaultFont.setFontHeightInPoints((short)11);
 		}
 		return defaultFont;
-	}	
-	
+	}
+
 	/**
 	 * Get a Font matching the BIRT style, either from the cache or by creating a new one.
 	 * @param birtStyle
 	 * The BIRT style to base the Font upon.
 	 * @return
-	 * A Font whose attributes are described by the BIRT style. 
+	 * A Font whose attributes are described by the BIRT style.
 	 */
 	public Font getFont( BirtStyle birtStyle ) {
 		if( birtStyle == null ) {
 			return getDefaultFont();
 		}
-		
+
 		if( ( birtStyle.getProperty( StylePropertyIndexes.STYLE_FONT_FAMILY ) == null )
 				&& ( birtStyle.getProperty( StylePropertyIndexes.STYLE_FONT_SIZE ) == null )
 				&& ( birtStyle.getProperty( StylePropertyIndexes.STYLE_FONT_WEIGHT ) == null )
@@ -219,26 +220,26 @@ public class FontManager {
 				) {
 			return getDefaultFont();
 		}
-		
+
 		for(FontPair fontPair : fonts) {
 			if(fontsEquivalent(birtStyle, fontPair.birtStyle)) {
 				return fontPair.poiFont;
 			}
 		}
-		
+
 		return createFont(birtStyle);
 	}
-	
+
 	private BirtStyle birtStyleFromFont( Font source ) {
 		for(FontPair fontPair : fonts) {
 			if( source.equals(fontPair.poiFont) ) {
 				return fontPair.birtStyle.clone();
 			}
 		}
-		
+
 		return new BirtStyle(cssEngine);
 	}
-	
+
 	/**
 	 * Return a POI font created by combining a POI font with a BIRT style, where the BIRT style overrides the values in the POI font.
 	 * @param source
@@ -251,7 +252,7 @@ public class FontManager {
 	public Font getFontWithExtraStyle( Font source, IStyle birtExtraStyle ) {
 
 		BirtStyle birtStyle = birtStyleFromFont( source );
-		
+
 		for(int i = 0; i < IStyle.NUMBER_OF_STYLE; ++i ) {
 			CSSValue value = birtExtraStyle.getProperty( i );
 			if( value != null ) {
@@ -262,6 +263,6 @@ public class FontManager {
 		Font newFont = getFont(birtStyle);
 		return newFont;
 	}
-	
-	
+
+
 }

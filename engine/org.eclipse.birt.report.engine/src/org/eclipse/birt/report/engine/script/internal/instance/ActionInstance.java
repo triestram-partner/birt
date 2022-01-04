@@ -20,9 +20,10 @@ import org.eclipse.birt.report.engine.content.IHyperlinkAction;
 import org.eclipse.birt.report.engine.content.impl.DrillThroughAction;
 
 /**
- * 
+ *
  */
 
+@SuppressWarnings("nls")
 public class ActionInstance implements IActionInstance {
 
 	IHyperlinkAction hyperlink;
@@ -33,7 +34,7 @@ public class ActionInstance implements IActionInstance {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IActionInstance#getType()
 	 */
 	public int getType() {
@@ -42,7 +43,7 @@ public class ActionInstance implements IActionInstance {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IActionInstance#getBookmark()
 	 */
 	public String getBookmark() {
@@ -54,7 +55,7 @@ public class ActionInstance implements IActionInstance {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IActionInstance#setBookmark(
 	 * java.lang.String )
 	 */
@@ -68,7 +69,7 @@ public class ActionInstance implements IActionInstance {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IActionInstance#getHyperlink()
 	 */
 	public String getHyperlink() {
@@ -80,7 +81,7 @@ public class ActionInstance implements IActionInstance {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IActionInstance#setHyperlink(
 	 * java.lang.String, java.lang.String )
 	 */
@@ -94,7 +95,7 @@ public class ActionInstance implements IActionInstance {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IActionInstance#getTargetWindow()
 	 */
 	public String getTargetWindow() {
@@ -109,7 +110,7 @@ public class ActionInstance implements IActionInstance {
 
 	/**
 	 * @deprecated (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IActionInstance#setDrillThrough()
 	 */
 	public IDrillThroughInstance createDrillThrough(String bookmark, boolean isBookmark, String reportName,
@@ -120,7 +121,7 @@ public class ActionInstance implements IActionInstance {
 
 	/**
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IActionInstance#setDrillThrough()
 	 */
 	public IDrillThroughInstance createDrillThrough(String bookmark, boolean isBookmark, String reportName,
@@ -137,7 +138,7 @@ public class ActionInstance implements IActionInstance {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IActionInstance#getDrillThrough(
 	 * )
 	 */
@@ -156,7 +157,7 @@ public class ActionInstance implements IActionInstance {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IActionInstance#setDrillThrough(
 	 * )
 	 */

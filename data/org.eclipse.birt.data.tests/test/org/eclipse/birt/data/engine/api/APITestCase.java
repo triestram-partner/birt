@@ -25,18 +25,18 @@ import org.eclipse.birt.data.engine.api.querydefn.QueryDefinition;
 import org.eclipse.birt.data.engine.api.querydefn.ScriptExpression;
 import org.eclipse.birt.data.engine.api.querydefn.SortDefinition;
 import org.eclipse.birt.data.engine.api.querydefn.SubqueryDefinition;
+import org.junit.After;
+import org.junit.Before;
 
 import testutil.BaseTestCase;
 import testutil.JDBCDataSource;
 import testutil.JDBCOdaDataSource;
 import testutil.TestDataSource;
 
-import org.junit.After;
-import org.junit.Before;
-
 /**
  * Base class for test cases that work with Data Engine public API
  */
+@SuppressWarnings("nls")
 abstract public class APITestCase extends BaseTestCase {
 	/** connection property */
 	protected String DriverClass;
@@ -81,7 +81,7 @@ abstract public class APITestCase extends BaseTestCase {
 	/**
 	 * Prepare test table and oda data source and data set design. In most case,
 	 * only one data source needs to be defined.
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	private void prepareDataSource() throws Exception {
@@ -120,7 +120,7 @@ abstract public class APITestCase extends BaseTestCase {
 	 * Prepare test table. This method is defined separatelly since in some test
 	 * cases, they might use more than one data set, although they share the same
 	 * data source.
-	 * 
+	 *
 	 * @param dataSourceInfo
 	 * @throws Exception
 	 */
@@ -136,7 +136,7 @@ abstract public class APITestCase extends BaseTestCase {
 	/**
 	 * Create test table and populate data into table, currently only derby data
 	 * base is used.
-	 * 
+	 *
 	 * @param tableName
 	 * @param createSql
 	 * @param dataFileName
@@ -160,7 +160,7 @@ abstract public class APITestCase extends BaseTestCase {
 	 * be defined in DataEngine. If the return value is null, there is no any
 	 * datasource and dataset is defined in dataEngine, which means other methods
 	 * such as newDataSet and newReportQuery can not be used.
-	 * 
+	 *
 	 * @return which data source will be used in this test case
 	 */
 	protected abstract DataSourceInfo getDataSourceInfo();
@@ -207,7 +207,7 @@ abstract public class APITestCase extends BaseTestCase {
 
 	/**
 	 * new a JDBC dataset with specified datasetname and querytext
-	 * 
+	 *
 	 * @param datasetName
 	 * @param queryText
 	 * @return dataset
@@ -225,7 +225,7 @@ abstract public class APITestCase extends BaseTestCase {
 
 	/**
 	 * new a default query, which only has data set information
-	 * 
+	 *
 	 * @return queryDefn QueryDefinition
 	 */
 	protected QueryDefinition newReportQuery() {
@@ -244,7 +244,7 @@ abstract public class APITestCase extends BaseTestCase {
 
 	/**
 	 * new a simple query with specified dataset
-	 * 
+	 *
 	 * @return queryDefn QueryDefinition
 	 */
 	protected QueryDefinition newReportQuery(IBaseDataSetDesign dataset) {
@@ -269,7 +269,7 @@ abstract public class APITestCase extends BaseTestCase {
 
 	/**
 	 * Execute query definition
-	 * 
+	 *
 	 * @param query
 	 * @return resultIterator
 	 * @throws Exception
@@ -282,7 +282,7 @@ abstract public class APITestCase extends BaseTestCase {
 
 	/**
 	 * Output result of executing query defintion
-	 * 
+	 *
 	 * @param resultIt
 	 * @param expressions
 	 * @throws Exception
@@ -355,7 +355,7 @@ abstract public class APITestCase extends BaseTestCase {
 
 	/**
 	 * Return default query definition
-	 * 
+	 *
 	 * @param dataSetName
 	 * @return default query definition
 	 */
@@ -365,7 +365,7 @@ abstract public class APITestCase extends BaseTestCase {
 
 	/**
 	 * Return default query definition with subquery
-	 * 
+	 *
 	 * @param dataSetName
 	 * @return default query definition with subquery
 	 */
@@ -375,7 +375,7 @@ abstract public class APITestCase extends BaseTestCase {
 
 	/**
 	 * Return expression of default query
-	 * 
+	 *
 	 * @return expression of default query
 	 */
 	protected BaseExpression[] getExpressionsOfDefaultQuery() {
@@ -402,7 +402,7 @@ abstract public class APITestCase extends BaseTestCase {
 
 		/**
 		 * Create a general Query with groups,sorts and subquery
-		 * 
+		 *
 		 * @param dataSetName
 		 * @return queryDefn
 		 */
@@ -479,7 +479,7 @@ abstract public class APITestCase extends BaseTestCase {
 
 		/**
 		 * Get query definition with sub query
-		 * 
+		 *
 		 * @return queryDefn
 		 */
 		protected IQueryDefinition getDefaultQueryDefnWithSubQuery(String dataSetName) {
@@ -547,7 +547,7 @@ abstract public class APITestCase extends BaseTestCase {
 
 		/**
 		 * Get default query expressions
-		 * 
+		 *
 		 * @return expressions BaseExpression[]
 		 */
 		protected BaseExpression[] getExpressionsOfDefaultQuery() {

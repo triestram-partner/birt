@@ -30,7 +30,7 @@ import org.eclipse.birt.report.engine.emitter.config.excel.i18n.Messages;
  */
 public class ExcelEmitterDescriptor extends AbstractEmitterDescriptor {
 	protected void initOptions() {
-		loadDefaultValues("org.eclipse.birt.report.engine.emitter.config.excel");
+		loadDefaultValues("org.eclipse.birt.report.engine.emitter.config.excel"); //$NON-NLS-1$
 		// Initializes the option for WrappingText.
 		ConfigurableOption wrappingText = initializeWrappingText();
 
@@ -40,7 +40,7 @@ public class ExcelEmitterDescriptor extends AbstractEmitterDescriptor {
 		chartDpi.setDataType(IConfigurableOption.DataType.INTEGER);
 		chartDpi.setDisplayType(IConfigurableOption.DisplayType.TEXT);
 		chartDpi.setDefaultValue(new Integer(192));
-		chartDpi.setToolTip(getMessage("Tooltip.ChartDpi"));
+		chartDpi.setToolTip(getMessage("Tooltip.ChartDpi")); //$NON-NLS-1$
 		chartDpi.setDescription(getMessage("OptionDescription.ChartDpi")); //$NON-NLS-1$
 
 		ConfigurableOption hideGridlines = new ConfigurableOption(HIDE_GRIDLINES);
@@ -77,7 +77,7 @@ public class ExcelEmitterDescriptor extends AbstractEmitterDescriptor {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.emitter.config.AbstractEmitterDescriptor
 	 * #getDescription()
 	 */
@@ -87,7 +87,7 @@ public class ExcelEmitterDescriptor extends AbstractEmitterDescriptor {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.birt.report.engine.emitters.IEmitterDescriptor#getDisplayName ()
 	 */
@@ -97,7 +97,7 @@ public class ExcelEmitterDescriptor extends AbstractEmitterDescriptor {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.emitters.IEmitterDescriptor#getID()
 	 */
 	public String getID() {

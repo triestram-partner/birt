@@ -14,14 +14,13 @@ import org.eclipse.birt.data.engine.api.DataEngine;
 import org.eclipse.birt.data.engine.api.DataEngineContext;
 import org.eclipse.birt.data.engine.api.IBaseDataSetDesign;
 import org.eclipse.birt.data.engine.api.IBaseDataSourceDesign;
-
 import org.eclipse.birt.data.engine.api.IPreparedQuery;
 import org.eclipse.birt.data.engine.api.IQueryResults;
 import org.eclipse.birt.data.engine.api.IResultIterator;
 import org.eclipse.birt.data.engine.api.querydefn.QueryDefinition;
 import org.eclipse.birt.data.engine.perf.util.SizeOfUtil;
-import org.eclipse.birt.data.engine.perf.util.TimeUtil;
 import org.eclipse.birt.data.engine.perf.util.SizeOfUtil.SizePoint;
+import org.eclipse.birt.data.engine.perf.util.TimeUtil;
 import org.eclipse.birt.data.engine.perf.util.TimeUtil.TimePoint;
 
 /**
@@ -40,9 +39,10 @@ interface QueryInfo {
 /**
  * A basic class used to test the performance of DtE API in aspects of time and
  * space bench mark.
- * 
+ *
  * This can also be used as an demonstration to design other performance test.
  */
+@SuppressWarnings("nls")
 public class APIPerfTestUtil {
 	/** query info provider */
 	private QueryInfo queryInfo;
@@ -56,7 +56,7 @@ public class APIPerfTestUtil {
 
 	/**
 	 * Set queryInfo provider
-	 * 
+	 *
 	 * @param queryInfo
 	 */
 	public void setQueryInfo(QueryInfo queryInfo) {
@@ -66,14 +66,14 @@ public class APIPerfTestUtil {
 
 	/**
 	 * Test feature of time benchmark between sequential operations
-	 * 
+	 *
 	 * Basic monitered event for time bench mark test. 1: start data engine 2: do
 	 * query execution 3: do retrive data 4: whole operation
-	 * 
+	 *
 	 * Define new bench mark test, please follow below steps: 1: define which event
 	 * needs to be monitered 2: define the function which do the real bench mark
 	 * test 3: output returned result
-	 * 
+	 *
 	 * @param isAverageValue
 	 * @throws Exception
 	 */
@@ -107,7 +107,7 @@ public class APIPerfTestUtil {
 	 * According to passed loopCount, the value is calculted by repeatedly calling
 	 * the function of doing the real bench mark to compute the avergae value of
 	 * operation.
-	 * 
+	 *
 	 * @param eventCount
 	 * @param loopCount
 	 * @return bench mark value of time
@@ -154,7 +154,7 @@ public class APIPerfTestUtil {
 
 	/**
 	 * Do time space bench mark
-	 * 
+	 *
 	 * @param tpArray
 	 * @throws Exception
 	 */
@@ -197,11 +197,11 @@ public class APIPerfTestUtil {
 
 	/**
 	 * Test feature of space benchmark between sequential operations
-	 * 
+	 *
 	 * Basic monitered event for space bench mark test. 1: do query execution 2: do
 	 * retrive data 3: close result iterator 4: close query result 5: close data
 	 * engine 6: whole operation
-	 * 
+	 *
 	 * @param isAverageValue
 	 * @throws Exception
 	 */
@@ -278,7 +278,7 @@ public class APIPerfTestUtil {
 
 	/**
 	 * Run test of memory consumed change
-	 * 
+	 *
 	 * @param spArray output sizePointArray
 	 */
 	private void doSpaceBenchMarkOnce(SizePoint[] spArray) throws Exception {
@@ -325,7 +325,7 @@ public class APIPerfTestUtil {
 
 	/**
 	 * Format long value
-	 * 
+	 *
 	 * @param value
 	 * @param length
 	 * @return string
@@ -345,7 +345,7 @@ public class APIPerfTestUtil {
 
 	/**
 	 * Add space char to the end of string
-	 * 
+	 *
 	 * @param inputStr
 	 * @param length
 	 * @return string
@@ -356,7 +356,7 @@ public class APIPerfTestUtil {
 
 	/**
 	 * Add space char to the beginning of string
-	 * 
+	 *
 	 * @param inputStr
 	 * @param length
 	 * @return string
@@ -367,7 +367,7 @@ public class APIPerfTestUtil {
 
 	/**
 	 * Format string, add space char to the string
-	 * 
+	 *
 	 * @param inputStr
 	 * @param length
 	 * @param appendToTail

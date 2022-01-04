@@ -38,7 +38,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#accept(org.eclipse.birt.
 	 * report.engine.content.IContentVisitor, java.lang.Object)
 	 */
@@ -48,7 +48,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getBookmark()
 	 */
 	public String getBookmark() {
@@ -57,7 +57,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.birt.report.engine.css.engine.CSSStylableElement#getComputedStyle
 	 * ()
@@ -68,7 +68,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getContentType()
 	 */
 	public int getContentType() {
@@ -77,7 +77,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.birt.report.engine.css.engine.CSSStylableElement#getCSSEngine()
 	 */
@@ -87,7 +87,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getGenerateBy()
 	 */
 	public Object getGenerateBy() {
@@ -96,7 +96,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getHeight()
 	 */
 	public DimensionType getHeight() {
@@ -105,7 +105,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getAltText()
 	 */
 	public String getAltText() {
@@ -114,7 +114,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getAltTextKey()
 	 */
 	public String getAltTextKey() {
@@ -123,7 +123,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getHelpText()
 	 */
 	public String getHelpText() {
@@ -132,7 +132,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getHyperlinkAction()
 	 */
 	public IHyperlinkAction getHyperlinkAction() {
@@ -141,7 +141,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getInlineStyle()
 	 */
 	public IStyle getInlineStyle() {
@@ -150,7 +150,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getInstanceID()
 	 */
 	public InstanceID getInstanceID() {
@@ -159,7 +159,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getName()
 	 */
 	public String getName() {
@@ -168,7 +168,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IElement#getParent()
 	 */
 	public IElement getParent() {
@@ -177,7 +177,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getReportContent()
 	 */
 	public IReportContent getReportContent() {
@@ -186,7 +186,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.css.engine.CSSStylableElement#getStyle()
 	 */
 	public IStyle getStyle() {
@@ -195,7 +195,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getStyleClass()
 	 */
 	public String getStyleClass() {
@@ -204,7 +204,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getTOC()
 	 */
 	public Object getTOC() {
@@ -213,7 +213,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getWidth()
 	 */
 	public DimensionType getWidth() {
@@ -222,7 +222,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getX()
 	 */
 	public DimensionType getX() {
@@ -231,7 +231,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getY()
 	 */
 	public DimensionType getY() {
@@ -248,17 +248,18 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#readContent(java.io.
 	 * DataInputStream)
 	 */
+	@SuppressWarnings("nls")
 	public void readContent(DataInputStream in, ClassLoader loader) throws IOException {
 		throw new IOException("Not supported");
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.birt.report.engine.content.IContent#setBookmark(java.lang.String)
 	 */
@@ -268,7 +269,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#setGenerateBy(java.lang.
 	 * Object)
 	 */
@@ -278,7 +279,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.birt.report.engine.content.IContent#setHeight(org.eclipse.birt.
 	 * report.engine.ir.DimensionType)
@@ -289,7 +290,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.birt.report.engine.content.IContent#setAltText(java.lang.String)
 	 */
@@ -299,7 +300,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#setAltTextKey(java.lang.
 	 * String)
 	 */
@@ -309,7 +310,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.birt.report.engine.content.IContent#setHelpText(java.lang.String)
 	 */
@@ -319,7 +320,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#setHyperlinkAction(org.
 	 * eclipse.birt.report.engine.content.IHyperlinkAction)
 	 */
@@ -329,7 +330,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.birt.report.engine.content.IContent#setInlineStyle(org.eclipse.
 	 * birt.report.engine.content.IStyle)
@@ -340,7 +341,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.birt.report.engine.content.IContent#setInstanceID(org.eclipse.
 	 * birt.report.engine.api.InstanceID)
@@ -351,7 +352,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.birt.report.engine.content.IContent#setName(java.lang.String)
 	 */
@@ -361,7 +362,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.birt.report.engine.content.IElement#setParent(org.eclipse.birt.
 	 * report.engine.content.IElement)
@@ -372,7 +373,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.birt.report.engine.content.IContent#setReportContent(org.eclipse.
 	 * birt.report.engine.content.IReportContent)
@@ -383,7 +384,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#setStyleClass(java.lang.
 	 * String)
 	 */
@@ -393,7 +394,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#setTOC(java.lang.String)
 	 */
 	public void setTOC(Object toc) {
@@ -402,7 +403,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.birt.report.engine.content.IContent#setWidth(org.eclipse.birt.
 	 * report.engine.ir.DimensionType)
@@ -413,7 +414,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.birt.report.engine.content.IContent#setX(org.eclipse.birt.report.
 	 * engine.ir.DimensionType)
@@ -424,7 +425,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.birt.report.engine.content.IContent#setY(org.eclipse.birt.report.
 	 * engine.ir.DimensionType)
@@ -435,14 +436,16 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#writeContent(java.io.
 	 * DataOutputStream)
 	 */
+	@SuppressWarnings("nls")
 	public void writeContent(DataOutputStream out) throws IOException {
 		throw new IOException("not supported");
 	}
 
+	@SuppressWarnings("nls")
 	protected void throwUnsupportedException() {
 		throw new UnsupportedOperationException("Unsupported Exception");
 	}
@@ -453,7 +456,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#isOrientationRTL()
 	 */
 	public boolean isRTL() {
@@ -462,7 +465,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#isTextDirectionRTL()
 	 */
 	public boolean isDirectionRTL() {
@@ -473,6 +476,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 		return content.getACL();
 	}
 
+	@SuppressWarnings("nls")
 	public void setACL(String acl) {
 		throw new UnsupportedOperationException("setACL");
 	}

@@ -10,11 +10,12 @@
  *******************************************************************************/
 package org.eclipse.birt.data.engine.perf;
 
+import static org.junit.Assert.fail;
+
 import org.eclipse.birt.core.data.DataType;
 import org.eclipse.birt.data.engine.api.IBaseDataSetDesign;
 import org.eclipse.birt.data.engine.api.IBaseDataSourceDesign;
 import org.eclipse.birt.data.engine.api.IBaseExpression;
-
 import org.eclipse.birt.data.engine.api.querydefn.ColumnDefinition;
 import org.eclipse.birt.data.engine.api.querydefn.FilterDefinition;
 import org.eclipse.birt.data.engine.api.querydefn.OdaDataSetDesign;
@@ -24,19 +25,18 @@ import org.eclipse.birt.data.engine.api.querydefn.ScriptDataSetDesign;
 import org.eclipse.birt.data.engine.api.querydefn.ScriptDataSourceDesign;
 import org.eclipse.birt.data.engine.api.querydefn.ScriptExpression;
 import org.eclipse.birt.data.engine.api.querydefn.SortDefinition;
-
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.Ignore;
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Provide an example to use PerfTestUtil to do bench mark test. If you want to
  * define your datasource and dataset, please use this case.
- * 
+ *
  * Make sure your defined datasource is available when running test.
  */
 @Ignore("ignore performance test")
+@SuppressWarnings("nls")
 public class APIPerfTest2 {
 	/** instance of performance test utility */
 	private APIPerfTestUtil perfTest = APIPerfTestUtil.newInstance();
@@ -55,7 +55,7 @@ public class APIPerfTest2 {
 
 	/**
 	 * Test simple JDBC query
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Test
@@ -165,7 +165,7 @@ public class APIPerfTest2 {
 
 			/**
 			 * Add more operation to query definition
-			 * 
+			 *
 			 * @param queryDefn2
 			 */
 			private void furthurProcessQueryDefn(QueryDefinition queryDefn2) {
@@ -212,7 +212,7 @@ public class APIPerfTest2 {
 
 	/**
 	 * Test simple SCRIPT query
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Test

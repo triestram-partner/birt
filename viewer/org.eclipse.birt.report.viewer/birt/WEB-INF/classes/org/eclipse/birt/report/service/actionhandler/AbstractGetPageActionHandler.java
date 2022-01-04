@@ -1,10 +1,10 @@
 /*************************************************************************************
  * Copyright (c) 2004 Actuate Corporation and others.
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Actuate Corporation - Initial implementation.
  ************************************************************************************/
@@ -65,7 +65,7 @@ public abstract class AbstractGetPageActionHandler extends AbstractBaseActionHan
 
 	/**
 	 * Returns report document file name.
-	 * 
+	 *
 	 * @param bean
 	 * @return
 	 */
@@ -73,7 +73,7 @@ public abstract class AbstractGetPageActionHandler extends AbstractBaseActionHan
 
 	/**
 	 * Check whether report document file existed.
-	 * 
+	 *
 	 * @param docName
 	 * @throws RemoteException
 	 */
@@ -81,7 +81,7 @@ public abstract class AbstractGetPageActionHandler extends AbstractBaseActionHan
 
 	/**
 	 * default constructor
-	 * 
+	 *
 	 * @param context
 	 * @param operation
 	 * @param response
@@ -101,7 +101,7 @@ public abstract class AbstractGetPageActionHandler extends AbstractBaseActionHan
 
 	/**
 	 * Prepare parameters
-	 * 
+	 *
 	 * @throws Exception
 	 * @throws RemoteException
 	 */
@@ -169,7 +169,7 @@ public abstract class AbstractGetPageActionHandler extends AbstractBaseActionHan
 
 	/**
 	 * Execution process
-	 * 
+	 *
 	 * @throws ReportServiceException
 	 * @throws RemoteException
 	 */
@@ -196,7 +196,7 @@ public abstract class AbstractGetPageActionHandler extends AbstractBaseActionHan
 
 	/**
 	 * Prepare response
-	 * 
+	 *
 	 * @throws ReportServiceException
 	 * @throws RemoteException
 	 */
@@ -229,7 +229,7 @@ public abstract class AbstractGetPageActionHandler extends AbstractBaseActionHan
 		updateNavbar.setUpdateData(updateData);
 
 		UpdateData updateDocumentData = new UpdateData();
-		updateDocumentData.setTarget("birtReportDocument");
+		updateDocumentData.setTarget("birtReportDocument"); //$NON-NLS-1$
 		updateDocumentData.setData(pageData);
 		updateDocument.setUpdateData(updateDocumentData);
 
@@ -238,7 +238,7 @@ public abstract class AbstractGetPageActionHandler extends AbstractBaseActionHan
 
 	/**
 	 * Check whether the page number is valid or not.
-	 * 
+	 *
 	 * @param pageNumber
 	 * @param document
 	 * @return
@@ -254,7 +254,7 @@ public abstract class AbstractGetPageActionHandler extends AbstractBaseActionHan
 
 	/**
 	 * Get page number from incoming soap request.
-	 * 
+	 *
 	 * @param params
 	 * @param document
 	 * @return

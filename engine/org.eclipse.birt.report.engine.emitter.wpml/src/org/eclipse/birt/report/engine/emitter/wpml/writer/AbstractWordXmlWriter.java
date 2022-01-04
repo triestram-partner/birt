@@ -272,7 +272,7 @@ public abstract class AbstractWordXmlWriter {
 	private void writeTableWidth(int tablewidth) {
 		writer.openTag("w:tblW"); //$NON-NLS-1$
 		writer.attribute("w:w", tablewidth); //$NON-NLS-1$
-		writer.attribute("w:type", "dxa"); //$NON-NLS-1$
+		writer.attribute("w:type", "dxa"); //$NON-NLS-1$ //$NON-NLS-2$
 		writer.closeTag("w:tblW"); //$NON-NLS-1$
 	}
 
@@ -491,7 +491,7 @@ public abstract class AbstractWordXmlWriter {
 		float spacingValue = PropertyUtil.getDimensionValue(height);
 		int spacing = WordUtil.milliPt2Twips(spacingValue);
 		writer.openTag("w:spacing"); //$NON-NLS-1$
-		writer.attribute("w:lineRule", "exact"); //$NON-NLS-1$ $NON-NLS-2$
+		writer.attribute("w:lineRule", "exact"); //$NON-NLS-1$ //$NON-NLS-2$
 		writer.attribute("w:line", spacing); //$NON-NLS-1$
 		writer.closeTag("w:spacing"); //$NON-NLS-1$
 	}
@@ -845,6 +845,7 @@ public abstract class AbstractWordXmlWriter {
 	 *
 	 * @param style this cell style
 	 */
+	@SuppressWarnings("nls")
 	private void writeCellProperties(IStyle style) {
 		// A cell background color may inherit from row background,
 		// so we should get the row background color here,
@@ -857,16 +858,17 @@ public abstract class AbstractWordXmlWriter {
 		writeCellPadding(style);
 		String verticalAlign = style.getVerticalAlign();
 		if (verticalAlign != null) {
-			writeAttrTag("w:vAlign", WordUtil.parseVerticalAlign(verticalAlign)); //$NON-NLS-1$
+			writeAttrTag("w:vAlign", WordUtil.parseVerticalAlign(verticalAlign));
 		}
 		String noWrap = CSSConstants.CSS_NOWRAP_VALUE.equalsIgnoreCase(style.getWhiteSpace()) ? "on" : "off";
-		writeAttrTag("w:noWrap", noWrap); //$NON-NLS-1$
+		writeAttrTag("w:noWrap", noWrap);
 	}
 
+	@SuppressWarnings("nls")
 	private void writeCellBorders(IStyle style) {
-		writer.openTag("w:tcBorders"); //$NON-NLS-1$
+		writer.openTag("w:tcBorders");
 		writeBorders(style, 0, 0, 0, 0);
-		writer.closeTag("w:tcBorders"); //$NON-NLS-1$
+		writer.closeTag("w:tcBorders");
 	}
 
 	private void writeCellPadding(IStyle style) {

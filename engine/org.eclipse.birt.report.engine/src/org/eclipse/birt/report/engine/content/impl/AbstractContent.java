@@ -43,6 +43,7 @@ import org.eclipse.birt.report.engine.ir.ReportItemDesign;
 import org.eclipse.birt.report.engine.ir.StyledElementDesign;
 import org.w3c.dom.css.CSSValue;
 
+@SuppressWarnings("nls")
 abstract public class AbstractContent extends AbstractElement implements IContent {
 
 	private static final DimensionType EMPTY_DIMENSION = new DimensionType("NONE");
@@ -103,7 +104,7 @@ abstract public class AbstractContent extends AbstractElement implements IConten
 
 	/**
 	 * Constructor of the AbstractContent
-	 * 
+	 *
 	 * @param report report can't be null
 	 */
 	public AbstractContent(IReportContent report) {
@@ -115,7 +116,7 @@ abstract public class AbstractContent extends AbstractElement implements IConten
 
 	/**
 	 * Set the report content, and the content can not be null
-	 * 
+	 *
 	 * @param report report can't be null
 	 */
 	public void setReportContent(IReportContent report) {
@@ -126,7 +127,7 @@ abstract public class AbstractContent extends AbstractElement implements IConten
 
 	/**
 	 * Constructor of the AbstractContent
-	 * 
+	 *
 	 * @param content content can't be null
 	 */
 	AbstractContent(IContent content) {
@@ -314,7 +315,7 @@ abstract public class AbstractContent extends AbstractElement implements IConten
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IStyledContent#getStyle()
 	 */
 	public IStyle getStyle() {
@@ -617,7 +618,7 @@ abstract public class AbstractContent extends AbstractElement implements IConten
 
 	/**
 	 * remove the constant in userProperties
-	 * 
+	 *
 	 * @param userProperties
 	 */
 	private void removeConstant(Map<String, Object> userProperties) {
@@ -710,7 +711,7 @@ abstract public class AbstractContent extends AbstractElement implements IConten
 
 	/**
 	 * Add report element design's constant of user properties
-	 * 
+	 *
 	 * @param userProperties read from the document
 	 */
 	private void addConstant(Map<String, Object> userProperties) {
@@ -834,7 +835,7 @@ abstract public class AbstractContent extends AbstractElement implements IConten
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#isRTL()
 	 */
 	public boolean isRTL() {
@@ -849,7 +850,7 @@ abstract public class AbstractContent extends AbstractElement implements IConten
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#isTextDirectionRTL()
 	 */
 	public boolean isDirectionRTL() {

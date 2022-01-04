@@ -317,7 +317,7 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 			mhtPartWriter.println("Subject:"); //$NON-NLS-1$
 			mhtPartWriter.println("Date:"); //$NON-NLS-1$
 			mhtPartWriter.println("MIME-Version: 1.0"); //$NON-NLS-1$
-			mhtPartWriter.println("Content-Type: multipart/related; type=\"text/html\"; boundary=\"" + BOUNDARY + "\""); //$NON-NLS-1$
+			mhtPartWriter.println("Content-Type: multipart/related; type=\"text/html\"; boundary=\"" + BOUNDARY + "\""); //$NON-NLS-1$ //$NON-NLS-2$
 			writeHtmlText(foreignContent);
 			writeImages();
 		} catch (IOException e) {
@@ -334,7 +334,7 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 
 	private void buildHtmlBody(IForeignContent foreignContent, String foreignText, IStyle style,
 			StringBuffer htmlBuffer) throws EncoderException, UnsupportedEncodingException {
-		htmlBuffer.append("<body>");
+		htmlBuffer.append("<body>"); //$NON-NLS-1$
 		DimensionType x = foreignContent.getX();
 		DimensionType y = foreignContent.getY();
 		DimensionType width = foreignContent.getWidth();
@@ -498,9 +498,9 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 		// build the text-align
 		String textAlign = style.getTextAlign();
 		if (textAlign != null) {
-			foreignStyles.append(" text-align:");
+			foreignStyles.append(" text-align:"); //$NON-NLS-1$
 			foreignStyles.append(textAlign);
-			foreignStyles.append(";");
+			foreignStyles.append(";"); //$NON-NLS-1$
 		}
 	}
 

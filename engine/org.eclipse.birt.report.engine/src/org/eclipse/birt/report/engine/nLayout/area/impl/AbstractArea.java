@@ -24,7 +24,7 @@ import org.w3c.dom.css.CSSValue;
 
 /**
  * abstract area which is the default implementation of <code>IArea</code>
- * 
+ *
  */
 public abstract class AbstractArea implements IArea {
 
@@ -166,7 +166,7 @@ public abstract class AbstractArea implements IArea {
 
 	/**
 	 * set width of this area
-	 * 
+	 *
 	 * @param width
 	 */
 	public void setWidth(int width) {
@@ -189,7 +189,7 @@ public abstract class AbstractArea implements IArea {
 
 	/**
 	 * set height of this area
-	 * 
+	 *
 	 * @param height
 	 */
 	public void setHeight(int height) {
@@ -206,7 +206,7 @@ public abstract class AbstractArea implements IArea {
 
 	/**
 	 * Sets the baseLine
-	 * 
+	 *
 	 * @param baseLine
 	 */
 	public void setBaseLine(int baseLine) {
@@ -215,7 +215,7 @@ public abstract class AbstractArea implements IArea {
 
 	/**
 	 * Gets the baseline
-	 * 
+	 *
 	 * @return the baseline
 	 */
 	public int getBaseLine() {
@@ -249,6 +249,7 @@ public abstract class AbstractArea implements IArea {
 		this.ignoreReordering = ignoreReordering;
 	}
 
+	@SuppressWarnings("nls")
 	public static void debugPrint(IArea area) {
 		if (area instanceof IContainerArea) {
 			System.out.print(area.getClass() + "||");
@@ -263,6 +264,7 @@ public abstract class AbstractArea implements IArea {
 		}
 	}
 
+	@SuppressWarnings("nls")
 	public static void debugPrintVisual(IArea area) {
 		if (area instanceof ITextArea) {
 			System.out.println(((ITextArea) area).getText());
@@ -277,6 +279,7 @@ public abstract class AbstractArea implements IArea {
 		debugPrint(area, 0, 0);
 	}
 
+	@SuppressWarnings("nls")
 	private static void debugPrint(IArea area, int x, int y) {
 		if (area instanceof IContainerArea) {
 			System.out.print(area.getClass() + "||");

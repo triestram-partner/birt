@@ -88,6 +88,7 @@ import org.w3c.dom.css.CSSValueList;
 
 import com.ibm.icu.util.ULocale;
 
+@SuppressWarnings("nls")
 public abstract class AbstractEmitterImpl {
 
 	public final static int NORMAL = -1;
@@ -1021,7 +1022,7 @@ public abstract class AbstractEmitterImpl {
 
 	/**
 	 * if the content is hidden
-	 * 
+	 *
 	 * @return
 	 */
 	private boolean isHiddenByVisibility(IContent content) {
@@ -1135,13 +1136,13 @@ public abstract class AbstractEmitterImpl {
 	 * Transfer background for current page to Doc format. Now, the exported file
 	 * will apply the first background properties, and followed background will
 	 * ignore.
-	 * 
+	 *
 	 * In addition, Since the Word only support fill-in background, the background
 	 * attach, pos, posX, posY and repeat are not mapped to Word easyly. At present,
 	 * ignore those properties.
-	 * 
+	 *
 	 * @throws IOException
-	 * 
+	 *
 	 * @TODO support background properties. attach, pos, posx, posy and repeat.
 	 */
 

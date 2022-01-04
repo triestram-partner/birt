@@ -3,7 +3,7 @@
  * the accompanying materials are made available under the terms of the Eclipse
  * Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors: Actuate Corporation - initial API and implementation
  ******************************************************************************/
 
@@ -60,12 +60,12 @@ import com.ibm.icu.util.StringTokenizer;
  * {@link #performOk() performOk}. These methods are called when the user
  * presses the ok or cancel button. <br/>
  * <br/>
- * 
+ *
  * Pages can be added to this by either calling the
  * {@link #addNodeTo(String, PropertyNode) addNodeTo}method or by calling the
  * {@link #addPageTo(String, String, String, Image, IPropertyPage) addPageTo}
  * method.
- * 
+ *
  * @version $Revision: 1.19.6.1 $ $Date: 2011/04/02 07:27:08 $
  */
 
@@ -110,7 +110,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 	/**
 	 * The only constructor for this dialog. It takes the parentShell and the model
 	 * object as parameters.
-	 * 
+	 *
 	 * @param parentShell The parent shell
 	 * @param model       The model object that the dialog pages will interact with.
 	 */
@@ -124,7 +124,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.designer.ui.IPropertyPageContainer#setModel(java
 	 * .lang.Object)
 	 */
@@ -134,7 +134,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.birt.report.designer.ui.IPropertyPageContainer#getModel()
 	 */
 	public final Object getModel() {
@@ -146,30 +146,30 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 	 * existing node or to the root element. The path elements are separated by the
 	 * "/" character. If the path is null then the node is just added to the root.
 	 * For e.g. In order to create the following tree structure: <br/>
-	 * 
+	 *
 	 * <pre>
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
+	 *
+	 *
+	 *
+	 *
+	 *
 	 *           Prop1
 	 *           |_
 	 *             Prop2
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
+	 *
+	 *
+	 *
+	 *
+	 *
 	 * </pre>
-	 * 
+	 *
 	 * <br/>
 	 * The api needs to be called as follows: <br/>
 	 * <code>
 	 *  addNodeTo("/", Prop1Node);<br/>
 	 *  addNodeTo("/Prop1", Prop2Node);<br/>
 	 * </code> Prop1 and Prop2 being the node ids of the respective nodes.
-	 * 
+	 *
 	 * @param path The path under which the new node is to be added.
 	 * @param node The node to be added.
 	 */
@@ -190,7 +190,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 	 * This is a convenience method that can be used to add the PropertyPage to the
 	 * dialog. In turn it creates a PropertyNode object and calls the
 	 * {@link #addNodeTo(String, PropertyNode) addNodeTo}method.
-	 * 
+	 *
 	 * @param path      The path under which the new page is to be added.
 	 * @param nodeId    The unique id to be assigned to the node
 	 * @param nodeLabel The label for the node, If this is null then the page name
@@ -206,7 +206,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 
 	/**
 	 * Looks up the node based on the path it is givean
-	 * 
+	 *
 	 * @param path The complete path to the target node.
 	 * @return The Node object or null if it is not found.
 	 */
@@ -229,7 +229,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets
 	 * .Composite)
@@ -270,7 +270,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.dialogs.TrayDialog#close()
 	 */
 	public boolean close() {
@@ -286,7 +286,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.dialogs.Dialog#initializeBounds()
 	 */
 	protected void initializeBounds() {
@@ -315,7 +315,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 	}
 
 	/**
-	 * 
+	 *
 	 * @param sash
 	 * @param parent
 	 * @param left
@@ -460,7 +460,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 
 	/**
 	 * Create TitleArea
-	 * 
+	 *
 	 * @param parent
 	 * @return
 	 */
@@ -528,7 +528,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 		private PropertyNode node;
 
 		/**
-		 * 
+		 *
 		 * @param node
 		 */
 		DialogPageAdapter(PropertyNode node) {
@@ -537,7 +537,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see org.eclipse.jface.dialogs.DialogPage#getControl()
 		 */
 		public Control getControl() {
@@ -550,7 +550,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 	}
 
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	protected Composite getPropertyPane() {
@@ -559,7 +559,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.dialogs.Dialog#buttonPressed(int)
 	 */
 	protected final void buttonPressed(int buttonId) {
@@ -589,7 +589,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 	 * performOk} methods. Derived classes can save the contents of the dialog and
 	 * perform any validation if necessary on the contents. <br/>
 	 * The dialog is closed if this method returns true.
-	 * 
+	 *
 	 * @return boolean indicating whether the method was successful or not.
 	 */
 	public abstract boolean performOk();
@@ -600,7 +600,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 	 * {@link org.eclipse.birt.report.designer.data.ui.property.IPropertyPage#performCancel()
 	 * performCancel()} methods. <br/>
 	 * The dialog is closed if this method returns true.
-	 * 
+	 *
 	 * @return boolean indicating whether the method was successful or not.
 	 */
 	public abstract boolean performCancel();
@@ -614,7 +614,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.dialogs.Dialog#cancelPressed()
 	 */
 	protected final void cancelPressed() {
@@ -657,7 +657,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.dialogs.Dialog#okPressed()
 	 */
 	protected void okPressed() {
@@ -703,7 +703,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.window.Window#handleShellCloseEvent()
 	 */
 	protected void handleShellCloseEvent() {
@@ -713,7 +713,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @seeorg.eclipse.birt.report.designer.internal.ui.dialogs.BaseDialog#
 	 * getDefaultSize()
 	 */
@@ -726,7 +726,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 	 * or not. It is called only once when the dialog is created. This default
 	 * implementation of this method returns true. Sub classes may override this
 	 * method to return false if they do not wish to show the title are.
-	 * 
+	 *
 	 * @return boolean indicating whether the title should be displayed or not.
 	 */
 	protected boolean isTitleVisible() {
@@ -735,11 +735,12 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.birt.report.designer.ui.dialogs.properties.IPropertyPageContainer
 	 * #setMessage(java.lang.String, int)
 	 */
+	@SuppressWarnings("nls")
 	public final void setMessage(String message, int messageType) {
 		if (messageArea != null) {
 			if (messageType != IMessageProvider.NONE) {
@@ -759,7 +760,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 	 * Convenience method to set a message with the message type
 	 * IMessageProvider.NONE. It in turn calls the {@link #setMessage (String, int)
 	 * setMessage}method.
-	 * 
+	 *
 	 * @param message The message to display in the title are
 	 */
 	public final void setMessage(String message) {
@@ -790,7 +791,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.dialogs.IPageChangeProvider#addPageChangedListener(
 	 * org.eclipse.jface.dialogs.IPageChangedListener)
 	 */
@@ -800,7 +801,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.dialogs.IPageChangeProvider#getSelectedPage()
 	 */
 	public Object getSelectedPage() {
@@ -809,7 +810,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.dialogs.IPageChangeProvider#removePageChangedListener
 	 * (org.eclipse.jface.dialogs.IPageChangedListener)
 	 */
@@ -818,7 +819,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 	}
 
 	/**
-	 * 
+	 *
 	 * @param event
 	 */
 	protected void firePageChanged(final PageChangedEvent event) {

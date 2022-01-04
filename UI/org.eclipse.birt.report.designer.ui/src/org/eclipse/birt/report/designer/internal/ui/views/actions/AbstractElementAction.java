@@ -89,7 +89,7 @@ public abstract class AbstractElementAction extends AbstractViewAction {
 
 	/**
 	 * Gets the activity stack of the report
-	 * 
+	 *
 	 * @return returns the stack
 	 */
 	protected CommandStack getCommandStack() {
@@ -99,9 +99,10 @@ public abstract class AbstractElementAction extends AbstractViewAction {
 	/**
 	 * Gets the label for the transaction.The default implement is to return the
 	 * text of the action.Subclasses may override this method
-	 * 
+	 *
 	 * @return Returns the label for the transaction
 	 */
+	@SuppressWarnings("nls")
 	protected String getTransactionLabel() {
 		return getText().replaceAll("&", "");
 	}
@@ -109,7 +110,7 @@ public abstract class AbstractElementAction extends AbstractViewAction {
 	/**
 	 * Defines the detail implementation of the action.Subclasses must implement
 	 * this method
-	 * 
+	 *
 	 * @param Returns if the
 	 */
 	abstract protected boolean doAction() throws Exception;

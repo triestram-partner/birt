@@ -15,8 +15,9 @@ import org.w3c.dom.DOMException;
 
 /**
  * This class provides a base implementation for the value factories.
- * 
+ *
  */
+@SuppressWarnings("nls")
 public abstract class AbstractValueFactory {
 
 	/**

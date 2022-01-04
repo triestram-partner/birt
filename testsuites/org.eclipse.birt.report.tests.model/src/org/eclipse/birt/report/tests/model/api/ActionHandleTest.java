@@ -11,9 +11,6 @@
 
 package org.eclipse.birt.report.tests.model.api;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import org.eclipse.birt.report.model.api.ActionHandle;
 import org.eclipse.birt.report.model.api.DesignEngine;
 import org.eclipse.birt.report.model.api.ElementFactory;
@@ -27,6 +24,9 @@ import org.eclipse.birt.report.tests.model.BaseTestCase;
 
 import com.ibm.icu.util.ULocale;
 
+import junit.framework.Test;
+import junit.framework.TestSuite;
+
 /**
  * TestCases for ActionHandle class. ActionHandle should be got from the
  * specific ElementHandle that contains an Action.
@@ -36,17 +36,18 @@ import com.ibm.icu.util.ULocale;
  * <th width="20%">Method</th>
  * <th width="40%">Test Case</th>
  * <th width="40%">Expected</th>
- * 
- * 
+ *
+ *
  * <tr>
  * <td>{@link #testTargetFileType()}</td>
  * <td>Test targetbookmarktype and targetfiletype for Action.</td>
  * <td>Get specified target type.</td>
  * </tr>
- * 
+ *
  * </table>
- * 
+ *
  */
+@SuppressWarnings("nls")
 public class ActionHandleTest extends BaseTestCase {
 
 	ActionHandle actionHandle = null;
@@ -71,7 +72,7 @@ public class ActionHandleTest extends BaseTestCase {
 
 	/**
 	 * Test targetbookmarktype and targetfiletype for Action.
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public void testTargetFileType() throws Exception {

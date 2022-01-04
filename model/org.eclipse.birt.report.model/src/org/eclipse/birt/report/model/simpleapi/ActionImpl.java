@@ -25,6 +25,7 @@ import org.eclipse.birt.report.model.api.elements.structures.Action;
 import org.eclipse.birt.report.model.api.simpleapi.IAction;
 import org.eclipse.birt.report.model.elements.interfaces.ILabelModel;
 
+@SuppressWarnings("nls")
 public class ActionImpl extends Structure implements IAction {
 
 	private DesignElementHandle handle;

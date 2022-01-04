@@ -36,6 +36,7 @@ import org.eclipse.birt.report.tests.chart.ChartTestCase;
  * </p>
  */
 
+@SuppressWarnings("nls")
 public class AfterDataSetFilled extends ChartTestCase {
 
 	/**
@@ -45,7 +46,7 @@ public class AfterDataSetFilled extends ChartTestCase {
 
 	/**
 	 * execute application
-	 * 
+	 *
 	 * @param args
 	 */
 	public static void main(String[] args) {

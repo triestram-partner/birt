@@ -40,6 +40,7 @@ import org.mozilla.javascript.ast.ScriptNode;
  * This class provides default implementations for the compilation of ROM
  * JavaScript expressions interface.
  */
+@SuppressWarnings("nls")
 abstract class AbstractExpressionCompiler {
 
 	private CompilerEnvirons m_compilerEnv;
@@ -64,7 +65,7 @@ abstract class AbstractExpressionCompiler {
 
 	/**
 	 * Compile the script expression.
-	 * 
+	 *
 	 * @param baseExpr
 	 * @param context
 	 * @return
@@ -78,7 +79,7 @@ abstract class AbstractExpressionCompiler {
 
 	/**
 	 * compile the scriptExpresion to generate a subclass of compiledExpression.
-	 * 
+	 *
 	 * @param exp
 	 * @param context
 	 * @return
@@ -103,7 +104,7 @@ abstract class AbstractExpressionCompiler {
 
 	/**
 	 * compile the string expression
-	 * 
+	 *
 	 * @param expression
 	 * @param context
 	 * @return
@@ -127,7 +128,7 @@ abstract class AbstractExpressionCompiler {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return scriptExpression
 	 */
 	protected IScriptExpression getScriptExpression() {
@@ -136,7 +137,7 @@ abstract class AbstractExpressionCompiler {
 
 	/**
 	 * get compiled environment
-	 * 
+	 *
 	 * @param context
 	 * @return
 	 */
@@ -150,7 +151,7 @@ abstract class AbstractExpressionCompiler {
 
 	/**
 	 * process the script tree to produce a <code>CompiledExpression</code>
-	 * 
+	 *
 	 * @param expression
 	 * @param tree
 	 * @param context
@@ -195,7 +196,7 @@ abstract class AbstractExpressionCompiler {
 
 	/**
 	 * parse the expression to script tree
-	 * 
+	 *
 	 * @param expression
 	 * @param cx
 	 * @return
@@ -214,9 +215,9 @@ abstract class AbstractExpressionCompiler {
 	}
 
 	/**
-	 * 
+	 *
 	 * returns the compiled expression from processing a child node
-	 * 
+	 *
 	 * @param context
 	 * @param customerChecked
 	 * @param parent
@@ -273,7 +274,7 @@ abstract class AbstractExpressionCompiler {
 	/**
 	 * Check if the expression is a direct column reference type. If so, returns an
 	 * instance of DirectColRefExpr that represents it; otherwise returns null.
-	 * 
+	 *
 	 * @param parent
 	 * @param refNode
 	 * @param customerChecked
@@ -286,7 +287,7 @@ abstract class AbstractExpressionCompiler {
 	/**
 	 * Check if the expression is a direct column reference type. If so, returns an
 	 * instance of DirectColRefExpr that represents it; otherwise returns null.
-	 * 
+	 *
 	 * @param refNode
 	 * @param customerChecked
 	 * @return
@@ -333,7 +334,7 @@ abstract class AbstractExpressionCompiler {
 	/**
 	 * Check the expression is an aggregate expression. If so, returns an instance
 	 * of AggregateExpression, otherwise return null
-	 * 
+	 *
 	 * @param context
 	 * @param parent
 	 * @param callNode
@@ -346,7 +347,7 @@ abstract class AbstractExpressionCompiler {
 	/**
 	 * Check the expression is a complex expression. If so, returns an instance of
 	 * ComplexExpression, otherwise return null
-	 * 
+	 *
 	 * @param context
 	 * @param complexNode
 	 * @return @throws DataException
@@ -384,7 +385,7 @@ abstract class AbstractExpressionCompiler {
 
 	/**
 	 * compile the tree to script
-	 * 
+	 *
 	 * @param context
 	 * @param tree
 	 * @param expr
@@ -402,7 +403,7 @@ abstract class AbstractExpressionCompiler {
 	 * An aggregation expression in the form of Total.xxx for example Total.sum(
 	 * row.x ) This means the first child is a GETPROP node, and its left child is
 	 * "Total" and its right child is "sum"
-	 * 
+	 *
 	 * @param callNode
 	 * @return @throws DataException
 	 */
@@ -437,7 +438,7 @@ abstract class AbstractExpressionCompiler {
 	 * provides no additional information for the calculation to use. this nesting
 	 * could occur depending on the Rhino parse tree that's returned by Rhino, and
 	 * the limited way we can traverse down the parse tree.
-	 * 
+	 *
 	 * @param complexExpr
 	 */
 	private void flattenNestedComplexExprs(ComplexExpression complexExpr) {
@@ -481,7 +482,7 @@ abstract class AbstractExpressionCompiler {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param isDataSetMode
 	 */
 	public void setDataSetMode(boolean isDataSetMode) {
@@ -494,7 +495,7 @@ abstract class AbstractExpressionCompiler {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	protected boolean getDataSetMode() {

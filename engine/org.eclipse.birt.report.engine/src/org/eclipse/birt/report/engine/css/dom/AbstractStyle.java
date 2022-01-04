@@ -25,6 +25,7 @@ import org.w3c.dom.css.CSSPrimitiveValue;
 import org.w3c.dom.css.CSSRule;
 import org.w3c.dom.css.CSSValue;
 
+@SuppressWarnings("nls")
 abstract public class AbstractStyle implements IStyle {
 
 	protected CSSEngine engine;

@@ -11,10 +11,11 @@ import com.ibm.icu.util.Calendar;
 /**
  * This abstract class used for MDX function. MTD,YTD,trailing,etc,,, will
  * extends this class, you can add some base method here.
- * 
+ *
  * @author peng.shi
- * 
+ *
  */
+@SuppressWarnings("nls")
 abstract public class AbstractMDX {
 
 	protected static final String YEAR = "year";
@@ -30,7 +31,7 @@ abstract public class AbstractMDX {
 	/**
 	 * translate the TimeMember.values to Calendar return the base
 	 * level("year","month","day"...)
-	 * 
+	 *
 	 * @param cal
 	 * @param levelTypes
 	 * @param values
@@ -137,7 +138,7 @@ abstract public class AbstractMDX {
 
 	/**
 	 * get the TimeMember.values from Calendar
-	 * 
+	 *
 	 * @param cal
 	 * @param levelTypes
 	 * @return

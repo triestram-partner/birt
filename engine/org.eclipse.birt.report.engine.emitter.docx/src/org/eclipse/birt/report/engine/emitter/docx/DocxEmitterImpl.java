@@ -32,7 +32,7 @@ import org.eclipse.birt.report.engine.presentation.ContentEmitterVisitor;
 
 public class DocxEmitterImpl extends AbstractEmitterImpl {
 
-	private static final String OUTPUT_FORMAT = "docx";
+	private static final String OUTPUT_FORMAT = "docx"; //$NON-NLS-1$
 
 	private boolean embedHtml = true;
 

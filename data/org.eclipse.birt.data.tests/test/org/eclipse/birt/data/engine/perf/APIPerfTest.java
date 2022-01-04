@@ -22,18 +22,18 @@ import org.eclipse.birt.data.engine.api.querydefn.GroupDefinition;
 import org.eclipse.birt.data.engine.api.querydefn.QueryDefinition;
 import org.eclipse.birt.data.engine.api.querydefn.ScriptExpression;
 import org.eclipse.birt.data.engine.api.querydefn.SortDefinition;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import testutil.ConfigText;
 
-import org.junit.Test;
-import org.junit.Ignore;
-
 /**
  * Test bench mark of DtE by using DtE API.
- * 
+ *
  * The test data is input from text file, and then can be done independently.
  */
 @Ignore("Ignore performance test")
+@SuppressWarnings("nls")
 public class APIPerfTest extends APITestCase {
 	/** defined query defintion */
 	private QueryDefinition queryDefn;
@@ -56,7 +56,7 @@ public class APIPerfTest extends APITestCase {
 
 	/**
 	 * Test simple query without any procession
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Test
@@ -92,7 +92,7 @@ public class APIPerfTest extends APITestCase {
 
 	/**
 	 * Test simple query with filter
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Test

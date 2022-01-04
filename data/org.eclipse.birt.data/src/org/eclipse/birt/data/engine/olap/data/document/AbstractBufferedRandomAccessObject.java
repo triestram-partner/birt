@@ -32,8 +32,8 @@ import org.eclipse.birt.data.engine.olap.data.util.Bytes;
  * Extension for the <code>java.io.RandomAccessFile</code>, except for the
  * constructor and <code>flush()</code> .
  * <p>
- * 
- * 
+ *
+ *
  * @see java.io.RandomAccessFile
  */
 public abstract class AbstractBufferedRandomAccessObject implements IRandomDataAccessObject {
@@ -42,7 +42,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Constructor for the BufferedRandomAccessFile object
-	 * 
+	 *
 	 * @param file       Description of Parameter
 	 * @param mode       Description of Parameter
 	 * @param bufferSize Description of Parameter
@@ -51,7 +51,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 	public AbstractBufferedRandomAccessObject(int bufferSize) throws IOException {
 
 		if (bufferSize < 1) {
-			throw new Error("Buffer size must be at least 1");
+			throw new Error("Buffer size must be at least 1"); //$NON-NLS-1$
 		}
 
 		currBuf = new FileBufferStruct();
@@ -62,14 +62,14 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 	}
 
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	protected abstract long delegateGetFilePointer() throws IOException;
 
 	/**
 	 * Sets the Length attribute of the BufferedRandomAccessFile object
-	 * 
+	 *
 	 * @param newLength The new Length value
 	 * @exception IOException Description of Exception
 	 */
@@ -90,14 +90,14 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 	}
 
 	/**
-	 * 
+	 *
 	 * @param newLength
 	 */
 	protected abstract void delegateSetLength(long newLength) throws IOException;
 
 	/**
 	 * Gets the FilePointer attribute of the BufferedRandomAccessFile object
-	 * 
+	 *
 	 * @return The FilePointer value
 	 */
 	public long getFilePointer() {
@@ -108,7 +108,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @return Description of the Returned Value
 	 * @exception IOException Description of Exception
 	 */
@@ -118,7 +118,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @return Description of the Returned Value
 	 * @exception IOException Description of Exception
 	 */
@@ -132,7 +132,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @return Description of the Returned Value
 	 * @exception IOException Description of Exception
 	 */
@@ -146,7 +146,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @return Description of the Returned Value
 	 * @exception IOException Description of Exception
 	 */
@@ -161,7 +161,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @return Description of the Returned Value
 	 * @exception IOException Description of Exception
 	 */
@@ -176,7 +176,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @return Description of the Returned Value
 	 * @exception IOException Description of Exception
 	 */
@@ -186,7 +186,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @return Description of the Returned Value
 	 * @exception IOException Description of Exception
 	 */
@@ -198,7 +198,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @return Description of the Returned Value
 	 * @exception IOException Description of Exception
 	 */
@@ -211,7 +211,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 	}
 
 	/**
-	 * 
+	 *
 	 * @return
 	 * @throws IOException
 	 */
@@ -221,7 +221,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @return Description of the Returned Value
 	 * @exception IOException Description of Exception
 	 */
@@ -231,7 +231,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @return Description of the Returned Value
 	 * @exception IOException Description of Exception
 	 */
@@ -241,7 +241,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @return Description of the Returned Value
 	 * @exception IOException Description of Exception
 	 */
@@ -275,7 +275,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 	}
 
 	/**
-	 * 
+	 *
 	 * @return
 	 * @throws IOException
 	 */
@@ -286,7 +286,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @return Description of the Returned Value
 	 * @exception IOException Description of Exception
 	 */
@@ -297,7 +297,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @param b Description of Parameter
 	 * @exception IOException Description of Exception
 	 */
@@ -307,7 +307,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @param b Description of Parameter
 	 * @exception IOException Description of Exception
 	 */
@@ -317,7 +317,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @param s Description of Parameter
 	 * @exception IOException Description of Exception
 	 */
@@ -328,7 +328,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @param ch Description of Parameter
 	 * @exception IOException Description of Exception
 	 */
@@ -338,7 +338,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @param i Description of Parameter
 	 * @exception IOException Description of Exception
 	 */
@@ -351,7 +351,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @param l Description of Parameter
 	 * @exception IOException Description of Exception
 	 */
@@ -367,7 +367,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 	}
 
 	/**
-	 * 
+	 *
 	 * @param date
 	 * @throws IOException
 	 */
@@ -377,7 +377,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @param f Description of Parameter
 	 * @exception IOException Description of Exception
 	 */
@@ -387,7 +387,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @param f Description of Parameter
 	 * @exception IOException Description of Exception
 	 */
@@ -396,7 +396,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 	}
 
 	/**
-	 * 
+	 *
 	 * @param bigDecimal
 	 * @throws IOException
 	 */
@@ -406,7 +406,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @param str Description of Parameter
 	 * @exception IOException Description of Exception
 	 */
@@ -446,7 +446,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @param b Description of Parameter
 	 * @exception IOException Description of Exception
 	 */
@@ -456,7 +456,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @param b   Description of Parameter
 	 * @param pos Description of Parameter
 	 * @param len Description of Parameter
@@ -475,7 +475,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @param s Description of Parameter
 	 * @exception IOException Description of Exception
 	 */
@@ -486,7 +486,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @param s Description of Parameter
 	 * @exception IOException Description of Exception
 	 */
@@ -505,7 +505,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @return Description of the Returned Value
 	 * @exception IOException Description of Exception
 	 */
@@ -527,6 +527,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 		writeBytes(new Bytes(bytes));
 	}
 
+	@SuppressWarnings("nls")
 	public Object readObject() throws IOException {
 		byte[] bytes = readBytes().bytesValue();
 		final ClassLoader loader = org.eclipse.birt.data.engine.impl.DataEngineSession.getCurrentClassLoader();
@@ -546,14 +547,14 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 	}
 
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	protected abstract long delegateLength() throws IOException;
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @return Description of the Returned Value
 	 * @exception IOException Description of Exception
 	 */
@@ -580,7 +581,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @param b Description of Parameter
 	 * @return Description of the Returned Value
 	 * @exception IOException Description of Exception
@@ -591,7 +592,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @param b   Description of Parameter
 	 * @param pos Description of Parameter
 	 * @param len Description of Parameter
@@ -637,13 +638,13 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 	}
 
 	/**
-	 * 
+	 *
 	 * @param pos
 	 */
 	protected abstract void delegateSeek(long pos) throws IOException;
 
 	/**
-	 * 
+	 *
 	 * @param b
 	 * @param pos
 	 * @param len
@@ -653,7 +654,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 	protected abstract int delegateRead(byte[] b, int pos, int len) throws IOException;
 
 	/**
-	 * 
+	 *
 	 * @param b
 	 * @return
 	 * @throws IOException
@@ -662,7 +663,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @param pos Description of Parameter
 	 * @exception IOException Description of Exception
 	 */
@@ -679,7 +680,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @param n Description of Parameter
 	 * @return Description of the Returned Value
 	 * @exception IOException Description of Exception
@@ -690,7 +691,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @param n Description of Parameter
 	 * @return Description of the Returned Value
 	 * @exception IOException Description of Exception
@@ -705,7 +706,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 	}
 
 	/**
-	 * 
+	 *
 	 * @param b
 	 * @throws IOException
 	 */
@@ -716,7 +717,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @param b Description of Parameter
 	 * @exception IOException Description of Exception
 	 */
@@ -726,7 +727,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @param b   Description of Parameter
 	 * @param pos Description of Parameter
 	 * @param len Description of Parameter
@@ -756,7 +757,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 	}
 
 	/**
-	 * 
+	 *
 	 * @param b
 	 * @param pos
 	 * @param len
@@ -766,7 +767,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @param b Description of Parameter
 	 * @exception IOException Description of Exception
 	 */
@@ -790,7 +791,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 	//
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @exception IOException Description of Exception
 	 */
 	public void flush() throws IOException {
@@ -803,7 +804,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @exception IOException Description of Exception
 	 */
 	public void close() throws IOException {
@@ -812,7 +813,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	protected abstract void delegateClose() throws IOException;
 
@@ -820,7 +821,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 	 * Save any changes and re-read the currBuf.bytes from the given position. Note
 	 * that the read(byte[],int,int) method assumes that this method sets
 	 * currBuf.pos to 0.
-	 * 
+	 *
 	 * @param new_FP Description of Parameter
 	 * @return int - the number of bytes available for reading
 	 * @exception IOException Description of Exception
@@ -835,7 +836,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * Description of the Method
-	 * 
+	 *
 	 * @exception IOException Description of Exception
 	 */
 	protected void fillBuffer() throws IOException {
@@ -849,7 +850,7 @@ public abstract class AbstractBufferedRandomAccessObject implements IRandomDataA
 
 	/**
 	 * If modified, write buffered bytes to the delegate file
-	 * 
+	 *
 	 * @exception IOException Description of Exception
 	 */
 	protected void commitBuffer() throws IOException {

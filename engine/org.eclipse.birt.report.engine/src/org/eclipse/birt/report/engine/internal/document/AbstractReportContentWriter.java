@@ -37,7 +37,7 @@ abstract public class AbstractReportContentWriter implements IReportContentWrite
 
 	/**
 	 * use to writer the content into the disk.
-	 * 
+	 *
 	 */
 	private static class ContentWriterVisitor extends ContentVisitorAdapter {
 
@@ -55,7 +55,7 @@ abstract public class AbstractReportContentWriter implements IReportContentWrite
 					visitContent(child, value);
 				}
 			} catch (IOException ex) {
-				logger.log(Level.SEVERE, "write content failed");
+				logger.log(Level.SEVERE, "write content failed"); //$NON-NLS-1$
 			}
 			return value;
 		}
@@ -77,7 +77,7 @@ abstract public class AbstractReportContentWriter implements IReportContentWrite
 					visitContent(content, value);
 				}
 			} catch (IOException ex) {
-				logger.log(Level.SEVERE, "write content failed");
+				logger.log(Level.SEVERE, "write content failed"); //$NON-NLS-1$
 			}
 			return value;
 		}

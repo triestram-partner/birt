@@ -27,6 +27,7 @@ import org.eclipse.birt.report.engine.api.ReportEngine;
 import uk.co.spudsoft.birt.emitters.excel.framework.Logger;
 import uk.co.spudsoft.birt.emitters.excel.handlers.IHandler;
 
+@SuppressWarnings("nls")
 public class HandlerState {
 
 	/**

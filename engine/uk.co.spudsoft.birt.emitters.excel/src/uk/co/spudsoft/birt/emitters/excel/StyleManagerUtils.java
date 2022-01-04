@@ -66,6 +66,7 @@ import uk.co.spudsoft.birt.emitters.excel.framework.Logger;
  * @author Jim Talbut
  *
  */
+@SuppressWarnings("nls")
 public abstract class StyleManagerUtils {
 
 	protected Logger log;

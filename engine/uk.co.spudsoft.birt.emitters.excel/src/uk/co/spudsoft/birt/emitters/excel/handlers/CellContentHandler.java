@@ -45,6 +45,7 @@ import org.eclipse.birt.report.engine.emitter.IContentEmitter;
 import org.eclipse.birt.report.engine.ir.DimensionType;
 import org.eclipse.birt.report.engine.layout.emitter.Image;
 import org.eclipse.birt.report.engine.presentation.ContentEmitterVisitor;
+import org.w3c.dom.css.CSSPrimitiveValue;
 import org.w3c.dom.css.CSSValue;
 
 import uk.co.spudsoft.birt.emitters.excel.Area;
@@ -62,6 +63,7 @@ import uk.co.spudsoft.birt.emitters.excel.StyleManagerUtils;
 import uk.co.spudsoft.birt.emitters.excel.StylePropertyIndexes;
 import uk.co.spudsoft.birt.emitters.excel.framework.Logger;
 
+@SuppressWarnings("nls")
 public class CellContentHandler extends AbstractHandler {
 
 	/**
@@ -171,9 +173,9 @@ public class CellContentHandler extends AbstractHandler {
 			hyperlink.setAddress(hyperlinkUrl);
 			cell.setHyperlink(hyperlink);
 			birtCellStyle.setProperty(StylePropertyIndexes.STYLE_COLOR,
-					new StringValue(StringValue.CSS_STRING, CSSConstants.CSS_BLUE_VALUE));
+					new StringValue(CSSPrimitiveValue.CSS_STRING, CSSConstants.CSS_BLUE_VALUE));
 			birtCellStyle.setProperty(StylePropertyIndexes.STYLE_TEXT_UNDERLINE,
-					new StringValue(StringValue.CSS_STRING, CSSConstants.CSS_UNDERLINE_VALUE));
+					new StringValue(CSSPrimitiveValue.CSS_STRING, CSSConstants.CSS_UNDERLINE_VALUE));
 		}
 		if (hyperlinkBookmark != null) {
 			Hyperlink hyperlink = cell.getSheet().getWorkbook().getCreationHelper()
@@ -181,9 +183,9 @@ public class CellContentHandler extends AbstractHandler {
 			hyperlink.setAddress(prepareName(hyperlinkBookmark));
 			cell.setHyperlink(hyperlink);
 			birtCellStyle.setProperty(StylePropertyIndexes.STYLE_COLOR,
-					new StringValue(StringValue.CSS_STRING, CSSConstants.CSS_BLUE_VALUE));
+					new StringValue(CSSPrimitiveValue.CSS_STRING, CSSConstants.CSS_BLUE_VALUE));
 			birtCellStyle.setProperty(StylePropertyIndexes.STYLE_TEXT_UNDERLINE,
-					new StringValue(StringValue.CSS_STRING, CSSConstants.CSS_UNDERLINE_VALUE));
+					new StringValue(CSSPrimitiveValue.CSS_STRING, CSSConstants.CSS_UNDERLINE_VALUE));
 		}
 
 		if ((lastFormula != null) && (lastValue == null)) {
@@ -226,12 +228,12 @@ public class CellContentHandler extends AbstractHandler {
 					if (lastString.contains("\n")) {
 						if (!CSSConstants.CSS_NOWRAP_VALUE.equals(lastElement.getStyle().getWhiteSpace())) {
 							birtCellStyle.setProperty(StylePropertyIndexes.STYLE_WHITE_SPACE,
-									new StringValue(StringValue.CSS_STRING, CSSConstants.CSS_PRE_VALUE));
+									new StringValue(CSSPrimitiveValue.CSS_STRING, CSSConstants.CSS_PRE_VALUE));
 						}
 					}
 					if (!richTextRuns.isEmpty()) {
 						birtCellStyle.setProperty(StylePropertyIndexes.STYLE_VERTICAL_ALIGN,
-								new StringValue(StringValue.CSS_STRING, CSSConstants.CSS_TOP_VALUE));
+								new StringValue(CSSPrimitiveValue.CSS_STRING, CSSConstants.CSS_TOP_VALUE));
 					}
 					if (preferredAlignment != null) {
 						birtCellStyle.setProperty(StylePropertyIndexes.STYLE_TEXT_ALIGN, preferredAlignment);
@@ -273,7 +275,7 @@ public class CellContentHandler extends AbstractHandler {
 				&& ((lastValue instanceof String) || (lastValue instanceof RichTextString))) {
 			int spannedRowAlgorithm = EmitterServices.integerOption(state.getRenderOptions(), element,
 					ExcelEmitter.SPANNED_ROW_HEIGHT, ExcelEmitter.SPANNED_ROW_HEIGHT_SPREAD);
-			Font defaultFont = state.getWb().getFontAt(cell.getCellStyle().getFontIndex());
+			Font defaultFont = state.getWb().getFontAt(cell.getCellStyle().getFontIndexAsInt());
 			double cellWidth = spanWidthMillimetres(state.currentSheet, cell.getColumnIndex(),
 					cell.getColumnIndex() + colSpan - 1);
 			float cellDesiredHeight = smu.calculateTextHeightPoints(cell.getStringCellValue(), defaultFont, cellWidth,
@@ -424,7 +426,7 @@ public class CellContentHandler extends AbstractHandler {
 	private CSSValue preferredAlignment(BirtStyle elementStyle) {
 		CSSValue newAlign = elementStyle.getProperty(StylePropertyIndexes.STYLE_TEXT_ALIGN);
 		if (newAlign == null) {
-			newAlign = new StringValue(StringValue.CSS_STRING, CSSConstants.CSS_LEFT_VALUE);
+			newAlign = new StringValue(CSSPrimitiveValue.CSS_STRING, CSSConstants.CSS_LEFT_VALUE);
 		}
 		if (preferredAlignment == null) {
 			return newAlign;

@@ -40,6 +40,7 @@ import uk.co.spudsoft.birt.emitters.excel.framework.Logger;
  * @author Jim Talbut
  *
  */
+@SuppressWarnings("nls")
 public class StyleManagerHUtils extends StyleManagerUtils {
 	private short paletteIndex = 64;
 	private static short minPaletteIndex = 40;

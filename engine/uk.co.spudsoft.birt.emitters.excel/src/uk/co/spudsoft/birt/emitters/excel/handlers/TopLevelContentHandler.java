@@ -1,12 +1,12 @@
 /*************************************************************************************
  * Copyright (c) 2011, 2012, 2013 James Talbut.
  *  jim-emitters@spudsoft.co.uk
- *  
- * All rights reserved. This program and the accompanying materials 
+ *
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     James Talbut - Initial implementation.
  ************************************************************************************/
@@ -28,13 +28,14 @@ import uk.co.spudsoft.birt.emitters.excel.HandlerState;
 import uk.co.spudsoft.birt.emitters.excel.StylePropertyIndexes;
 import uk.co.spudsoft.birt.emitters.excel.framework.Logger;
 
+@SuppressWarnings("nls")
 public class TopLevelContentHandler extends CellContentHandler {
 
 	public TopLevelContentHandler(IContentEmitter emitter, Logger log, IHandler parent) {
 		super(emitter, log, parent, null);
 	}
-	
-	
+
+
 	@Override
 	public void emitText(HandlerState state, ITextContent text) throws BirtException {
 		log.debug( "Creating row ", state.rowNum, " for text" );
@@ -44,7 +45,7 @@ public class TopLevelContentHandler extends CellContentHandler {
 
 		Cell currentCell = state.currentSheet.getRow(state.rowNum).createCell( 0 );
 		// currentCell.setCellType(Cell.CELL_TYPE_BLANK);
-				
+
 		endCellContent(state, null, text, currentCell, null);
 
 		++state.rowNum;
@@ -60,7 +61,7 @@ public class TopLevelContentHandler extends CellContentHandler {
 
 		Cell currentCell = state.currentSheet.getRow(state.rowNum).createCell( 0 );
 		// currentCell.setCellType(Cell.CELL_TYPE_BLANK);
-				
+
 		endCellContent(state, null, data, currentCell, null);
 
 		++state.rowNum;
@@ -77,7 +78,7 @@ public class TopLevelContentHandler extends CellContentHandler {
 
 		Cell currentCell = state.currentSheet.getRow(state.rowNum).createCell( 0 );
 		// currentCell.setCellType(Cell.CELL_TYPE_BLANK);
-				
+
 		endCellContent(state, null, label, currentCell, null);
 
 		++state.rowNum;
@@ -86,14 +87,14 @@ public class TopLevelContentHandler extends CellContentHandler {
 
 	@Override
 	public void emitForeign(HandlerState state, IForeignContent foreign) throws BirtException {
-		
+
 		log.debug( "Handling foreign content of type ", foreign.getRawType() );
 		if ( IForeignContent.HTML_TYPE.equalsIgnoreCase( foreign.getRawType( ) ) )
 		{
 			HTML2Content.html2Content( foreign );
-			contentVisitor.visitChildren( foreign, null );			
+			contentVisitor.visitChildren( foreign, null );
 		}
-		
+
 		state.setHandler(parent);
 	}
 
@@ -105,13 +106,13 @@ public class TopLevelContentHandler extends CellContentHandler {
 		recordImage(state, new Coordinate( state.rowNum, 0 ), image, true);
 		Cell currentCell = state.currentSheet.getRow(state.rowNum).createCell( 0 );
 		// currentCell.setCellType(Cell.CELL_TYPE_BLANK);
-				
+
 		endCellContent(state, null, image, currentCell, null);
 
 		++state.rowNum;
 		state.setHandler(parent);
 	}
-	
 
-	
+
+
 }

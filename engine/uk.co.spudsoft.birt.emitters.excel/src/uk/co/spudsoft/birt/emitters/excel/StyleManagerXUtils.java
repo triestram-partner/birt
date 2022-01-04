@@ -40,6 +40,7 @@ import uk.co.spudsoft.birt.emitters.excel.framework.Logger;
  * @author Jim Talbut
  *
  */
+@SuppressWarnings("nls")
 public class StyleManagerXUtils extends StyleManagerUtils {
 
 	private static Factory factory = new StyleManagerUtils.Factory() {

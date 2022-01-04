@@ -52,12 +52,13 @@ import uk.co.spudsoft.birt.emitters.excel.HandlerState;
 import uk.co.spudsoft.birt.emitters.excel.StyleManagerUtils;
 import uk.co.spudsoft.birt.emitters.excel.framework.Logger;
 
+@SuppressWarnings("nls")
 public class PageHandler extends AbstractHandler {
-	
+
 	private static Pattern INVALID_CHARS_REGEX = Pattern.compile( "[/\\\\*'?\\[\\]:]+" );
-	
+
 	boolean created;
-	
+
 	public PageHandler(Logger log, IPageContent page) {
 		super(log, null, page);
 	}
@@ -132,7 +133,7 @@ public class PageHandler extends AbstractHandler {
 		}
 
 	}
-	
+
 	private void cleanSheet( Sheet sheet ) {
 		for( int i = 0; i < sheet.getNumMergedRegions(); ++i ) {
 			sheet.removeMergedRegion(i);
@@ -142,12 +143,12 @@ public class PageHandler extends AbstractHandler {
 			sheet.removeRow(row);
 		}
 	}
-	
+
 	@Override
 	public void startPage(HandlerState state, IPageContent page) throws BirtException {
-		
+
 		element = page;
-		
+
 		if( state.getWb().getNumberOfSheets() > 0 ) {
 			if( EmitterServices.booleanOption( state.getRenderOptions(), page, ExcelEmitter.SINGLE_SHEET_PAGE_BREAKS, false ) ) {
 				state.currentSheet.setRowBreak( state.rowNum - 1 );
@@ -156,21 +157,21 @@ public class PageHandler extends AbstractHandler {
 				return;
 			}
 		}
-		
+
 		state.currentSheet = null;
 		created = false;
 	}
-	
+
 	private void createSheet(HandlerState state, IContent newElement) throws BirtException {
 		if( created ) {
 			return ;
 		}
 		IPageContent page = (IPageContent)element;
-		if( EmitterServices.booleanOption( state.getRenderOptions(), page, ExcelEmitter.SINGLE_SHEET, false )  
+		if( EmitterServices.booleanOption( state.getRenderOptions(), page, ExcelEmitter.SINGLE_SHEET, false )
 				&& state.getWb().getNumberOfSheets() > 0 ) {
 			return ;
-		}		
-		
+		}
+
 		String pageLabel = null;
 		IReportContext reportContext = page.getReportContent().getReportContext();
 		if( reportContext != null ) {
@@ -191,7 +192,7 @@ public class PageHandler extends AbstractHandler {
 				pageLabel = name;
 			}
 		}
-			
+
 		if( pageLabel != null ) {
 			state.sheetName = null;
 			String sheetName = prepareSheetName(state, pageLabel);
@@ -206,7 +207,7 @@ public class PageHandler extends AbstractHandler {
 			state.currentSheet = state.getWb().createSheet();
 		}
 		created = true;
-		
+
 		log.debug("Page type: ", page.getPageType());
 
 		if (page.getPageType() != null) {
@@ -242,7 +243,7 @@ public class PageHandler extends AbstractHandler {
 		if ((printScale > 0) && (printScale < Short.MAX_VALUE)) {
 			state.currentSheet.getPrintSetup().setScale((short) printScale);
 		}
-		
+
 		boolean structuredHeader =
 				! state.getEmitter().isExtractMode()
 				&& EmitterServices.booleanOption( state.getRenderOptions(), page, ExcelEmitter.STRUCTURED_HEADER, false );
@@ -251,17 +252,17 @@ public class PageHandler extends AbstractHandler {
 		} else {
 			processHeaderFooter(state, page.getHeader(), state.currentSheet.getHeader() );
 			processHeaderFooter(state, page.getFooter(), state.currentSheet.getFooter() );
-		} 
-		
+		}
+
 		state.getSmu().prepareMarginDimensions(state.currentSheet, page, !structuredHeader);
 	}
-	
+
 	private String prepareSheetName( HandlerState state, String proposedName ) {
 		// Strip invalid chars
 		proposedName = INVALID_CHARS_REGEX.matcher(proposedName).replaceAll(" ");
-		
+
 		String preparedName = proposedName.length() > 31 ? proposedName.substring(0,31) : proposedName;
-		
+
 		// Check whether there are really any sheets with that name
 		boolean found = false;
 		Workbook wb = state.getWb();
@@ -274,11 +275,11 @@ public class PageHandler extends AbstractHandler {
 		if( ! found ) {
 			state.sheetNames.remove(preparedName);
 		}
-				
+
 		Integer nameCount = state.sheetNames.get(preparedName);
 		if( nameCount != null ) {
 			++nameCount;
-			String suffix = " " + nameCount;			
+			String suffix = " " + nameCount;
 			state.sheetNames.put(preparedName, nameCount);
 			if( preparedName.length() > 31 - suffix.length() ) {
 				preparedName = preparedName.substring(0,31 - suffix.length()) + " " + nameCount;
@@ -290,7 +291,7 @@ public class PageHandler extends AbstractHandler {
 		}
 		return preparedName;
 	}
-	
+
 	private int findNamedSheetIndex( Workbook workbook, String sheetName ) {
 		for( int i = 0; i < workbook.getNumberOfSheets(); ++i ) {
 			if( workbook.getSheetName(i).equalsIgnoreCase(sheetName)) {
@@ -300,7 +301,7 @@ public class PageHandler extends AbstractHandler {
 		}
 		return -1;
 	}
-	
+
 	private int sheetIndex( Workbook workbook, Sheet sheet ) {
 		for( int i = 0; i < workbook.getNumberOfSheets(); ++i ) {
 			if( workbook.getSheetAt(i) == sheet ) {
@@ -309,24 +310,24 @@ public class PageHandler extends AbstractHandler {
 		}
 		return -1;
 	}
-	
+
 	@Override
 	public void endPage(HandlerState state, IPageContent page) throws BirtException {
-		
+
 		if( ( state.sheetName != null ) && ! state.sheetName.isEmpty() ) {
 			String newSheetName = prepareSheetName( state, state.sheetName );
 			state.getWb().setSheetName( sheetIndex( state.getWb(), state.currentSheet ), newSheetName );
 		}
-		
-		if( EmitterServices.booleanOption( state.getRenderOptions(), page, ExcelEmitter.SINGLE_SHEET, false )  
+
+		if( EmitterServices.booleanOption( state.getRenderOptions(), page, ExcelEmitter.SINGLE_SHEET, false )
 			&& ! state.reportEnding ) {
 			return ;
-		}		
-		
+		}
+
 		if( EmitterServices.booleanOption( state.getRenderOptions(), page, ExcelEmitter.STRUCTURED_HEADER, false ) ) {
 			outputStructuredHeaderFooter(state, page.getFooter());
-		} 
-		
+		}
+
 		if( state.sheetPassword != null ) {
 			log.debug("Attempting to protect sheet ", ( state.getWb().getNumberOfSheets() - 1 ) );
 			state.currentSheet.protectSheet( state.sheetPassword );
@@ -345,8 +346,8 @@ public class PageHandler extends AbstractHandler {
 		state.colNum = 0;
 		state.clearRowSpans();
 		state.areaBorders.clear();
-		
-		created = false;		
+
+		created = false;
 		state.currentSheet = null;
 		state.sheetName = null;
 	}
@@ -374,7 +375,7 @@ public class PageHandler extends AbstractHandler {
 	 */
 	private void processCellImage(HandlerState state, Drawing<?> drawing, CellImage cellImage) {
 		Coordinate location = cellImage.location;
-		
+
 		if( state.currentSheet.getRow( location.getRow() ) == null ) {
 			state.currentSheet.createRow( location.getRow() );
 		}

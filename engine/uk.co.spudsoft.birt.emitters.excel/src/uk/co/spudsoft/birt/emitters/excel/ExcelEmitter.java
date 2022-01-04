@@ -1,12 +1,12 @@
 /*************************************************************************************
  * Copyright (c) 2011, 2012, 2013 James Talbut.
  *  jim-emitters@spudsoft.co.uk
- *  
- * All rights reserved. This program and the accompanying materials 
+ *
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     James Talbut - Initial implementation.
  ************************************************************************************/
@@ -52,6 +52,7 @@ import uk.co.spudsoft.birt.emitters.excel.framework.ExcelEmitterPlugin;
 import uk.co.spudsoft.birt.emitters.excel.framework.Logger;
 import uk.co.spudsoft.birt.emitters.excel.handlers.PageHandler;
 
+@SuppressWarnings("nls")
 public abstract class ExcelEmitter implements IContentEmitter {
 
 	public static final String DEBUG = "ExcelEmitter.DEBUG";
@@ -81,7 +82,7 @@ public abstract class ExcelEmitter implements IContentEmitter {
 	public static final String PRINT_SCALE = "ExcelEmitter.PrintScale";
 	public static final String PRINT_PAGES_WIDE = "ExcelEmitter.PrintPagesWide";
 	public static final String PRINT_PAGES_HIGH = "ExcelEmitter.PrintPagesHigh";
-		
+
 	public static final String DISPLAYFORMULAS_PROP = "ExcelEmitter.DisplayFormulas";
 	public static final String DISPLAYGRIDLINES_PROP = "ExcelEmitter.DisplayGridlines";
 	public static final String DISPLAYROWCOLHEADINGS_PROP = "ExcelEmitter.DisplayRowColHeadings";
@@ -92,9 +93,9 @@ public abstract class ExcelEmitter implements IContentEmitter {
 
 	public static final String TEMPLATE_FILE = "ExcelEmitter.TemplateFile";
 	public static final String FORCE_RECALCULATION = "ExcelEmitter.ForceRecalculation";
-	
+
 	public static final String EXTRACT_MODE = "ExcelEmitter.ExtractMode";
-	
+
 	/**
 	 * Logger.
 	 */
@@ -129,7 +130,7 @@ public abstract class ExcelEmitter implements IContentEmitter {
 	private IRenderOption renderOptions;
 	/**
 	 * The last page seen, cached so it can be used to call endPage
-	 * 
+	 *
 	 */
 	private IPageContent lastPage;
 
@@ -137,12 +138,12 @@ public abstract class ExcelEmitter implements IContentEmitter {
 	 * Factory for creating the appropriate StyleManagerUtils object
 	 */
 	private StyleManagerUtils.Factory utilsFactory;
-	
+
 	/**
 	 * Extract mode is enabled
 	 */
 	protected boolean extractMode;
-	
+
 	protected ExcelEmitter(StyleManagerUtils.Factory utilsFactory) {
 		this.utilsFactory = utilsFactory;
 		try {
@@ -168,7 +169,7 @@ public abstract class ExcelEmitter implements IContentEmitter {
 	 * The new workbook.
 	 */
 	protected abstract Workbook createWorkbook();
-	
+
 	/**
 	 * Constructs a new workbook to be processed by the emitter.
 	 * @param templateFile
@@ -177,19 +178,19 @@ public abstract class ExcelEmitter implements IContentEmitter {
 	 * The new workbook.
 	 */
 	protected abstract Workbook openWorkbook( File templateFile ) throws IOException;
-	
+
 	/**
 	 * Return true if the emitter is in ExtractMode
 	 */
 	public boolean isExtractMode() {
 		return extractMode;
 	}
-	
+
 	public void initialize( IEmitterServices service ) throws BirtException {
 		renderOptions = service.getRenderOption();
 		boolean debug = EmitterServices.booleanOption( renderOptions, (IContent)null, DEBUG, false );
 		log.setDebug(debug);
-		
+
 		log.debug("inintialize");
 		reportOutputStream = service.getRenderOption().getOutputStream();
 		reportOutputFilename = service.getRenderOption().getOutputFileName();
@@ -198,14 +199,14 @@ public abstract class ExcelEmitter implements IContentEmitter {
 			throw new BirtException( EmitterServices.getPluginName()
 					, "Neither output stream nor output filename have been specified"
 					, null
-					);			
+					);
 		}
 	}
 
 	public void start( IReportContent report ) throws BirtException {
 		log.addPrefix('>');
 		log.info( 0, "start:" + report.getTitle(), null);
-		
+
 		extractMode = EmitterServices.booleanOption( renderOptions, report, EXTRACT_MODE, false );
 		String templatePath = extractMode ? null : EmitterServices.stringOption( renderOptions, report, TEMPLATE_FILE, null );
 	    Workbook wb;
@@ -215,7 +216,7 @@ public abstract class ExcelEmitter implements IContentEmitter {
 				throw new BirtException( EmitterServices.getPluginName()
 						, "Unable locate template resource for " + templatePath
 						, null
-						);			
+						);
 			}
 			File templateFile;
 			try {
@@ -224,7 +225,7 @@ public abstract class ExcelEmitter implements IContentEmitter {
 				throw new BirtException( EmitterServices.getPluginName()
 						, "Unable locate template file for " + templatePath
 						, ex
-						);			
+						);
 			}
 			try {
 				wb = openWorkbook( templateFile );
@@ -232,21 +233,21 @@ public abstract class ExcelEmitter implements IContentEmitter {
 				throw new BirtException( EmitterServices.getPluginName()
 						, "Unable to open template workbook for " + templateFile.toString()
 						, ex
-						);			
+						);
 			}
 		} else {
 		    wb = createWorkbook();
 		}
-		
+
 		if( EmitterServices.booleanOption( renderOptions, report, ExcelEmitter.FORCE_RECALCULATION, false ) ) {
 			wb.setForceFormulaRecalculation(true);
 		}
-		
+
 	    CSSEngine cssEngine = report.getRoot().getCSSEngine();
 		StyleManagerUtils smu = utilsFactory.create(log);
-	    
+
 	    StyleManager sm = new StyleManager( wb, log, smu, cssEngine, report.getReportContext().getLocale() );
-	    
+
 		handlerState = new HandlerState(this, log, smu, wb, sm, renderOptions);
 		handlerState.setHandler( new PageHandler(log, null) );
 
@@ -256,21 +257,21 @@ public abstract class ExcelEmitter implements IContentEmitter {
 	}
 
 	public void end( IReportContent report ) throws BirtException {
-		
+
 		if( EmitterServices.booleanOption( handlerState.getRenderOptions(), report, ExcelEmitter.SINGLE_SHEET, false ) ) {
 			handlerState.reportEnding = true;
 			handlerState.getHandler().endPage(handlerState, lastPage);
 		}
-		
+
 		log.removePrefix('>');
 		log.debug("end:", report);
-		
+
 		String reportTitle = report.getTitle();
-		if( ( handlerState.getWb().getNumberOfSheets() == 1 ) 
+		if( ( handlerState.getWb().getNumberOfSheets() == 1 )
 				&& ( reportTitle != null )) {
 			handlerState.getWb().setSheetName(0, reportTitle);
 		}
-		
+
 		OutputStream outputStream = reportOutputStream;
 		try {
 			if( outputStream == null ) {
@@ -283,21 +284,21 @@ public abstract class ExcelEmitter implements IContentEmitter {
 								, "Unable to open file (\"{}\") for writing"
 								, new Object[] { reportOutputFilename }
 								, null
-								, ex 
+								, ex
 								);
 					}
-				} 
+				}
 			}
 			handlerState.getWb().write(outputStream);
 		} catch( Throwable ex ) {
 			log.debug("ex:", ex.toString());
 			ex.printStackTrace();
-			
+
 			throw new BirtException( EmitterServices.getPluginName()
 					, reportOutputStream == null ?
 							"Unable to save file (\"" + reportOutputFilename + "\")"
 							: "Unable to save file to stream"
-					, ex 
+					, ex
 					);
 		} finally {
 			if( reportOutputStream == null ) {
@@ -307,7 +308,7 @@ public abstract class ExcelEmitter implements IContentEmitter {
 					log.debug("ex:", ex.toString());
 				}
 			}
-			
+
 			if (handlerState.getWb() instanceof SXSSFWorkbook) {
 				// dispose SXSSFWorkbook to let it removing temporary files
 				SXSSFWorkbook wb = (SXSSFWorkbook) handlerState.getWb();
@@ -315,12 +316,12 @@ public abstract class ExcelEmitter implements IContentEmitter {
 					log.error(0, "Failed to dispose SXSSFWorkbook.", new Exception("SXSSFWorkbook.dispose() has returned false."));
 				}
 			}
-				
+
 			handlerState = null;
-			reportOutputFilename = null;			
+			reportOutputFilename = null;
 			reportOutputStream = null;
 		}
-		
+
 	}
 
 	public void startPage( IPageContent page ) throws BirtException {
@@ -378,7 +379,7 @@ public abstract class ExcelEmitter implements IContentEmitter {
 		handlerState.getHandler().endCell(handlerState,cell);
 		log.removePrefix( 'C' );
 	}
-	
+
 	public void startList( IListContent list ) throws BirtException {
 		log.addPrefix( 'L' );
 		log.debug( handlerState, "startList: " );
@@ -426,7 +427,7 @@ public abstract class ExcelEmitter implements IContentEmitter {
 		log.debug( handlerState, "startLabel: " );
 		handlerState.getHandler().emitLabel(handlerState,label);
 	}
-	
+
 	public void startAutoText ( IAutoTextContent autoText ) throws BirtException {
 		log.debug( handlerState, "startAutoText: " );
 		handlerState.getHandler().emitAutoText(handlerState,autoText);
@@ -454,7 +455,7 @@ public abstract class ExcelEmitter implements IContentEmitter {
 		handlerState.getHandler().endContent(handlerState,content);
 		log.removePrefix( 'N' );
 	}
-	
+
 	public void startGroup( IGroupContent group ) throws BirtException {
 		log.debug( handlerState, "startGroup: " );
 		handlerState.getHandler().startGroup(handlerState,group);
@@ -485,8 +486,8 @@ public abstract class ExcelEmitter implements IContentEmitter {
 		handlerState.getHandler().endListGroup(handlerState,group);
 		log.removePrefix( 'G' );
 	}
-	
-	
-	
-	
+
+
+
+
 }

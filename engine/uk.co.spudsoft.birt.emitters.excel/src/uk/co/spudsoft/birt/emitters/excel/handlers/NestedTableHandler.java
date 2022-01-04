@@ -1,12 +1,12 @@
 /*************************************************************************************
  * Copyright (c) 2011, 2012, 2013 James Talbut.
  *  jim-emitters@spudsoft.co.uk
- *  
- * All rights reserved. This program and the accompanying materials 
+ *
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     James Talbut - Initial implementation.
  ************************************************************************************/
@@ -23,14 +23,15 @@ import uk.co.spudsoft.birt.emitters.excel.ExcelEmitter;
 import uk.co.spudsoft.birt.emitters.excel.HandlerState;
 import uk.co.spudsoft.birt.emitters.excel.framework.Logger;
 
+@SuppressWarnings("nls")
 public class NestedTableHandler extends AbstractRealTableHandler {
-	
+
 	boolean inserted = false;
-	
+
 	private Coordinate topLeft;
 	private Coordinate bottomRight;
 	private int parentRowSpan;
-	
+
 	@Override
 	public String toString() {
 		return "NestedTableHandler [topLeft=" + topLeft + ", bottomRight=" + bottomRight + ", parentRowSpan=" + parentRowSpan + "]";
@@ -40,15 +41,15 @@ public class NestedTableHandler extends AbstractRealTableHandler {
 		super(log, parent, table);
 		this.parentRowSpan = parentRowSpan;
 	}
-	
+
 	public void setInserted(boolean inserted) {
 		this.inserted = inserted;
 	}
-	
+
 	public boolean includesRow( int rowNum ) {
 		return ( ( topLeft.getRow() <= rowNum ) && ( bottomRight.getRow() >= rowNum ) );
 	}
-	
+
 	public int extendParentsRowBy( int rowNum ) {
 		if( rowNum == topLeft.getRow() + parentRowSpan - 1 ) {
 			if( bottomRight.getRow() - topLeft.getRow() >= parentRowSpan - 1 ) {
@@ -70,7 +71,7 @@ public class NestedTableHandler extends AbstractRealTableHandler {
 		if( ( name != null ) && ! name.isEmpty() ) {
 			state.sheetName = name;
 		}
-		
+
 		if( ( state.sheetPassword == null ) || state.sheetPassword.isEmpty() ) {
 			String password = EmitterServices.stringOption( state.getRenderOptions(), table, ExcelEmitter.SHEET_PASSWORD, null);
 			if( ( password != null ) && ! password.isEmpty() ) {
@@ -83,7 +84,7 @@ public class NestedTableHandler extends AbstractRealTableHandler {
 	public void startRow(HandlerState state, IRowContent row) throws BirtException {
 		log.debug( "startRow called with topLeft = [", topLeft.getRow(), ", ", topLeft.getCol(), "]" );
 		NestedTableRowHandler rowHandler = new NestedTableRowHandler(log, this, row, topLeft.getCol());
-		
+
 		state.setHandler(rowHandler);
 		state.getHandler().startRow(state, row);
 	}
@@ -92,7 +93,7 @@ public class NestedTableHandler extends AbstractRealTableHandler {
 	public void endTable(HandlerState state, ITableContent table) throws BirtException {
 
 		bottomRight = new Coordinate(state.rowNum - 1, state.colNum);
-		
+
 		super.endTable(state, table);
 
 		// Parent could be a ListHandler (all derive from TopLevelListHandler) or a CellHandler
@@ -104,17 +105,17 @@ public class NestedTableHandler extends AbstractRealTableHandler {
 		}
 
 		state.rowNum = topLeft.getRow();
-		
+
 		NestedTableContainer parentTableHandler = this.getAncestor( NestedTableContainer.class );
 		parentTableHandler.addNestedTable( this );
-		
+
 		if( bottomRight.getRow() < topLeft.getRow() + parentRowSpan - 1 ) {
 			state.getSmu().extendRows( state, topLeft.getRow(), topLeft.getCol(), topLeft.getRow() + parentRowSpan, bottomRight.getCol() );
 		}
 
 		state.setHandler(parent);
 	}
-	
-	
-	
+
+
+
 }

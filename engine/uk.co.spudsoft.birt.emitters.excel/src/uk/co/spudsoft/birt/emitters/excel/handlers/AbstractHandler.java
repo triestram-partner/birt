@@ -45,6 +45,7 @@ import org.w3c.dom.css.CSSValue;
 import uk.co.spudsoft.birt.emitters.excel.HandlerState;
 import uk.co.spudsoft.birt.emitters.excel.framework.Logger;
 
+@SuppressWarnings("nls")
 public class AbstractHandler implements IHandler {
 
 	protected Logger log;

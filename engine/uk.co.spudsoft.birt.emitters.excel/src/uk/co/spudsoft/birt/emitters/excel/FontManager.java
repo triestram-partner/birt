@@ -32,6 +32,7 @@ import org.w3c.dom.css.CSSValue;
  * @author Jim Talbut
  *
  */
+@SuppressWarnings("nls")
 public class FontManager {
 
 	/**

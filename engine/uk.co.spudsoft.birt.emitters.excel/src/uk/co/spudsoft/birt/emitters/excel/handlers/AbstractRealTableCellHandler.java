@@ -1,12 +1,12 @@
 /*************************************************************************************
  * Copyright (c) 2011, 2012, 2013 James Talbut.
  *  jim-emitters@spudsoft.co.uk
- *  
- * All rights reserved. This program and the accompanying materials 
+ *
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     James Talbut - Initial implementation.
  ************************************************************************************/
@@ -41,12 +41,13 @@ import uk.co.spudsoft.birt.emitters.excel.HandlerState;
 import uk.co.spudsoft.birt.emitters.excel.StylePropertyIndexes;
 import uk.co.spudsoft.birt.emitters.excel.framework.Logger;
 
+@SuppressWarnings("nls")
 public class AbstractRealTableCellHandler extends CellContentHandler {
 
 	protected int column;
 	private AbstractRealTableRowHandler parentRow;
 	private boolean containsTable;
-	
+
 	public AbstractRealTableCellHandler(IContentEmitter emitter, Logger log, IHandler parent, ICellContent cell) {
 		super(emitter, log, parent, cell);
 		column = cell.getColumn();
@@ -63,23 +64,23 @@ public class AbstractRealTableCellHandler extends CellContentHandler {
 
 	@Override
 	public void startCell(HandlerState state, ICellContent cell) throws BirtException {
-		log.debug( "Cell - " 
-				+ "BIRT[" 
+		log.debug( "Cell - "
+				+ "BIRT["
 					+ cell.getRow()
 					+ ( cell.getRowSpan() > 1 ? "-" + (cell.getRow() + cell.getRowSpan()-1) : "" )
 					+ ","
-					+ cell.getColumn() 
+					+ cell.getColumn()
 					+ ( cell.getColSpan() > 1 ? "-" + (cell.getColumn() + cell.getColSpan()-1) : "" )
 					+ "]"
-				+ " state[" 
+				+ " state["
 					+ state.rowNum
 					+ ","
-					+ state.colNum 
+					+ state.colNum
 					+ "]"
 				);
 		resumeCell(state);
 	}
-	
+
 	@Override
 	public void endCell(HandlerState state, ICellContent cell) throws BirtException {
 		if( cell.getBookmark() != null ) {
@@ -88,18 +89,18 @@ public class AbstractRealTableCellHandler extends CellContentHandler {
 
 		interruptCell(state, ! containsTable );
 	}
-	
+
 	public void resumeCell(HandlerState state) {
 	}
-	
+
 	public void interruptCell(HandlerState state, boolean includeFormatOnly) throws BirtException {
-		
+
 		if( state == null ) {
 			System.err.println( "state == null" );
 		} else if( state.currentSheet == null ) {
 			System.err.println( "state.currentSheet == null" );
 		} else if( state.currentSheet.getRow(state.rowNum) == null ) {
-			System.err.println( "state.currentSheet.getRow(" + state.rowNum + ") == null" );			
+			System.err.println( "state.currentSheet.getRow(" + state.rowNum + ") == null" );
 		}
 
 		if( ( lastValue != null ) || includeFormatOnly ) {
@@ -108,24 +109,24 @@ public class AbstractRealTableCellHandler extends CellContentHandler {
 				log.debug( "Creating cell[", state.rowNum, ",", column, "]");
 				currentCell = state.currentSheet.getRow(state.rowNum).createCell( column );
 			}
-					
-			ICellContent cell = (ICellContent)element; 
+
+			ICellContent cell = (ICellContent)element;
 			Area area = null;
-			
+
 			if(( cell.getColSpan() > 1 )||( cell.getRowSpan() > 1 )) {
-				
+
 				if( state.getEmitter().isExtractMode() ) {
 					throw new IllegalArgumentException( "Merged cells encountered in extract mode, not currently supported" );
 				}
 
                 int endRow = state.rowNum + cell.getRowSpan() - 1;
 				int endCol = state.colNum + cell.getColSpan() - 1;
-                
+
                 if(cell.getRowSpan() > 1) {
                 	log.debug( "Adding row span [", state.rowNum, ",", state.colNum, "] to [", endRow, ",", endCol, "]" );
                     area = state.addRowSpan(state.rowNum, state.colNum, endRow, endCol);
                 }
-				
+
                 int offset = state.computeNumberSpanBefore(state.rowNum, state.colNum);
                 log.debug( "Offset for [", state.rowNum, ",", state.colNum, "] calculated as ", offset);
                 log.debug( "Merging [", state.rowNum, ",", state.colNum + offset, "] to [", endRow, ",", endCol + offset, "]" );
@@ -133,13 +134,13 @@ public class AbstractRealTableCellHandler extends CellContentHandler {
                 // CellRangeAddress newMergedRegion = new CellRangeAddress( state.rowNum, endRow, state.colNum + offset, endCol + offset );
                 CellRangeAddress newMergedRegion = new CellRangeAddress( state.rowNum, endRow, column, column + cell.getColSpan() - 1 );
                 state.currentSheet.addMergedRegion( newMergedRegion );
-                                
+
 				colSpan = cell.getColSpan();
 			}
-	
+
 			endCellContent(state, cell, lastElement, currentCell, area);
 		}
-		
+
 		if( state.cellIsMergedWithBorders( state.rowNum, column ) ) {
 			int absoluteColumn = column;
 			++state.colNum;
@@ -155,11 +156,11 @@ public class AbstractRealTableCellHandler extends CellContentHandler {
 		} else {
 			state.colNum += colSpan;
 		}
-		
+
 		state.setHandler(parent);
 	}
-	
-	
+
+
 	@Override
 	public void startContainer(HandlerState state, IContainerContent container) throws BirtException {
 		// log.debug( "Container display = " + getStyleProperty( container, StylePropertyIndexes.STYLE_DISPLAY, "block") );
@@ -167,7 +168,7 @@ public class AbstractRealTableCellHandler extends CellContentHandler {
 			lastCellContentsWasBlock = true;
 		}
 	}
-	
+
 	@Override
 	public void endContainer(HandlerState state, IContainerContent container) throws BirtException {
 		// log.debug( "Container display = " + getStyleProperty( container, StylePropertyIndexes.STYLE_DISPLAY, "block") );
@@ -175,7 +176,7 @@ public class AbstractRealTableCellHandler extends CellContentHandler {
 			lastCellContentsWasBlock = true;
 		}
 	}
-	
+
 	private TableContent cellDesignsTableContent() {
 		IElement current = element;
 		while( ( current != null ) && ! ( current instanceof TableContent ) ) {
@@ -190,50 +191,50 @@ public class AbstractRealTableCellHandler extends CellContentHandler {
 		int rowSpan = ((ICellContent)element).getRowSpan();
 		ITableHandler tableHandler = getAncestor(ITableHandler.class);
 		TableContent myTableContent = cellDesignsTableContent();
-		
-		if( ( tableHandler != null ) 
+
+		if( ( tableHandler != null )
 				&& ( tableHandler.getColumnCount() == colSpan )
 				&& ( table.getParent() instanceof CellContent )
 				&& ( ( (CellContent)table.getParent() ).getGenerateBy() instanceof CellDesign )
 				&& ( 1 == ( (CellDesign)( (CellContent)table.getParent() ).getGenerateBy()).getContentCount() )
 				) {
 			// Parent row contains only one item
-			
+
 			containsTable = true;
 			parentRow = getAncestor(AbstractRealTableRowHandler.class);
 			interruptCell(state, false);
 			parentRow.interruptRow(state);
-			
+
 			state.setHandler(new NestedTableHandler(log, this, table, rowSpan));
-			state.getHandler().startTable(state, table);			
-		} else if( ( tableHandler != null ) 
+			state.getHandler().startTable(state, table);
+		} else if( ( tableHandler != null )
 					&& ( myTableContent != null )
 					&& ( table.getParent() instanceof CellContent )
 					&& ( ( (CellContent)table.getParent() ).getGenerateBy() instanceof CellDesign )
 					&& ( ( (CellDesign)( (CellContent)table.getParent() ).getGenerateBy()).getColumn() + 1 == myTableContent.getColumnCount() )
-					&& EmitterServices.booleanOption( state.getRenderOptions(), table, ExcelEmitter.NEST_TABLE_IN_LAST_CELL, false ) 
+					&& EmitterServices.booleanOption( state.getRenderOptions(), table, ExcelEmitter.NEST_TABLE_IN_LAST_CELL, false )
 					) {
 			// This is last cell in row
-			
+
 			colSpan = table.getColumnCount();
 			containsTable = true;
 			parentRow = getAncestor(AbstractRealTableRowHandler.class);
 			interruptCell(state, false);
 			// parentRow.interruptRow(state);
-			
+
 			state.setHandler(new NestedTableHandler(log, this, table, rowSpan));
 			state.getHandler().startTable(state, table);
-		} else if( ( tableHandler != null ) 
-				&& ( table.getColumnCount() <= colSpan ) 
+		} else if( ( tableHandler != null )
+				&& ( table.getColumnCount() <= colSpan )
 				) {
 			// This cell is merged over same number of columns as new table
-			
+
 			containsTable = true;
 			parentRow = getAncestor(AbstractRealTableRowHandler.class);
 			interruptCell(state, false);
-			
+
 			removeMergedCell( state, state.rowNum, state.colNum );
-			
+
 			NestedTableHandler nestedTableHandler = new NestedTableHandler(log, this, table, rowSpan);
 			nestedTableHandler.setInserted(true);
 			state.setHandler(nestedTableHandler);
@@ -244,21 +245,21 @@ public class AbstractRealTableCellHandler extends CellContentHandler {
 			state.getHandler().startTable(state, table);
 		}
 	}
-	
+
 	@Override
 	public void startList(HandlerState state, IListContent list) throws BirtException {
 		int colSpan = ((ICellContent)element).getColSpan();
 		ITableHandler tableHandler = getAncestor(ITableHandler.class);
-		if( ( tableHandler != null ) 
+		if( ( tableHandler != null )
 				&& ( tableHandler.getColumnCount() == colSpan )
 				&& ( 1 == ( (CellDesign)( (CellContent)list.getParent() ).getGenerateBy()).getContentCount() )
 				) {
-			
+
 			containsTable = true;
 			parentRow = getAncestor(AbstractRealTableRowHandler.class);
 			interruptCell(state, false);
 			parentRow.interruptRow(state);
-			
+
 			state.colNum = column;
 			state.setHandler(new NestedListHandler(log, this, list));
 			state.getHandler().startList(state, list);
@@ -279,7 +280,7 @@ public class AbstractRealTableCellHandler extends CellContentHandler {
 	public void emitData(HandlerState state, IDataContent data) throws BirtException {
 		emitContent(state,data,data.getValue(), ( ! "inline".equals( getStyleProperty(data, StylePropertyIndexes.STYLE_DISPLAY, "block") ) ) );
 	}
-	
+
 	@Override
 	public void emitLabel(HandlerState state, ILabelContent label) throws BirtException {
 		// String labelText = ( label.getLabelText() != null ) ? label.getLabelText() : label.getText();
@@ -300,17 +301,17 @@ public class AbstractRealTableCellHandler extends CellContentHandler {
 		if ( IForeignContent.HTML_TYPE.equalsIgnoreCase( foreign.getRawType( ) ) )
 		{
 			HTML2Content.html2Content( foreign );
-			contentVisitor.visitChildren( foreign, null );			
+			contentVisitor.visitChildren( foreign, null );
 		}
 	}
 
 	@Override
 	public void emitImage(HandlerState state, IImageContent image) throws BirtException {
 		boolean imageCanSpan = false;
-		
+
 		int colSpan = ((ICellContent)element).getColSpan();
 		ITableHandler tableHandler = getAncestor(ITableHandler.class);
-		if( ( tableHandler != null ) 
+		if( ( tableHandler != null )
 				&& ( tableHandler.getColumnCount() == colSpan )
 				&& ( 1 == ( (CellDesign)( (CellContent)image.getParent() ).getGenerateBy()).getContentCount() )
 				) {
@@ -319,5 +320,5 @@ public class AbstractRealTableCellHandler extends CellContentHandler {
 		recordImage(state, new Coordinate( state.rowNum, column ), image, imageCanSpan);
 		lastElement = image;
 	}
-			
+
 }

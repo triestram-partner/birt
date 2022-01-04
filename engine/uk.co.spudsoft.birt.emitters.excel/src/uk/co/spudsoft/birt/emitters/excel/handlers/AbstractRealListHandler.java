@@ -1,12 +1,12 @@
 /*************************************************************************************
  * Copyright (c) 2011, 2012, 2013 James Talbut.
  *  jim-emitters@spudsoft.co.uk
- *  
- * All rights reserved. This program and the accompanying materials 
+ *
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     James Talbut - Initial implementation.
  ************************************************************************************/
@@ -28,25 +28,26 @@ import uk.co.spudsoft.birt.emitters.excel.ExcelEmitter;
 import uk.co.spudsoft.birt.emitters.excel.HandlerState;
 import uk.co.spudsoft.birt.emitters.excel.framework.Logger;
 
+@SuppressWarnings("nls")
 public class AbstractRealListHandler extends AbstractHandler implements NestedTableContainer {
 
 	protected int startRow = -1;
 	protected int startCol = -1;
-	
+
 	@SuppressWarnings("unused")
 	private IListGroupContent currentGroup;
 	@SuppressWarnings("unused")
 	private IListBandContent currentBand;
-	
+
 	private AreaBorders borderDefn;
 
 	private List< NestedTableHandler > nestedTables;
 	private NestedTableHandler lastNestedTable;
-	
+
 	public AbstractRealListHandler(Logger log, IHandler parent, IListContent list) {
 		super(log, parent, list);
 	}
-	
+
 	@Override
 	public void notifyHandler(HandlerState state) {
 		super.notifyHandler(state);
@@ -67,7 +68,7 @@ public class AbstractRealListHandler extends AbstractHandler implements NestedTa
 		nestedTables.add(nestedTableHandler);
 		lastNestedTable = nestedTableHandler;
 	}
-	
+
 	public boolean rowHasNestedTable( int rowNum ) {
 		if( nestedTables != null ) {
 			for( NestedTableHandler nestedTableHandler : nestedTables ) {
@@ -80,7 +81,7 @@ public class AbstractRealListHandler extends AbstractHandler implements NestedTa
 		log.debug( "Row ", rowNum, " has no nested tables" );
 		return false;
 	}
-	
+
 	public int extendRowBy( int rowNum ) {
 		int offset = 1;
 		if( nestedTables != null ) {
@@ -94,14 +95,14 @@ public class AbstractRealListHandler extends AbstractHandler implements NestedTa
 		}
 		return offset;
 	}
-	
+
 	@Override
 	public void startList(HandlerState state, IListContent list) throws BirtException {
 		startRow = state.rowNum;
 		startCol = state.colNum;
 		log.debug( "List started at [", startRow, ",", startCol, "]" );
 	}
-	
+
 	@Override
 	public void endList(HandlerState state, IListContent list) throws BirtException {
 		state.setHandler(parent);
@@ -109,7 +110,7 @@ public class AbstractRealListHandler extends AbstractHandler implements NestedTa
 		int endRow = state.rowNum - 1;
 		int colStart = 0;
 		int colEnd = 0;
-		
+
 		for( int row = startRow; row < endRow; ++row ) {
 			if( state.currentSheet.getRow(row) != null ) {
 				int lastColInRow = state.currentSheet.getRow(row).getLastCellNum() - 1;
@@ -118,17 +119,17 @@ public class AbstractRealListHandler extends AbstractHandler implements NestedTa
 				}
 			}
 		}
-		
+
 		state.getSmu().applyBordersToArea( state.getSm(), state.currentSheet, colStart, colEnd, startRow, endRow, new BirtStyle( list ) );
-		
+
 		if( borderDefn != null ) {
 			state.removeBorderOverload(borderDefn);
 		}
-		
+
 		if( ( list.getBookmark() != null ) && ( state.rowNum > startRow ) ) {
 			createName(state, prepareName( list.getBookmark() ), startRow, 0, state.rowNum - 1, 0);
 		}
-		
+
 		if( EmitterServices.booleanOption( state.getRenderOptions(), list, ExcelEmitter.DISPLAYFORMULAS_PROP, false ) ) {
 			state.currentSheet.setDisplayFormulas(true);
 		}
@@ -153,7 +154,7 @@ public class AbstractRealListHandler extends AbstractHandler implements NestedTa
 	@Override
 	public void endListBand(HandlerState state, IListBandContent band) throws BirtException {
         boolean rowHasNestedTable = rowHasNestedTable( state.rowNum );
-        
+
 		if( rowHasNestedTable ) {
 			state.rowNum += extendRowBy( state.rowNum );
 		}

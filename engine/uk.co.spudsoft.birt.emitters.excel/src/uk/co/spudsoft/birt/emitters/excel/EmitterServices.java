@@ -1,12 +1,12 @@
 /*************************************************************************************
  * Copyright (c) 2011, 2012, 2013 James Talbut.
  *  jim-emitters@spudsoft.co.uk
- *  
- * All rights reserved. This program and the accompanying materials 
+ *
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     James Talbut - Initial implementation.
  ************************************************************************************/
@@ -29,7 +29,7 @@ public class EmitterServices {
 	/**
 	 * Convert an Object to a boolean, with quite a few options about the class of
 	 * the Object.
-	 * 
+	 *
 	 * @param options      The task options to extract the value from.
 	 * @param birtContent  The leaf node to look for UserProperties
 	 * @param name         The name of the value to extract from options.
@@ -111,7 +111,7 @@ public class EmitterServices {
 
 	/**
 	 * Search for an emitter option and return it as a string
-	 * 
+	 *
 	 * @param options      The task options to extract the value from.
 	 * @param birtContent  The leaf node to look for UserProperties
 	 * @param name         The name of the value to extract from options.
@@ -166,7 +166,7 @@ public class EmitterServices {
 
 	/**
 	 * Search for an emitter option and return it as a string
-	 * 
+	 *
 	 * @param options       The task options to extract the value from.
 	 * @param reportContent The report
 	 * @param name          The name of the value to extract from options.
@@ -202,7 +202,7 @@ public class EmitterServices {
 
 	/**
 	 * Search for an emitter option and return it as an integer
-	 * 
+	 *
 	 * @param options      The task options to extract the value from.
 	 * @param birtContent  The leaf node to look for UserProperties
 	 * @param name         The name of the value to extract from options.
@@ -263,7 +263,7 @@ public class EmitterServices {
 	/**
 	 * Convert an Object to a boolean, with quite a few options about the class of
 	 * the Object.
-	 * 
+	 *
 	 * @param value        A value that can be of any type.
 	 * @param defaultValue Value to return if value is null.
 	 * @return true if value in some way represents a boolean TRUE value.
@@ -290,7 +290,7 @@ public class EmitterServices {
 		if ((ExcelEmitterPlugin.getDefault() != null) && (ExcelEmitterPlugin.getDefault().getBundle() != null)) {
 			return ExcelEmitterPlugin.getDefault().getBundle().getSymbolicName();
 		} else {
-			return "uk.co.spudsoft.birt.emitters.excel";
+			return "uk.co.spudsoft.birt.emitters.excel"; //$NON-NLS-1$
 		}
 	}
 

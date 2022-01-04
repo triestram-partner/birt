@@ -1,12 +1,12 @@
 /*************************************************************************************
  * Copyright (c) 2011, 2012, 2013 James Talbut.
  *  jim-emitters@spudsoft.co.uk
- *  
- * All rights reserved. This program and the accompanying materials 
+ *
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     James Talbut - Initial implementation.
  ************************************************************************************/
@@ -24,10 +24,11 @@ import org.apache.poi.ss.usermodel.Font;
  * from POI, but experiments found that to produce NullPoiiunterExceptions and
  * multiple entries in the XLSX files.
  * </p>
- * 
+ *
  * @author jtalbut
  *
  */
+@SuppressWarnings("nls")
 public class RichTextRun {
 	/**
 	 * The index of the first character to be formatted using this font.

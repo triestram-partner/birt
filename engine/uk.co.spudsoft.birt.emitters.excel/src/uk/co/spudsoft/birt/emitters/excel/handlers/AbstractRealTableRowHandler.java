@@ -1,12 +1,12 @@
 /*************************************************************************************
  * Copyright (c) 2011, 2012, 2013 James Talbut.
  *  jim-emitters@spudsoft.co.uk
- *  
- * All rights reserved. This program and the accompanying materials 
+ *
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     James Talbut - Initial implementation.
  ************************************************************************************/
@@ -32,6 +32,7 @@ import uk.co.spudsoft.birt.emitters.excel.HandlerState;
 import uk.co.spudsoft.birt.emitters.excel.StyleManagerUtils;
 import uk.co.spudsoft.birt.emitters.excel.framework.Logger;
 
+@SuppressWarnings("nls")
 public abstract class AbstractRealTableRowHandler extends AbstractHandler {
 
 	protected Row currentRow;
@@ -62,16 +63,16 @@ public abstract class AbstractRealTableRowHandler extends AbstractHandler {
 		if( row.getBookmark() != null ) {
 			createName(state, prepareName( row.getBookmark() ), birtRowStartedAtPoiRow, 0, state.rowNum - 1, currentRow.getLastCellNum() - 1 );
 		}
-		
+
 		if( EmitterServices.booleanOption( state.getRenderOptions(), row, ExcelEmitter.PRINT_BREAK_AFTER, false ) ) {
 			state.currentSheet.setRowBreak( state.rowNum - 1 );
 		}
-		
-		state.setHandler(parent);		
+
+		state.setHandler(parent);
 	}
-	
+
 	protected abstract boolean isNested();
-	
+
 	public void resumeRow(HandlerState state) {
 		log.debug( "Resume row at ", state.rowNum );
 
@@ -81,26 +82,26 @@ public abstract class AbstractRealTableRowHandler extends AbstractHandler {
 			log.debug( "Creating row ", state.rowNum );
 			currentRow = state.currentSheet.createRow( state.rowNum );
 		}
-		state.requiredRowHeightInPoints = 0;		
-		
+		state.requiredRowHeightInPoints = 0;
+
 		rowStyle = new BirtStyle( (IRowContent)element );
 		borderDefn = AreaBorders.create( myRow, 0, ((IRowContent)element).getTable().getColumnCount() - 1, myRow, rowStyle );
 		if( borderDefn != null ) {
 			state.insertBorderOverload(borderDefn);
 		}
 	}
-	
+
 	public void interruptRow(HandlerState state) throws BirtException {
 		log.debug( "Interrupt row at ", state.rowNum );
 		currentRow = state.currentSheet.getRow( state.rowNum );
-	
+
 		boolean blankRow = EmitterServices.booleanOption( state.getRenderOptions(), element, ExcelEmitter.REMOVE_BLANK_ROWS, true );
 
 		log.debug( "currentRow.getRowNum() == ", currentRow.getRowNum(), ", state.rowNum == ", state.rowNum );
-		
+
 		if( state.rowHasMergedCellsWithBorders( state.rowNum ) ) {
 			for( AreaBorders areaBorder : state.areaBorders ) {
-				if( ( areaBorder.isMergedCells ) 
+				if( ( areaBorder.isMergedCells )
 						&& ( areaBorder.top <= state.rowNum )
 						&& ( areaBorder.bottom >= state.rowNum ) ) {
 
@@ -115,11 +116,11 @@ public abstract class AbstractRealTableRowHandler extends AbstractHandler {
 						}
 					}
 				}
-			}			
+			}
 			blankRow = false;
 		}
-		
-		
+
+
 		if( blankRow ) {
 			for(Iterator<Cell> iter = currentRow.cellIterator(); iter.hasNext(); ) {
 				Cell cell = iter.next();
@@ -148,17 +149,17 @@ public abstract class AbstractRealTableRowHandler extends AbstractHandler {
         		blankRow = false;
         	}
         }
-        
+
         boolean rowHasNestedTable = ((NestedTableContainer)parent).rowHasNestedTable( state.rowNum );
-        
+
         if( blankRow && rowHasNestedTable ) {
         	blankRow = false;
         }
-        
+
         if( blankRow && isNested() ) {
         	blankRow = false;
         }
-        
+
 		if( blankRow || ( ( ! rowHasNestedTable ) && ( ! isNested() ) && ( currentRow.getPhysicalNumberOfCells() == 0 ) ) ) {
 			log.debug( "Removing row ", currentRow.getRowNum() );
 			state.currentSheet.removeRow(currentRow);
@@ -173,7 +174,7 @@ public abstract class AbstractRealTableRowHandler extends AbstractHandler {
 			if( state.requiredRowHeightInPoints > currentRow.getHeightInPoints() ) {
 				currentRow.setHeightInPoints( state.requiredRowHeightInPoints );
 			}
-			
+
 			if( rowHasNestedTable ) {
 				int increase = ((NestedTableContainer)parent).extendRowBy( state.rowNum );
 				log.debug( "Incrementing rowNum from ", state.rowNum, " to ", state.rowNum + increase );
@@ -186,7 +187,7 @@ public abstract class AbstractRealTableRowHandler extends AbstractHandler {
 				log.debug( "Not incrementing rowNum from ", state.rowNum, " because there are no cells on row ", currentRow.getPhysicalNumberOfCells() );
 			}
 		}
-		
+
 		if( borderDefn != null ) {
 			state.removeBorderOverload(borderDefn);
 			borderDefn = null;

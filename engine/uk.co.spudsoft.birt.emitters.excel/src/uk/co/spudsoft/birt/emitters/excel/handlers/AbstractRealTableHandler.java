@@ -1,12 +1,12 @@
 /*************************************************************************************
  * Copyright (c) 2011, 2012, 2013 James Talbut.
  *  jim-emitters@spudsoft.co.uk
- *  
- * All rights reserved. This program and the accompanying materials 
+ *
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     James Talbut - Initial implementation.
  ************************************************************************************/
@@ -37,6 +37,7 @@ import uk.co.spudsoft.birt.emitters.excel.FilteredSheet;
 import uk.co.spudsoft.birt.emitters.excel.HandlerState;
 import uk.co.spudsoft.birt.emitters.excel.framework.Logger;
 
+@SuppressWarnings("nls")
 public class AbstractRealTableHandler extends AbstractHandler implements ITableHandler, NestedTableContainer {
 
 	protected int startRow;
@@ -44,17 +45,17 @@ public class AbstractRealTableHandler extends AbstractHandler implements ITableH
 	protected int startDetailsRow = -1;
 	protected int endDetailsRow;
 	protected int startHeaderRow = -1;
-	
+
 	@SuppressWarnings("unused")
 	private ITableGroupContent currentGroup;
 	@SuppressWarnings("unused")
 	private ITableBandContent currentBand;
-	
+
 	private BirtStyle tableStyle;
 	private AreaBorders borderDefn;
-	
+
 	private boolean repeatHeader = false;
-	
+
 	private List< NestedTableHandler > nestedTables;
 
 	public AbstractRealTableHandler(Logger log, IHandler parent, ITableContent table) {
@@ -64,7 +65,7 @@ public class AbstractRealTableHandler extends AbstractHandler implements ITableH
 	public int getColumnCount() {
 		return ((ITableContent)this.element).getColumnCount();
 	}
-	
+
 	public void addNestedTable( NestedTableHandler nestedTableHandler ) {
 		if( nestedTables == null ) {
 			nestedTables = new ArrayList<NestedTableHandler>();
@@ -72,7 +73,7 @@ public class AbstractRealTableHandler extends AbstractHandler implements ITableH
 		log.debug( "Adding nested table: ", nestedTableHandler );
 		nestedTables.add(nestedTableHandler);
 	}
-	
+
 	public boolean rowHasNestedTable( int rowNum ) {
 		if( nestedTables != null ) {
 			for( NestedTableHandler nestedTableHandler : nestedTables ) {
@@ -85,7 +86,7 @@ public class AbstractRealTableHandler extends AbstractHandler implements ITableH
 		log.debug( "Row ", rowNum, " has no nested tables" );
 		return false;
 	}
-	
+
 	public int extendRowBy( int rowNum ) {
 		int offset = 1;
 		if( nestedTables != null ) {
@@ -104,7 +105,7 @@ public class AbstractRealTableHandler extends AbstractHandler implements ITableH
 	public void startTable(HandlerState state, ITableContent table) throws BirtException {
 		startRow = state.rowNum;
 		startCol = state.colNum;
-		
+
 		log.debug( "startTable @ [", startRow, ",", startCol, "]" );
 
 		repeatHeader = false;
@@ -123,13 +124,13 @@ public class AbstractRealTableHandler extends AbstractHandler implements ITableH
 			if( repeatRowHeader == null ) {
 				repeatRowHeader = Boolean.TRUE;
 			}
-			
+
 			if( ( rowPageBreakInterval instanceof Integer ) && ( repeatRowHeader instanceof Boolean ) ) {
 				repeatHeader = (((Integer)rowPageBreakInterval).intValue() == 0) && (((Boolean)repeatRowHeader).booleanValue());
 			}
 		}
-		
-		
+
+
 		for( int col = 0; col < table.getColumnCount(); ++col ) {
 			DimensionType width = table.getColumn(col).getWidth();
 			if( width != null ) {
@@ -141,33 +142,33 @@ public class AbstractRealTableHandler extends AbstractHandler implements ITableH
 				}
 			}
 		}
-		
+
 		tableStyle = new BirtStyle( table );
 		borderDefn = AreaBorders.create( -1, startCol, startCol + table.getColumnCount() - 1, startRow, tableStyle );
 		if( borderDefn != null ) {
 			state.insertBorderOverload(borderDefn);
 		}
-		
+
 		if( table.getGenerateBy() instanceof GridItemDesign ) {
 			startDetailsRow = state.rowNum;
 		}
 	}
-	
+
 	@Override
 	public void endTable(HandlerState state, ITableContent table) throws BirtException {
 		if( table.getGenerateBy() instanceof GridItemDesign ) {
 			endDetailsRow = state.rowNum - 1;
 		}
-		
+
 		log.debug( "Applying bottom border to [", state.rowNum - 1, ",", startCol, "] - [", state.rowNum - 1, ",", startCol + table.getColumnCount() - 1, "]" );
 		state.getSmu().applyBottomBorderToRow( state.getSm(), state.currentSheet, startCol, startCol + table.getColumnCount() - 1, state.rowNum - 1, tableStyle );
-		
+
 		if( borderDefn != null ) {
 			state.removeBorderOverload(borderDefn);
 		}
-		
+
 		log.debug( "Details rows from ", startDetailsRow, " to ", endDetailsRow );
-		
+
 		int autoWidthStartRow = startDetailsRow;
 		if( EmitterServices.booleanOption( state.getRenderOptions(), table, ExcelEmitter.AUTO_COL_WIDTHS_HEADER, false ) ) {
 			autoWidthStartRow = startRow;
@@ -176,7 +177,7 @@ public class AbstractRealTableHandler extends AbstractHandler implements ITableH
 		if( EmitterServices.booleanOption( state.getRenderOptions(), table, ExcelEmitter.AUTO_COL_WIDTHS_FOOTER, false ) ) {
 			autoWidthEndRow = state.rowNum - 1;
 		}
-		
+
 		if( ( autoWidthStartRow >= 0 ) && ( autoWidthEndRow > autoWidthStartRow ) ) {
 			boolean forceAutoColWidths = EmitterServices.booleanOption( state.getRenderOptions(), table, ExcelEmitter.FORCEAUTOCOLWIDTHS_PROP, false );
 			for( int col = 0; col < table.getColumnCount(); ++col ) {
@@ -198,11 +199,11 @@ public class AbstractRealTableHandler extends AbstractHandler implements ITableH
 				}
 			}
 		}
-		
+
 		if( ( table.getBookmark() != null ) && ( state.rowNum > startRow ) && ( table.getColumnCount() > 1 ) ) {
 			createName(state, prepareName( table.getBookmark() ), startRow, 0, state.rowNum - 1, table.getColumnCount() - 1);
 		}
-		
+
 		if( EmitterServices.booleanOption( state.getRenderOptions(), table, ExcelEmitter.DISPLAYFORMULAS_PROP, false ) ) {
 			state.currentSheet.setDisplayFormulas(true);
 		}
@@ -214,7 +215,7 @@ public class AbstractRealTableHandler extends AbstractHandler implements ITableH
 		}
 		if( ! EmitterServices.booleanOption( state.getRenderOptions(), table, ExcelEmitter.DISPLAYZEROS_PROP, true ) ) {
 			state.currentSheet.setDisplayZeros(false);
-		}		
+		}
 	}
 
 	@Override
@@ -235,7 +236,7 @@ public class AbstractRealTableHandler extends AbstractHandler implements ITableH
 		}
 		if( ( band.getBandType() == ITableBandContent.BAND_HEADER ) && repeatHeader && (state.rowNum > startHeaderRow) ) {
 			int endHeaderRow = state.rowNum - 1;
-			
+
 			if( state.currentSheet.getRepeatingRows() == null ) {
 				CellRangeAddress repeatingRows = new CellRangeAddress(startHeaderRow, endHeaderRow, -1, -1);
 				// repeatingRows = CellRangeAddress.valueOf( Integer.toString(startHeaderRow+1) + ":" + Integer.toString(endHeaderRow+1) );

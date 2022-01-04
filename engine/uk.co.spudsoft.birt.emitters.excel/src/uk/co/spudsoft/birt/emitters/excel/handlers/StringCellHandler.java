@@ -1,12 +1,12 @@
 /*************************************************************************************
  * Copyright (c) 2011, 2012, 2013 James Talbut.
  *  jim-emitters@spudsoft.co.uk
- *  
- * All rights reserved. This program and the accompanying materials 
+ *
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     James Talbut - Initial implementation.
  ************************************************************************************/
@@ -33,10 +33,11 @@ import uk.co.spudsoft.birt.emitters.excel.HandlerState;
 import uk.co.spudsoft.birt.emitters.excel.StylePropertyIndexes;
 import uk.co.spudsoft.birt.emitters.excel.framework.Logger;
 
+@SuppressWarnings("nls")
 public class StringCellHandler extends CellContentHandler {
 
 	private String result = null;
-	
+
 	public StringCellHandler(IContentEmitter emitter, Logger log, IHandler parent, ICellContent cell) {
 		super(emitter, log, parent, cell);
 	}
@@ -45,7 +46,7 @@ public class StringCellHandler extends CellContentHandler {
 	public void endCell(HandlerState state, ICellContent cell) throws BirtException {
 		endCellContent(state, cell, lastElement, null, null );
 	}
-	
+
 	@Override
 	protected void endCellContent(HandlerState state, ICellContent birtCell, IContent element, Cell cell, Area area) {
 		if( lastValue != null ) {
@@ -82,13 +83,13 @@ public class StringCellHandler extends CellContentHandler {
 					result = lastValue.toString();
 				}
 			}
-		} 
+		}
 		if( result == null ) {
 			result = "";
 		}
 		return result;
 	}
-	
+
 
 	@Override
 	public void startTable(HandlerState state, ITableContent table) throws BirtException {
@@ -127,7 +128,7 @@ public class StringCellHandler extends CellContentHandler {
 		if ( IForeignContent.HTML_TYPE.equalsIgnoreCase( foreign.getRawType( ) ) )
 		{
 			HTML2Content.html2Content( foreign );
-			contentVisitor.visitChildren( foreign, null );			
+			contentVisitor.visitChildren( foreign, null );
 		}
 	}
 
@@ -139,7 +140,7 @@ public class StringCellHandler extends CellContentHandler {
 	public void endContainer(HandlerState state, IContainerContent container) throws BirtException {
 		lastCellContentsWasBlock = ( ! "inline".equals( getStyleProperty(container, StylePropertyIndexes.STYLE_DISPLAY, "block") ) );
 	}
-			
-	
-	
+
+
+
 }

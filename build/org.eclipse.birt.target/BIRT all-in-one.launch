@@ -502,7 +502,7 @@
         <setEntry value="org.eclipse.ltk.core.refactoring@default:default"/>
         <setEntry value="org.eclipse.ltk.ui.refactoring@default:default"/>
         <setEntry value="org.eclipse.orbit.mongodb@default:default"/>
-        <setEntry value="org.eclipse.osgi*3.17.0.v20210823-1805@-1:true"/>
+        <setEntry value="org.eclipse.osgi*3.17.100.v20211104-1730@-1:true"/>
         <setEntry value="org.eclipse.osgi.compatibility.state@default:false"/>
         <setEntry value="org.eclipse.osgi.services*3.10.200.v20210723-0643@2:true"/>
         <setEntry value="org.eclipse.osgi.services*3.9.0.v20200511-1725@2:true"/>
@@ -673,11 +673,9 @@
         <setEntry value="org.mortbay.jasper.apache-el@default:default"/>
         <setEntry value="org.mortbay.jasper.apache-jsp@default:default"/>
         <setEntry value="org.mozilla.javascript@default:default"/>
-        <setEntry value="org.objectweb.asm*9.1.0.v20210209-1849@default:default"/>
         <setEntry value="org.objectweb.asm*9.2.0@default:default"/>
         <setEntry value="org.objectweb.asm.commons*9.1.0@default:default"/>
         <setEntry value="org.objectweb.asm.commons*9.2.0@default:default"/>
-        <setEntry value="org.objectweb.asm.tree*9.1.0.v20210209-1849@default:default"/>
         <setEntry value="org.objectweb.asm.tree*9.2.0@default:default"/>
         <setEntry value="org.objectweb.asm.tree.analysis*9.1.0@default:default"/>
         <setEntry value="org.objectweb.asm.tree.analysis*9.2.0@default:default"/>

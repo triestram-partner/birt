@@ -32,7 +32,7 @@
     <stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit4"/>
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_ATTR_USE_ARGFILE" value="false"/>
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_SHOW_CODEDETAILS_IN_EXCEPTION_MESSAGES" value="true"/>
-    <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17"/>
+    <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk-11.0.13+8"/>
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.eclipse.birt.report.model.AllTests"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.eclipse.birt.report.model.tests"/>
@@ -435,6 +435,7 @@
         <setEntry value="org.eclipse.jem.workbench@default:default"/>
         <setEntry value="org.eclipse.jem@default:default"/>
         <setEntry value="org.eclipse.jetty.annotations@default:default"/>
+        <setEntry value="org.eclipse.jetty.apache-jsp@default:default"/>
         <setEntry value="org.eclipse.jetty.continuation@default:default"/>
         <setEntry value="org.eclipse.jetty.deploy@default:default"/>
         <setEntry value="org.eclipse.jetty.http@default:default"/>
@@ -518,7 +519,7 @@
         <setEntry value="org.eclipse.ltk.core.refactoring@default:default"/>
         <setEntry value="org.eclipse.ltk.ui.refactoring@default:default"/>
         <setEntry value="org.eclipse.orbit.mongodb@default:default"/>
-        <setEntry value="org.eclipse.osgi*3.17.0.v20210823-1805@-1:true"/>
+        <setEntry value="org.eclipse.osgi*3.17.100.v20211104-1730@-1:true"/>
         <setEntry value="org.eclipse.osgi.compatibility.state@default:false"/>
         <setEntry value="org.eclipse.osgi.services*3.10.200.v20210723-0643@default:default"/>
         <setEntry value="org.eclipse.osgi.services*3.9.0.v20200511-1725@default:default"/>
@@ -695,15 +696,17 @@
         <setEntry value="org.junit.platform.launcher@default:default"/>
         <setEntry value="org.junit.platform.runner@default:default"/>
         <setEntry value="org.junit.platform.suite.api@default:default"/>
+        <setEntry value="org.junit.platform.suite.commons@default:default"/>
+        <setEntry value="org.junit.platform.suite.engine@default:default"/>
         <setEntry value="org.junit.vintage.engine@default:default"/>
         <setEntry value="org.junit@default:default"/>
+        <setEntry value="org.mortbay.jasper.apache-el@default:default"/>
+        <setEntry value="org.mortbay.jasper.apache-jsp@default:default"/>
         <setEntry value="org.mozilla.javascript@default:default"/>
-        <setEntry value="org.objectweb.asm*9.1.0.v20210209-1849@default:default"/>
         <setEntry value="org.objectweb.asm*9.1.0@default:default"/>
         <setEntry value="org.objectweb.asm*9.2.0@default:default"/>
         <setEntry value="org.objectweb.asm.commons*9.1.0@default:default"/>
         <setEntry value="org.objectweb.asm.commons*9.2.0@default:default"/>
-        <setEntry value="org.objectweb.asm.tree*9.1.0.v20210209-1849@default:default"/>
         <setEntry value="org.objectweb.asm.tree*9.1.0@default:default"/>
         <setEntry value="org.objectweb.asm.tree*9.2.0@default:default"/>
         <setEntry value="org.objectweb.asm.tree.analysis*9.1.0@default:default"/>
@@ -722,11 +725,12 @@
         <setEntry value="org.w3c.dom.svg@default:default"/>
         <setEntry value="slf4j.api@default:default"/>
         <setEntry value="slf4j.simple@default:default"/>
-        <setEntry value="wrapped.com.innoventsolutions.birt.runtime.flute@default:default"/>
         <setEntry value="wrapped.org.apache.xmlgraphics.fop@default:default"/>
     </setAttribute>
     <setAttribute key="selected_workspace_bundles">
         <setEntry value="org.apache.axis@default:default"/>
+        <setEntry value="org.apache.batik.dom.birt.ext@default:false"/>
+        <setEntry value="org.apache.batik.transcoder.birt.ext@default:false"/>
         <setEntry value="org.apache.derby.core@default:default"/>
         <setEntry value="org.eclipse.birt.axis.overlay@default:false"/>
         <setEntry value="org.eclipse.birt.build@default:default"/>

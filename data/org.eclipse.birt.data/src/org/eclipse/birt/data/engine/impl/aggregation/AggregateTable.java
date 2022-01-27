@@ -24,6 +24,7 @@ import org.mozilla.javascript.Scriptable;
  * A registry of aggregate expressions. Stores all aggregate expressions that
  * appears in a report query or subquery
  */
+@SuppressWarnings("nls")
 public final class AggregateTable {
 	/** Array of AggrExprInfo objects to record all aggregates */
 	private List aggrExprInfoList;
@@ -51,7 +52,7 @@ public final class AggregateTable {
 
 	/**
 	 * construct the aggregateTable from preparedQuery
-	 * 
+	 *
 	 * @param query
 	 */
 	public AggregateTable(String tempDir, Scriptable scope, List groupDefns) {
@@ -66,7 +67,7 @@ public final class AggregateTable {
 
 	/**
 	 * construct the aggregateTable from baseQuery
-	 * 
+	 *
 	 * @param query
 	 */
 	public AggregateTable(String tempDir, BaseQuery query) {
@@ -83,7 +84,7 @@ public final class AggregateTable {
 	 * Returns an implementation of the AggregateRegistry interface used by
 	 * ExpressionCompiler, to register aggregate expressions at the specified
 	 * grouping level
-	 * 
+	 *
 	 * @param groupLevel
 	 * @param afterGroup
 	 * @param cx

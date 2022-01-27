@@ -10,6 +10,7 @@ import org.eclipse.birt.report.model.api.oda.interfaces.IAggregationDefn;
 import org.eclipse.birt.report.model.api.oda.interfaces.IBirtAggregationConstants;
 import org.eclipse.birt.report.model.metadata.MetaDataDictionary;
 
+@SuppressWarnings("nls")
 public class AggregationDefn implements IAggregationDefn {
 
 	/**
@@ -59,7 +60,7 @@ public class AggregationDefn implements IAggregationDefn {
 
 	/**
 	 * Construct aggregation definition based on BIRT predefined aggregation id.
-	 * 
+	 *
 	 * @param birtAggregationId birt predefined aggregation id.
 	 * @throws IllegalArgumentException exception when the passed in birt
 	 *                                  aggregation id is not predefined.
@@ -74,7 +75,7 @@ public class AggregationDefn implements IAggregationDefn {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @seeorg.eclipse.birt.report.model.api.oda.interfaces.IAggregationDefn#
 	 * canIgnoreDuplicateValues()
 	 */
@@ -85,7 +86,7 @@ public class AggregationDefn implements IAggregationDefn {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @seeorg.eclipse.birt.report.model.api.oda.interfaces.IAggregationDefn#
 	 * canIgnoreNullValues()
 	 */
@@ -96,7 +97,7 @@ public class AggregationDefn implements IAggregationDefn {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @seeorg.eclipse.birt.report.model.api.oda.interfaces.IAggregationDefn#
 	 * getBirtAggregationDisplayName()
 	 */
@@ -106,7 +107,7 @@ public class AggregationDefn implements IAggregationDefn {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @seeorg.eclipse.birt.report.model.api.oda.interfaces.IAggregationDefn#
 	 * getBirtAggregationId()
 	 */
@@ -117,7 +118,7 @@ public class AggregationDefn implements IAggregationDefn {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @seeorg.eclipse.birt.report.model.api.oda.interfaces.IAggregationDefn#
 	 * getMaxInputVariables()
 	 */
@@ -131,7 +132,7 @@ public class AggregationDefn implements IAggregationDefn {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @seeorg.eclipse.birt.report.model.api.oda.interfaces.IAggregationDefn#
 	 * getMinInputVariables()
 	 */
@@ -145,7 +146,7 @@ public class AggregationDefn implements IAggregationDefn {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @seeorg.eclipse.birt.report.model.api.oda.interfaces.IAggregationDefn#
 	 * getODAAggregationDisplayName()
 	 */
@@ -156,7 +157,7 @@ public class AggregationDefn implements IAggregationDefn {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @seeorg.eclipse.birt.report.model.api.oda.interfaces.IAggregationDefn#
 	 * getODAAggregationId()
 	 */
@@ -167,7 +168,7 @@ public class AggregationDefn implements IAggregationDefn {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @seeorg.eclipse.birt.report.model.api.oda.interfaces.IAggregationDefn#
 	 * getProviderExtensionId()
 	 */
@@ -178,7 +179,7 @@ public class AggregationDefn implements IAggregationDefn {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @seeorg.eclipse.birt.report.model.api.oda.interfaces.IAggregationDefn#
 	 * supportsUnboundedMaxInputVariables()
 	 */

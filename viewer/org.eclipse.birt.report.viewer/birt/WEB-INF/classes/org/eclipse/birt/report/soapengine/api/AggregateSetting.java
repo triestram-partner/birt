@@ -7,6 +7,7 @@
 
 package org.eclipse.birt.report.soapengine.api;
 
+@SuppressWarnings("nls")
 public class AggregateSetting implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private java.lang.Boolean enable;
@@ -24,7 +25,7 @@ public class AggregateSetting implements java.io.Serializable {
 
 	/**
 	 * Gets the enable value for this AggregateSetting.
-	 * 
+	 *
 	 * @return enable
 	 */
 	public java.lang.Boolean getEnable() {
@@ -33,7 +34,7 @@ public class AggregateSetting implements java.io.Serializable {
 
 	/**
 	 * Sets the enable value for this AggregateSetting.
-	 * 
+	 *
 	 * @param enable
 	 */
 	public void setEnable(java.lang.Boolean enable) {
@@ -42,7 +43,7 @@ public class AggregateSetting implements java.io.Serializable {
 
 	/**
 	 * Gets the showInFooter value for this AggregateSetting.
-	 * 
+	 *
 	 * @return showInFooter
 	 */
 	public java.lang.Boolean getShowInFooter() {
@@ -51,7 +52,7 @@ public class AggregateSetting implements java.io.Serializable {
 
 	/**
 	 * Sets the showInFooter value for this AggregateSetting.
-	 * 
+	 *
 	 * @param showInFooter
 	 */
 	public void setShowInFooter(java.lang.Boolean showInFooter) {
@@ -60,7 +61,7 @@ public class AggregateSetting implements java.io.Serializable {
 
 	/**
 	 * Gets the groupName value for this AggregateSetting.
-	 * 
+	 *
 	 * @return groupName
 	 */
 	public java.lang.String getGroupName() {
@@ -69,7 +70,7 @@ public class AggregateSetting implements java.io.Serializable {
 
 	/**
 	 * Sets the groupName value for this AggregateSetting.
-	 * 
+	 *
 	 * @param groupName
 	 */
 	public void setGroupName(java.lang.String groupName) {

@@ -7,6 +7,7 @@
 
 package org.eclipse.birt.report.soapengine.api;
 
+@SuppressWarnings("nls")
 public class AggregateDefinition implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private java.lang.String func;
@@ -30,7 +31,7 @@ public class AggregateDefinition implements java.io.Serializable {
 
 	/**
 	 * Gets the func value for this AggregateDefinition.
-	 * 
+	 *
 	 * @return func
 	 */
 	public java.lang.String getFunc() {
@@ -39,7 +40,7 @@ public class AggregateDefinition implements java.io.Serializable {
 
 	/**
 	 * Sets the func value for this AggregateDefinition.
-	 * 
+	 *
 	 * @param func
 	 */
 	public void setFunc(java.lang.String func) {
@@ -48,7 +49,7 @@ public class AggregateDefinition implements java.io.Serializable {
 
 	/**
 	 * Gets the subTotal value for this AggregateDefinition.
-	 * 
+	 *
 	 * @return subTotal
 	 */
 	public org.eclipse.birt.report.soapengine.api.AggregateSetting getSubTotal() {
@@ -57,7 +58,7 @@ public class AggregateDefinition implements java.io.Serializable {
 
 	/**
 	 * Sets the subTotal value for this AggregateDefinition.
-	 * 
+	 *
 	 * @param subTotal
 	 */
 	public void setSubTotal(org.eclipse.birt.report.soapengine.api.AggregateSetting subTotal) {
@@ -66,7 +67,7 @@ public class AggregateDefinition implements java.io.Serializable {
 
 	/**
 	 * Gets the grandTotal value for this AggregateDefinition.
-	 * 
+	 *
 	 * @return grandTotal
 	 */
 	public org.eclipse.birt.report.soapengine.api.AggregateSetting getGrandTotal() {
@@ -75,7 +76,7 @@ public class AggregateDefinition implements java.io.Serializable {
 
 	/**
 	 * Sets the grandTotal value for this AggregateDefinition.
-	 * 
+	 *
 	 * @param grandTotal
 	 */
 	public void setGrandTotal(org.eclipse.birt.report.soapengine.api.AggregateSetting grandTotal) {
@@ -84,7 +85,7 @@ public class AggregateDefinition implements java.io.Serializable {
 
 	/**
 	 * Gets the intParameter value for this AggregateDefinition.
-	 * 
+	 *
 	 * @return intParameter
 	 */
 	public java.lang.Integer getIntParameter() {
@@ -93,7 +94,7 @@ public class AggregateDefinition implements java.io.Serializable {
 
 	/**
 	 * Sets the intParameter value for this AggregateDefinition.
-	 * 
+	 *
 	 * @param intParameter
 	 */
 	public void setIntParameter(java.lang.Integer intParameter) {
@@ -102,7 +103,7 @@ public class AggregateDefinition implements java.io.Serializable {
 
 	/**
 	 * Gets the sortDir value for this AggregateDefinition.
-	 * 
+	 *
 	 * @return sortDir
 	 */
 	public java.lang.String getSortDir() {
@@ -111,7 +112,7 @@ public class AggregateDefinition implements java.io.Serializable {
 
 	/**
 	 * Sets the sortDir value for this AggregateDefinition.
-	 * 
+	 *
 	 * @param sortDir
 	 */
 	public void setSortDir(java.lang.String sortDir) {

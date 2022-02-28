@@ -47,7 +47,6 @@ public class Footer extends BasicComponent {
 		writer.close();
 	}
 
-	@Override
 	protected int getImageID() {
 		return document.nextImageID();
 	}

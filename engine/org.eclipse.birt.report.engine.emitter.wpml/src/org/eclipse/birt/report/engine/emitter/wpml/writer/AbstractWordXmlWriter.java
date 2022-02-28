@@ -677,7 +677,7 @@ public abstract class AbstractWordXmlWriter {
 	/**
 	 *
 	 * @param style  style of the row
-	 * @param height height of current row, if heigh equals 1 then ignore height
+	 * @param height height of current row, if height equals 1 then ignore height
 	 * @param type   header or normal
 	 */
 

@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2021 Contributors to the Eclipse Foundation
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * https://www.eclipse.org/legal/epl-2.0/.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *   See git history
  *******************************************************************************/
@@ -42,7 +42,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.ScrollBar;
 
-@SuppressWarnings("nls")
 public abstract class AccordionControl extends Composite {
 
 	/** Pixel spacing between items in the content area */
@@ -91,7 +90,7 @@ public abstract class AccordionControl extends Composite {
 
 	/**
 	 * Creates the children under a particular header
-	 *
+	 * 
 	 * @param parent the parent composite to add the SWT items to
 	 * @param header the header object that is being opened for the first time
 	 */
@@ -99,7 +98,7 @@ public abstract class AccordionControl extends Composite {
 
 	/**
 	 * Set whether a single category should be enforced or not (default=true)
-	 *
+	 * 
 	 * @param single if true, enforce a single category open at a time
 	 */
 	public void setAutoClose(boolean single) {
@@ -108,7 +107,7 @@ public abstract class AccordionControl extends Composite {
 
 	/**
 	 * Returns whether a single category should be enforced or not (default=true)
-	 *
+	 * 
 	 * @return true if only a single category can be open at a time
 	 */
 	public boolean isAutoClose() {
@@ -117,11 +116,11 @@ public abstract class AccordionControl extends Composite {
 
 	/**
 	 * Returns the labels used as header categories
-	 *
+	 * 
 	 * @return list of header labels
 	 */
 	public List<AccordionLabel> getHeaderLabels() {
-		List<AccordionLabel> headers = new ArrayList<AccordionLabel>();
+		List<AccordionLabel> headers = new ArrayList<>();
 		for (Control c : getChildren()) {
 			if (c instanceof AccordionLabel) {
 				headers.add((AccordionLabel) c);
@@ -133,7 +132,7 @@ public abstract class AccordionControl extends Composite {
 
 	/**
 	 * Show all categories
-	 *
+	 * 
 	 * @param performLayout if true, call {@link #layout} and {@link #pack} when
 	 *                      done
 	 */
@@ -153,7 +152,7 @@ public abstract class AccordionControl extends Composite {
 
 	/**
 	 * Hide all categories
-	 *
+	 * 
 	 * @param performLayout if true, call {@link #layout} and {@link #pack} when
 	 *                      done
 	 */
@@ -172,7 +171,7 @@ public abstract class AccordionControl extends Composite {
 
 	/**
 	 * Create the composite.
-	 *
+	 * 
 	 * @param parent       the parent widget to add the accordion to
 	 * @param style        the SWT style mask to use
 	 * @param headers      a list of headers, whose {@link Object#toString} method
@@ -202,7 +201,7 @@ public abstract class AccordionControl extends Composite {
 
 		mOpen = ICON_EXPAND; // $NON-NLS-1$
 		mClosed = ICON_COLLAPSE; // $NON-NLS-1$
-		List<AccordionLabel> expandLabels = new ArrayList<AccordionLabel>();
+		List<AccordionLabel> expandLabels = new ArrayList<>();
 
 		for (int i = 0; i < headers.size(); i++) {
 			Object header = headers.get(i);
@@ -223,8 +222,9 @@ public abstract class AccordionControl extends Composite {
 			}
 			label.setFont(labelFont);
 			GridData gd = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
-			if (i > 0)
+			if (i > 0) {
 				gd.verticalIndent = 5;
+			}
 			label.setLayoutData(gd);
 			setHeader(header, label);
 			label.addMouseListener(new MouseAdapter() {
@@ -244,14 +244,17 @@ public abstract class AccordionControl extends Composite {
 			});
 			label.addMouseTrackListener(new MouseTrackListener() {
 
+				@Override
 				public void mouseEnter(MouseEvent e) {
 					updateBackground(label, true);
 				}
 
+				@Override
 				public void mouseExit(MouseEvent e) {
 					updateBackground(label, false);
 				}
 
+				@Override
 				public void mouseHover(MouseEvent e) {
 				}
 			});
@@ -339,8 +342,9 @@ public abstract class AccordionControl extends Composite {
 
 	/** Returns true if the content area for the given label is open/showing */
 	private boolean isOpen(Control label) {
-		if (getContentArea(label) == null)
+		if (getContentArea(label) == null) {
 			return false;
+		}
 		return !((GridData) getContentArea(label).getLayoutData()).exclude;
 	}
 
@@ -402,7 +406,7 @@ public abstract class AccordionControl extends Composite {
 	/**
 	 * Returns the set of expanded categories in the palette. Note: Header labels
 	 * will have escaped ampersand characters with double ampersands.
-	 *
+	 * 
 	 * @return the set of expanded categories in the palette - never null
 	 */
 	public List getExpandedCategories() {

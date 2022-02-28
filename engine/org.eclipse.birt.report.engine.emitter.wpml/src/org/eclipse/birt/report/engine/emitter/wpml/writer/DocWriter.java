@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2006 Inetsoft Technology Corp.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * https://www.eclipse.org/legal/epl-2.0/.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  *
  * Contributors:
  *  Inetsoft Technology Corp  - initial API and implementation
@@ -49,6 +49,7 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter {
 		writer.open(out, encoding);
 	}
 
+	@Override
 	public void start(boolean rtl, String creator, String title, String description, String subject) {
 		this.rtl = rtl;
 		writer.startWriter();
@@ -191,6 +192,7 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter {
 	 * @param height image height, unit = pt
 	 * @param width  image width, unit = pt
 	 */
+	@Override
 	public void drawImage(byte[] data, double height, double width, HyperlinkInfo hyper, IStyle style,
 			InlineFlag inlineFlag, String altText, String imageUrl) {
 		if (inlineFlag == InlineFlag.BLOCK || inlineFlag == InlineFlag.FIRST_INLINE) {
@@ -239,6 +241,7 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter {
 		writer.closeTag("v:shape"); //$NON-NLS-1$
 	}
 
+	@Override
 	public void writeContent(int type, String txt, IStyle style, IStyle inlineStyle, String fontFamily,
 			HyperlinkInfo info, InlineFlag inlineFlag, TextFlag flag, int paragraphWidth, boolean runIsRtl,
 			String textAlign) {
@@ -249,13 +252,15 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter {
 			if (inlineFlag == InlineFlag.FIRST_INLINE && flag == TextFlag.START) {
 				startParagraph(style, isInline, paragraphWidth, textAlign);
 			}
-			if (inlineStyle != null)
+			if (inlineStyle != null) {
 				writeTextInRun(type, txt, inlineStyle, fontFamily, info, isInline, paragraphWidth, runIsRtl, textAlign);
-			else
+			} else {
 				writeTextInRun(type, txt, style, fontFamily, info, isInline, paragraphWidth, runIsRtl, textAlign);
+			}
 		}
 	}
 
+	@Override
 	protected void openHyperlink(HyperlinkInfo info) {
 		if (info == null) {
 			return;
@@ -274,6 +279,7 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter {
 		}
 	}
 
+	@Override
 	protected void closeHyperlink(HyperlinkInfo info) {
 		if ((info == null) || (info.getType() == HyperlinkInfo.DRILL)) {
 			return;
@@ -281,6 +287,7 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter {
 		writer.closeTag("w:hlink"); //$NON-NLS-1$
 	}
 
+	@Override
 	public void writeBookmark(String bm) {
 		bm = WordUtil.validBookmarkName(bm);
 
@@ -302,12 +309,14 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter {
 		writer.close();
 	}
 
+	@Override
 	protected void writeTableLayout() {
 		writer.openTag("w:tblLayout"); //$NON-NLS-1$
 		writer.attribute("w:type", "Fixed"); //$NON-NLS-1$ //$NON-NLS-2$
 		writer.closeTag("w:tblLayout"); //$NON-NLS-1$
 	}
 
+	@Override
 	protected void writeFontSize(IStyle style) {
 		CSSValue fontSize = style.getProperty(StyleConstants.STYLE_FONT_SIZE);
 		int size = WordUtil.parseFontSize(PropertyUtil.getDimensionValue(fontSize));
@@ -315,6 +324,7 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter {
 		writeAttrTag("w:sz-cs", size); //$NON-NLS-1$
 	}
 
+	@Override
 	protected void writeFont(String fontFamily) {
 		writer.openTag("w:rFonts"); //$NON-NLS-1$
 		writer.attribute("w:ascii", fontFamily); //$NON-NLS-1$
@@ -324,6 +334,7 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter {
 		writer.closeTag("w:rFonts"); //$NON-NLS-1$
 	}
 
+	@Override
 	protected void writeFontStyle(IStyle style) {
 		String val = WordUtil.removeQuote(style.getFontStyle());
 		if (!"normal".equalsIgnoreCase(val)) { //$NON-NLS-1$
@@ -332,6 +343,7 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter {
 		}
 	}
 
+	@Override
 	protected void writeFontWeight(IStyle style) {
 		String val = WordUtil.removeQuote(style.getFontWeight());
 		if (!"normal".equalsIgnoreCase(val)) { //$NON-NLS-1$
@@ -340,6 +352,7 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter {
 		}
 	}
 
+	@Override
 	public void drawDocumentBackground(String bgcolor, String backgroundImageUrl, String backgroundHeight,
 			String backgroundWidth) {
 		// Image priority is higher than color.
@@ -351,11 +364,13 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter {
 			} catch (IOException e) {
 				logger.log(Level.WARNING, e.getLocalizedMessage());
 			}
-		} else
+		} else {
 			drawDocumentBackgroundColor(bgcolor);
+		}
 		writer.closeTag("w:bgPict"); //$NON-NLS-1$
 	}
 
+	@Override
 	public void drawDocumentBackgroundImage(String backgroundImageUrl, String height, String width, double topMargin,
 			double leftMargin, double pageHeight, double pageWidth) {
 		if (backgroundImageUrl != null) {
@@ -414,24 +429,29 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter {
 		}
 	}
 
+	@Override
 	public void startTableRow(double height) {
 		startTableRow(height, false, false, false, false);
 	}
 
+	@Override
 	public void startPage() {
 		writer.openTag("wx:sect"); //$NON-NLS-1$
 	}
 
+	@Override
 	public void endPage() {
 		writer.closeTag("wx:sect"); //$NON-NLS-1$
 	}
 
+	@Override
 	public void end() {
 		writer.closeTag("w:body"); //$NON-NLS-1$
 		writer.closeTag("w:wordDocument"); //$NON-NLS-1$
 		writer.close();
 	}
 
+	@Override
 	public void startHeader(boolean showHeaderOnFirst, int headerHeight, int headerWidth) {
 		if (!showHeaderOnFirst) {
 			writer.openTag("w:hdr"); //$NON-NLS-1$
@@ -447,6 +467,7 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter {
 		startHeaderFooterContainer(headerHeight, headerWidth);
 	}
 
+	@Override
 	public void endHeader() {
 		endHeaderFooterContainer();
 		writer.closeTag("w:hdr"); //$NON-NLS-1$
@@ -456,21 +477,25 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter {
 		return true;
 	}
 
+	@Override
 	public void startFooter(boolean isFirstPage, int footerHeight, int footerWidth ) {
 		writer.openTag("w:ftr"); //$NON-NLS-1$
 		writer.attribute("w:type", (isFirstPage ? "first" : "odd")); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 		startHeaderFooterContainer(footerHeight, footerWidth);
 	}
 
+	@Override
 	public void endFooter() {
 		endHeaderFooterContainer();
 		writer.closeTag("w:ftr"); //$NON-NLS-1$
 	}
 
+	@Override
 	public void writeTOC(String tocText, int level) {
 		writeTOC(tocText, null, level, false);
 	}
 
+	@Override
 	public void writeTOC(String tocText, String color, int level, boolean middleInline) {
 		if (!middleInline) {
 			writer.openTag("w:p"); //$NON-NLS-1$
@@ -516,6 +541,7 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter {
 		}
 	}
 
+	@Override
 	protected void writeVmerge(SpanInfo spanInfo) {
 		if (spanInfo.isStart()) {
 			writeAttrTag("w:vmerge", "restart"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -525,9 +551,11 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter {
 		}
 	}
 
+	@Override
 	public void writeForeign(IForeignContent foreignContent) {
 	}
 
+	@Override
 	public void writePageBorders(IStyle style, int topMargin, int bottomMargin, int leftMargin, int rightMargin) {
 		writer.openTag("w:pgBorders"); //$NON-NLS-1$
 		writer.attribute("w:offset-from", "page"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -536,12 +564,14 @@ public class DocWriter extends AbstractWordXmlWriter implements IWordWriter {
 
 	}
 
+	@Override
 	protected void writeIndent(int textIndent) {
 		writer.openTag("w:ind"); //$NON-NLS-1$
 		writer.attribute("w:first-line", textIndent); //$NON-NLS-1$
 		writer.closeTag("w:ind"); //$NON-NLS-1$
 	}
 
+	@Override
 	protected void writeIndent(int leftMargin, int rightMargin, int textIndent) {
 		if (leftMargin == 0 && rightMargin == 0 && textIndent == 0) {
 			return;

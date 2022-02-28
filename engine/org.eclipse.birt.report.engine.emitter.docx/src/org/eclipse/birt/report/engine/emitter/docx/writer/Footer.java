@@ -31,6 +31,7 @@ public class Footer extends BasicComponent {
 		this.footerWidth = footerWidth;
 	}
 
+	@Override
 	void start() {
 		writer.startWriter();
 		writer.openTag("w:ftr"); //$NON-NLS-1$
@@ -38,6 +39,7 @@ public class Footer extends BasicComponent {
 		startHeaderFooterContainer(footerHeight, footerWidth);
 	}
 
+	@Override
 	void end() {
 		endHeaderFooterContainer();
 		writer.closeTag("w:ftr"); //$NON-NLS-1$
@@ -45,10 +47,12 @@ public class Footer extends BasicComponent {
 		writer.close();
 	}
 
+	@Override
 	protected int getImageID() {
 		return document.nextImageID();
 	}
 
+	@Override
 	protected int nextMhtTextId() {
 		return document.nextMhtTextId();
 	}

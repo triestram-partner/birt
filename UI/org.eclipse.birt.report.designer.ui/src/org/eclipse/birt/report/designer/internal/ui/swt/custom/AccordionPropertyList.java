@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2004 Actuate Corporation.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * https://www.eclipse.org/legal/epl-2.0/.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  *
  * Contributors:
  *  Actuate Corporation  - initial API and implementation
@@ -71,7 +71,7 @@ public class AccordionPropertyList extends Canvas implements IPropertyList {
 	public static final Image ICON_EXPAND = UIHelper.getImage(ReportPlugin.getDefault().getBundle(),
 			ReportPlatformUIImages.ICONS_PATH + ReportPlatformUIImages.OBJ16_PATH + "expand.png");
 
-	private static final ListElement[] ELEMENTS_EMPTY = new ListElement[0];
+	private static final ListElement[] ELEMENTS_EMPTY = {};
 
 	protected static final int NONE = -1;
 
@@ -130,12 +130,14 @@ public class AccordionPropertyList extends Canvas implements IPropertyList {
 
 			addPaintListener(new PaintListener() {
 
+				@Override
 				public void paintControl(PaintEvent e) {
 					paint(e);
 				}
 			});
 			addMouseListener(new MouseAdapter() {
 
+				@Override
 				public void mouseDown(MouseEvent e) {
 					if (!selected) {
 						select(getIndex(ListElement.this), true);
@@ -146,7 +148,6 @@ public class AccordionPropertyList extends Canvas implements IPropertyList {
 					if (children != null && children.length > 0) {
 						for (int i = 0; i < children.length; i++) {
 							if (children[i] == AccordionPropertyList.this) {
-								continue;
 							} else if (children[i].setFocus()) {
 								focus = false;
 								return;
@@ -157,6 +158,7 @@ public class AccordionPropertyList extends Canvas implements IPropertyList {
 			});
 			addMouseMoveListener(new MouseMoveListener() {
 
+				@Override
 				public void mouseMove(MouseEvent e) {
 					if (!hover) {
 						hover = true;
@@ -166,6 +168,7 @@ public class AccordionPropertyList extends Canvas implements IPropertyList {
 			});
 			addMouseTrackListener(new MouseTrackAdapter() {
 
+				@Override
 				public void mouseExit(MouseEvent e) {
 					hover = false;
 					redraw();
@@ -232,10 +235,11 @@ public class AccordionPropertyList extends Canvas implements IPropertyList {
 			} else {
 				textIndent = textIndent - 3;
 			}
-			if (selected)
+			if (selected) {
 				e.gc.drawImage(ICON_EXPAND, textIndent, textMiddle - 1);
-			else
+			} else {
 				e.gc.drawImage(ICON_COLLAPSE, textIndent, textMiddle - 1);
+			}
 			textIndent = textIndent + 16 + 5;
 
 			/* draw the text */
@@ -269,6 +273,7 @@ public class AccordionPropertyList extends Canvas implements IPropertyList {
 			return tab.getText();
 		}
 
+		@Override
 		public String toString() {
 			return tab.getText();
 		}
@@ -284,6 +289,7 @@ public class AccordionPropertyList extends Canvas implements IPropertyList {
 
 		this.addFocusListener(new FocusListener() {
 
+			@Override
 			public void focusGained(FocusEvent e) {
 				focus = true;
 				int i = getSelectionIndex();
@@ -292,6 +298,7 @@ public class AccordionPropertyList extends Canvas implements IPropertyList {
 				}
 			}
 
+			@Override
 			public void focusLost(FocusEvent e) {
 				focus = false;
 				int i = getSelectionIndex();
@@ -307,6 +314,7 @@ public class AccordionPropertyList extends Canvas implements IPropertyList {
 
 		this.addControlListener(new ControlAdapter() {
 
+			@Override
 			public void controlResized(ControlEvent e) {
 				computeTopAndBottomTab();
 			}
@@ -314,6 +322,7 @@ public class AccordionPropertyList extends Canvas implements IPropertyList {
 
 		this.addTraverseListener(new TraverseListener() {
 
+			@Override
 			public void keyTraversed(TraverseEvent e) {
 				if (e.detail == SWT.TRAVERSE_ARROW_PREVIOUS || e.detail == SWT.TRAVERSE_ARROW_NEXT) {
 					int nMax = elements.length - 1;
@@ -366,10 +375,12 @@ public class AccordionPropertyList extends Canvas implements IPropertyList {
 	 *
 	 * @return the index of the selected item
 	 */
+	@Override
 	public int getSelectionIndex() {
 		return selectedElementIndex;
 	}
 
+	@Override
 	public String getSelectionKey() {
 		return elementMap.keySet().toArray()[selectedElementIndex].toString();
 	}
@@ -394,6 +405,7 @@ public class AccordionPropertyList extends Canvas implements IPropertyList {
 
 	private Map elementMap = null;
 
+	@Override
 	public void setElements(Map children) {
 		elementMap = children;
 		if (elements != ELEMENTS_EMPTY) {
@@ -493,13 +505,16 @@ public class AccordionPropertyList extends Canvas implements IPropertyList {
 		formData.right = new FormAttachment(100, 0);
 		formData.top = new FormAttachment(elements[index], 0);
 
-		if (index + 1 < elements.length)
+		if (index + 1 < elements.length) {
 			elements[index + 1].setLayoutData(formData);
+		}
 	}
 
+	@Override
 	public void setSelection(String key, int index) {
-		if (elementMap.containsKey(key))
+		if (elementMap.containsKey(key)) {
 			index = Arrays.asList(elementMap.keySet().toArray()).indexOf(key);
+		}
 		if (getSelectionIndex() == index) {
 			/*
 			 * this index is already selected.
@@ -544,7 +559,7 @@ public class AccordionPropertyList extends Canvas implements IPropertyList {
 
 			container.getParent().layout();
 		}
-	};
+	}
 
 	/**
 	 * Selects one for the elements in the list.
@@ -563,6 +578,7 @@ public class AccordionPropertyList extends Canvas implements IPropertyList {
 	/**
 	 * Computes the size based on the widest string in the list.
 	 */
+	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
 		Point result = super.computeSize(hHint, wHint, changed);
 		if (widestLabelIndex == -1) {
@@ -643,6 +659,7 @@ public class AccordionPropertyList extends Canvas implements IPropertyList {
 	/**
 	 * @see org.eclipse.swt.widgets.Widget#dispose()
 	 */
+	@Override
 	public void dispose() {
 		if (textGc != null && !textGc.isDisposed()) {
 			textGc.dispose();
@@ -692,12 +709,10 @@ public class AccordionPropertyList extends Canvas implements IPropertyList {
 				formData.right = new FormAttachment(100, 0);
 				if (i == 0) {
 					formData.top = new FormAttachment(0, 0);
+				} else if (i == getSelectionIndex() + 1) {
+					formData.top = new FormAttachment((Composite) elements[i - 1].getData(), 0);
 				} else {
-					if (i == getSelectionIndex() + 1) {
-						formData.top = new FormAttachment((Composite) elements[i - 1].getData(), 0);
-					} else {
-						formData.top = new FormAttachment(elements[i - 1], 0);
-					}
+					formData.top = new FormAttachment(elements[i - 1], 0);
 				}
 				elements[i].setLayoutData(formData);
 				elements[i].setVisible(true);
@@ -712,8 +727,9 @@ public class AccordionPropertyList extends Canvas implements IPropertyList {
 					Composite container = (Composite) elements[i].getData();
 
 					int height = container.computeSize(SWT.DEFAULT, SWT.DEFAULT).y;
-					if (formData.height < height)
+					if (formData.height < height) {
 						formData.height = height;
+					}
 
 					container.setLayoutData(formData);
 					container.setVisible(true);
@@ -738,12 +754,14 @@ public class AccordionPropertyList extends Canvas implements IPropertyList {
 		final Accessible accessible = getAccessible();
 		accessible.addAccessibleListener(new AccessibleAdapter() {
 
+			@Override
 			public void getName(AccessibleEvent e) {
 				if (getSelectionIndex() != NONE) {
 					e.result = elements[getSelectionIndex()].getText();
 				}
 			}
 
+			@Override
 			public void getHelp(AccessibleEvent e) {
 				if (getSelectionIndex() != NONE) {
 					e.result = elements[getSelectionIndex()].getText();
@@ -753,11 +771,13 @@ public class AccordionPropertyList extends Canvas implements IPropertyList {
 
 		accessible.addAccessibleControlListener(new AccessibleControlAdapter() {
 
+			@Override
 			public void getChildAtPoint(AccessibleControlEvent e) {
 				Point pt = toControl(new Point(e.x, e.y));
 				e.childID = (getBounds().contains(pt)) ? ACC.CHILDID_SELF : ACC.CHILDID_NONE;
 			}
 
+			@Override
 			public void getLocation(AccessibleControlEvent e) {
 				if (getSelectionIndex() != NONE) {
 					Rectangle location = elements[getSelectionIndex()].getBounds();
@@ -769,14 +789,17 @@ public class AccordionPropertyList extends Canvas implements IPropertyList {
 				}
 			}
 
+			@Override
 			public void getChildCount(AccessibleControlEvent e) {
 				e.detail = 0;
 			}
 
+			@Override
 			public void getRole(AccessibleControlEvent e) {
 				e.detail = ACC.ROLE_TABITEM;
 			}
 
+			@Override
 			public void getState(AccessibleControlEvent e) {
 				e.detail = ACC.STATE_NORMAL | ACC.STATE_SELECTABLE | ACC.STATE_SELECTED | ACC.STATE_FOCUSED
 						| ACC.STATE_FOCUSABLE;
@@ -785,6 +808,7 @@ public class AccordionPropertyList extends Canvas implements IPropertyList {
 
 		addListener(SWT.Selection, new Listener() {
 
+			@Override
 			public void handleEvent(Event event) {
 				if (isFocusControl()) {
 					accessible.setFocus(ACC.CHILDID_SELF);
@@ -794,19 +818,23 @@ public class AccordionPropertyList extends Canvas implements IPropertyList {
 
 		addListener(SWT.FocusIn, new Listener() {
 
+			@Override
 			public void handleEvent(Event event) {
 				accessible.setFocus(ACC.CHILDID_SELF);
 			}
 		});
 	}
 
+	@Override
 	public Control getControl() {
 		return this;
 	}
 
+	@Override
 	public Control getItem(int index) {
-		if (index >= 0 && index < elements.length)
+		if (index >= 0 && index < elements.length) {
 			return elements[index];
+		}
 		return null;
 	}
 }

@@ -4,9 +4,9 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * https://www.eclipse.org/legal/epl-2.0/.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: Actuate Corporation - initial API and implementation
  ******************************************************************************/
 
@@ -131,6 +131,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 	 * @see org.eclipse.birt.report.designer.ui.IPropertyPageContainer#setModel(java
 	 * .lang.Object)
 	 */
+	@Override
 	public void setModel(Object model) {
 		modelObject = model;
 	}
@@ -140,6 +141,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 	 *
 	 * @see org.eclipse.birt.report.designer.ui.IPropertyPageContainer#getModel()
 	 */
+	@Override
 	public final Object getModel() {
 		return modelObject;
 	}
@@ -237,6 +239,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 	 * org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets
 	 * .Composite)
 	 */
+	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -276,6 +279,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 	 *
 	 * @see org.eclipse.jface.dialogs.TrayDialog#close()
 	 */
+	@Override
 	public boolean close() {
 
 		IDialogSettings setting = getDialogBoundsSettings();
@@ -292,6 +296,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 	 *
 	 * @see org.eclipse.jface.dialogs.Dialog#initializeBounds()
 	 */
+	@Override
 	protected void initializeBounds() {
 		try {
 			IDialogSettings setting = getDialogBoundsSettings();
@@ -327,6 +332,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 	private void addDragListerner(final Sash sash, final Composite parent, final Control left, final Control right) {
 		sash.addListener(SWT.Selection, new Listener() {
 
+			@Override
 			public void handleEvent(Event event) {
 				if (event.detail == SWT.DRAG) {
 					return;
@@ -360,12 +366,10 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 		if (node != null) {
 			StructuredSelection select = new StructuredSelection(node);
 			viewer.setSelection(select);
-		} else {
-			if (viewer.getTree().getItems().length > 0) {
-				TreeItem firstNode = viewer.getTree().getItems()[0];
-				StructuredSelection select = new StructuredSelection(firstNode.getData());
-				viewer.setSelection(select);
-			}
+		} else if (viewer.getTree().getItems().length > 0) {
+			TreeItem firstNode = viewer.getTree().getItems()[0];
+			StructuredSelection select = new StructuredSelection(firstNode.getData());
+			viewer.setSelection(select);
 		}
 	}
 
@@ -373,14 +377,17 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 		viewer = new TreeViewer(parent);
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
+			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				final PropertyNode selectedNode = (PropertyNode) ((IStructuredSelection) event.getSelection())
 						.getFirstElement();
-				if (selectedNode == null)
+				if (selectedNode == null) {
 					return;
+				}
 				if (processSelection) {
 					BusyIndicator.showWhile(getShell().getDisplay(), new Runnable() {
 
+						@Override
 						public void run() {
 							showSelectionPage(selectedNode);
 						}
@@ -392,14 +399,15 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 
 		viewer.getTree().addMouseTrackListener(new MouseTrackAdapter() {
 
+			@Override
 			public void mouseHover(MouseEvent event) {
 				Widget widget = event.widget;
 				if (widget == viewer.getTree()) {
 					Point pt = new Point(event.x, event.y);
 					TreeItem item = viewer.getTree().getItem(pt);
-					if (item == null)
+					if (item == null) {
 						viewer.getTree().setToolTipText("");//$NON-NLS-1$
-					else {
+					} else {
 						String text = null;
 						if (item.getData() instanceof PropertyNode) {
 							text = ((PropertyNode) item.getData()).getPage().getToolTip();
@@ -418,8 +426,9 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 	}
 
 	public void showSelectionPage(PropertyNode selectedNode) {
-		if (selectedNode == null)
+		if (selectedNode == null) {
 			return;
+		}
 		showPage = showPage(selectedNode);
 		if (!showPage) {
 			processSelection = false;
@@ -543,10 +552,12 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 		 *
 		 * @see org.eclipse.jface.dialogs.DialogPage#getControl()
 		 */
+		@Override
 		public Control getControl() {
 			return node.getPageControl();
 		}
 
+		@Override
 		public void createControl(Composite parent) {
 			// do nothing here
 		}
@@ -565,6 +576,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 	 *
 	 * @see org.eclipse.jface.dialogs.Dialog#buttonPressed(int)
 	 */
+	@Override
 	protected final void buttonPressed(int buttonId) {
 		switch (buttonId) {
 		case IDialogConstants.OK_ID: {
@@ -620,6 +632,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 	 *
 	 * @see org.eclipse.jface.dialogs.Dialog#cancelPressed()
 	 */
+	@Override
 	protected final void cancelPressed() {
 		// First call cancel on all the pages
 		if (rootNode.hasSubNodes()) {
@@ -663,10 +676,12 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 	 *
 	 * @see org.eclipse.jface.dialogs.Dialog#okPressed()
 	 */
+	@Override
 	protected void okPressed() {
 		if (currentNode != null) {
-			if (!okPressed(currentNode))
+			if (!okPressed(currentNode)) {
 				return;
+			}
 		}
 		// First call ok on all the pages
 		if (rootNode.hasSubNodes()) {
@@ -709,6 +724,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 	 *
 	 * @see org.eclipse.jface.window.Window#handleShellCloseEvent()
 	 */
+	@Override
 	protected void handleShellCloseEvent() {
 		// Same as cancel
 		cancelPressed();
@@ -720,6 +736,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 	 * @seeorg.eclipse.birt.report.designer.internal.ui.dialogs.BaseDialog#
 	 * getDefaultSize()
 	 */
+	@Override
 	protected Point getDefaultSize() {
 		return new Point(800, 500);
 	}
@@ -743,7 +760,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 	 * org.eclipse.birt.report.designer.ui.dialogs.properties.IPropertyPageContainer
 	 * #setMessage(java.lang.String, int)
 	 */
-	@SuppressWarnings("nls")
+	@Override
 	public final void setMessage(String message, int messageType) {
 		if (messageArea != null) {
 			if (messageType != IMessageProvider.NONE) {
@@ -798,6 +815,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 	 * @see org.eclipse.jface.dialogs.IPageChangeProvider#addPageChangedListener(
 	 * org.eclipse.jface.dialogs.IPageChangedListener)
 	 */
+	@Override
 	public void addPageChangedListener(IPageChangedListener listener) {
 		pageChangedListeners.add(listener);
 	}
@@ -807,6 +825,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 	 *
 	 * @see org.eclipse.jface.dialogs.IPageChangeProvider#getSelectedPage()
 	 */
+	@Override
 	public Object getSelectedPage() {
 		return currentNode != null ? currentNode.getPage() : null;
 	}
@@ -817,6 +836,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 	 * @see org.eclipse.jface.dialogs.IPageChangeProvider#removePageChangedListener
 	 * (org.eclipse.jface.dialogs.IPageChangedListener)
 	 */
+	@Override
 	public void removePageChangedListener(IPageChangedListener listener) {
 		pageChangedListeners.remove(listener);
 	}
@@ -831,6 +851,7 @@ public abstract class AbstractPropertyDialog extends BaseDialog implements IProp
 			final IPageChangedListener l = (IPageChangedListener) listeners[i];
 			SafeRunnable.run(new SafeRunnable() {
 
+				@Override
 				public void run() {
 					l.pageChanged(event);
 				}

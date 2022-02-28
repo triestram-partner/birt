@@ -24,7 +24,7 @@ public class DocxRenderOption extends RenderOption {
 
 	@SuppressWarnings("unchecked")
 	public void setCompressionMode(CompressionMode compressionMode) {
-		options.put( OPTION_COMPRESSION_MODE, compressionMode );
+		options.put(OPTION_COMPRESSION_MODE, compressionMode);
 	}
 
 	public CompressionMode getCompressionMode() {

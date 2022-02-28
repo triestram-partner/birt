@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2004,2007 Actuate Corporation.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * https://www.eclipse.org/legal/epl-2.0/.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  *
  * Contributors:
  *  Actuate Corporation  - initial API and implementation
@@ -55,27 +55,31 @@ public class PDFRender extends PageDeviceRender {
 
 	protected PDFPageDevice currentPageDevice = null;
 
-	protected HashSet<String> bookmarks = new HashSet<String>();
+	protected HashSet<String> bookmarks = new HashSet<>();
 
 	public PDFRender(IEmitterServices services) throws EngineException {
 		initialize(services);
 	}
 
+	@Override
 	public IPageDevice createPageDevice(String title, String author, String subject, String description,
 			IReportContext context, IReportContent report) throws Exception {
 		currentPageDevice = new PDFPageDevice(output, title, author, subject, description, context, report);
 		return currentPageDevice;
 	}
 
+	@Override
 	public String getOutputFormat() {
 		return "pdf";
 	}
 
+	@Override
 	protected void newPage(IContainerArea page) {
 		super.newPage(page);
 		currentPage = (PDFPage) pageGraphic;
 	}
 
+	@Override
 	public void visitImage(IImageArea imageArea) {
 		int imageX = currentX + getX(imageArea);
 		int imageY = currentY + getY(imageArea);
@@ -84,6 +88,7 @@ public class PDFRender extends PageDeviceRender {
 		createHyperlink(imageArea, imageX, imageY);
 	}
 
+	@Override
 	public void visitText(ITextArea textArea) {
 		super.visitText(textArea);
 		int x = currentX + getX(textArea);
@@ -92,6 +97,7 @@ public class PDFRender extends PageDeviceRender {
 		createHyperlink(textArea, x, y);
 	}
 
+	@Override
 	public void visitAutoText(ITemplateArea templateArea) {
 		super.visitAutoText(templateArea);
 		int x = currentX + getX(templateArea);
@@ -100,6 +106,7 @@ public class PDFRender extends PageDeviceRender {
 		createTotalPageTemplate(x, y, getWidth(templateArea), getHeight(templateArea), scale);
 	}
 
+	@Override
 	public void setTotalPage(ITextArea totalPage) {
 		super.setTotalPage(totalPage);
 		isTotalPage = true;
@@ -124,11 +131,13 @@ public class PDFRender extends PageDeviceRender {
 	 *
 	 * @param rc the report content.
 	 */
+	@Override
 	public void end(IReportContent rc) {
 		createTOC();
 		super.end(rc);
 	}
 
+	@Override
 	protected void drawContainer(IContainerArea container) {
 		super.drawContainer(container);
 		int x = currentX + getX(container);
@@ -156,6 +165,7 @@ public class PDFRender extends PageDeviceRender {
 		this.output = EmitterUtil.getOuputStream(services, "report.pdf");
 	}
 
+	@Override
 	protected void drawTextAt(ITextArea text, int x, int y, int width, int height, TextStyle textInfo) {
 		if (isTotalPage) {
 			currentPage.drawTotalPage(text.getText(), x, y, width, height, textInfo, scale);
@@ -166,7 +176,7 @@ public class PDFRender extends PageDeviceRender {
 
 	private void createHyperlink(IArea area, int x, int y) {
 		IHyperlinkAction hlAction = area.getAction();
-		if (null != hlAction)
+		if (null != hlAction) {
 			try {
 				String systemId = reportRunnable == null ? null : reportRunnable.getReportName();
 				int width = getWidth(area);
@@ -178,7 +188,7 @@ public class PDFRender extends PageDeviceRender {
 				String link = null;
 				IHTMLActionHandler actionHandler = null;
 				Object ac = services.getOption(RenderOption.ACTION_HANDLER);
-				if (ac != null && ac instanceof IHTMLActionHandler) {
+				if (ac instanceof IHTMLActionHandler) {
 					actionHandler = (IHTMLActionHandler) ac;
 				}
 				if (actionHandler != null) {
@@ -203,6 +213,7 @@ public class PDFRender extends PageDeviceRender {
 			} catch (Exception e) {
 				logger.log(Level.WARNING, e.getMessage(), e);
 			}
+		}
 	}
 
 	@SuppressWarnings("unchecked")

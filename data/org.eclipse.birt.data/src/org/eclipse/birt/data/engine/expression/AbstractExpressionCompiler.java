@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Actuate Corporation.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * https://www.eclipse.org/legal/epl-2.0/.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  *
  * Contributors:
  *  Actuate Corporation  - initial API and implementation
@@ -74,8 +74,9 @@ abstract class AbstractExpressionCompiler {
 	 * @return
 	 */
 	private void compile(IScriptExpression baseExpr, ScriptContext context) throws DataException {
-		if (baseExpr == null)
+		if (baseExpr == null) {
 			return;
+		}
 		CompiledExpression handle = this.compileExpression(baseExpr, context);
 		baseExpr.setHandle(handle);
 	}
@@ -93,8 +94,9 @@ abstract class AbstractExpressionCompiler {
 		try {
 			this.scriptExpr = baseExpr;
 			exp = baseExpr.getText();
-			if (exp == null || BaseExpression.constantId.equals(baseExpr.getScriptId()))
+			if (exp == null || BaseExpression.constantId.equals(baseExpr.getScriptId())) {
 				return null;
+			}
 			IDataScriptEngine engine = (IDataScriptEngine) context.getScriptEngine(IDataScriptEngine.ENGINE_NAME);
 
 			ScriptNode tree = parse(exp, engine.getJSContext(context));
@@ -117,8 +119,9 @@ abstract class AbstractExpressionCompiler {
 		String exp = "";
 		try {
 			exp = expression;
-			if (exp == null)
+			if (exp == null) {
 				return null;
+			}
 
 			IDataScriptEngine engine = (IDataScriptEngine) context.getScriptEngine(IDataScriptEngine.ENGINE_NAME);
 
@@ -166,9 +169,10 @@ abstract class AbstractExpressionCompiler {
 	{
 		CompiledExpression expr;
 		if (tree.getFirstChild() == tree.getLastChild()) {
-			if (tree.getFirstChild() == null)
+			if (tree.getFirstChild() == null) {
 				throw new DataException("Expression parse error: first child is null. The expression is " + expression,
 						expression);
+			}
 			// A single expression
 			if (tree.getFirstChild().getType() != Token.EXPR_RESULT && tree.getFirstChild().getType() != Token.EXPR_VOID
 					&& tree.getFirstChild().getType() != Token.BLOCK) {
@@ -178,9 +182,9 @@ abstract class AbstractExpressionCompiler {
 			Node child, parent = tree;
 			Node exprNode = parent.getFirstChild();
 			child = exprNode.getFirstChild();
-			if (child.getNext() != null)
+			if (child.getNext() != null) {
 				child = exprNode;
-			else {
+			} else {
 				parent = exprNode;
 			}
 			assert (child != null && parent != null);
@@ -192,8 +196,9 @@ abstract class AbstractExpressionCompiler {
 			// to identify the interesting subexpressions
 			expr = compileComplexExpr(context, tree, false);
 		}
-		if (expr instanceof BytecodeExpression)
+		if (expr instanceof BytecodeExpression) {
 			compileForBytecodeExpr(context, tree, expr);
+		}
 		return expr;
 	}
 
@@ -206,8 +211,9 @@ abstract class AbstractExpressionCompiler {
 	 * @throws DataException
 	 */
 	protected ScriptNode parse(String expression, Context cx) throws DataException {
-		if (expression == null)
+		if (expression == null) {
 			throw new DataException(ResourceConstants.EXPRESSION_CANNOT_BE_NULL_OR_BLANK);
+		}
 
 		CompilerEnvirons compilerEnv = getCompilerEnv(cx);
 		Parser p = new Parser(compilerEnv, cx.getErrorReporter());
@@ -269,8 +275,9 @@ abstract class AbstractExpressionCompiler {
 			break;
 		}
 		}
-		if (compiledExpr == null)
+		if (compiledExpr == null) {
 			compiledExpr = compileComplexExpr(context, child, customerChecked);
+		}
 		return compiledExpr;
 	}
 
@@ -304,13 +311,15 @@ abstract class AbstractExpressionCompiler {
 
 		Node rowName = refNode.getFirstChild();
 		assert (rowName != null);
-		if (rowName.getType() != Token.NAME)
+		if (rowName.getType() != Token.NAME) {
 			return null;
+		}
 
 		String str = rowName.getString();
 		assert (str != null);
-		if (!str.equals(rowIndicator))
+		if (!str.equals(rowIndicator)) {
 			return null;
+		}
 
 		Node rowColumn = rowName.getNext();
 		assert (rowColumn != null);
@@ -359,7 +368,7 @@ abstract class AbstractExpressionCompiler {
 			throws DataException {
 		ComplexExpression complexExpr = new ComplexExpression();
 		Node child = complexNode.getFirstChild();
-		complexExpr.addTokenList(Integer.valueOf(complexNode.getType()));
+		complexExpr.addTokenList(complexNode.getType());
 		while (child != null) {
 			// keep reference to next child, since subsequent steps could lose
 			// the reference to it
@@ -369,15 +378,16 @@ abstract class AbstractExpressionCompiler {
 			if (child.getType() == Token.NUMBER || child.getType() == Token.STRING || child.getType() == Token.TRUE
 					|| child.getType() == Token.FALSE || child.getType() == Token.NULL) {
 				CompiledExpression subExpr = processChild(context, false, complexNode, child, null);
-				if (subExpr instanceof ConstantExpression)
+				if (subExpr instanceof ConstantExpression) {
 					complexExpr.addContantsExpressions(subExpr);
+				}
 				child = nextChild;
 				continue;
 			}
 
 			CompiledExpression subExpr = processChild(context, checked, complexNode, child, null);
 			complexExpr.addSubExpression(subExpr);
-			complexExpr.addTokenList(Integer.valueOf(child.getType()));
+			complexExpr.addTokenList(child.getType());
 			child = nextChild;
 		}
 
@@ -413,16 +423,19 @@ abstract class AbstractExpressionCompiler {
 	protected IAggrFunction getAggregationFunction(Node callNode) throws DataException {
 
 		Node firstChild = callNode.getFirstChild();
-		if (firstChild.getType() != Token.GETPROP)
+		if (firstChild.getType() != Token.GETPROP) {
 			return null;
+		}
 
 		Node getPropLeftChild = firstChild.getFirstChild();
-		if (getPropLeftChild.getType() != Token.NAME || !getPropLeftChild.getString().equals(TOTAL))
+		if (getPropLeftChild.getType() != Token.NAME || !getPropLeftChild.getString().equals(TOTAL)) {
 			return null;
+		}
 
 		Node getPropRightChild = firstChild.getLastChild();
-		if (getPropRightChild.getType() != Token.STRING)
+		if (getPropRightChild.getType() != Token.STRING) {
 			return null;
+		}
 
 		String aggrFuncName = getPropRightChild.getString();
 		IAggrFunction agg = AggregationManager.getInstance().getAggregation(aggrFuncName);
@@ -453,9 +466,9 @@ abstract class AbstractExpressionCompiler {
 		Iterator iter = subExprs.iterator();
 		while (iter.hasNext()) {
 			CompiledExpression childExpr = (CompiledExpression) iter.next();
-			if (childExpr instanceof ColumnReferenceExpression || childExpr instanceof AggregateExpression)
+			if (childExpr instanceof ColumnReferenceExpression || childExpr instanceof AggregateExpression) {
 				interestingSubExpr.add(childExpr);
-			else if (childExpr instanceof ComplexExpression) {
+			} else if (childExpr instanceof ComplexExpression) {
 				Collection childSubExprs = ((ComplexExpression) childExpr).getSubExpressions();
 
 				childSubExprs.addAll(((ComplexExpression) childExpr).getConstantExpressions());
@@ -465,16 +478,18 @@ abstract class AbstractExpressionCompiler {
 				while (childIter.hasNext()) {
 					CompiledExpression childChildExpr = (CompiledExpression) childIter.next();
 					if (childChildExpr instanceof ColumnReferenceExpression
-							|| childChildExpr instanceof AggregateExpression)
+							|| childChildExpr instanceof AggregateExpression) {
 						interestingSubExpr.add(childChildExpr);
-					else if (childChildExpr instanceof ConstantExpression)
+					} else if (childChildExpr instanceof ConstantExpression) {
 						interestingConstantExpr.add(childChildExpr);
-					else
+					} else {
 						assert false;
+					}
 				}
 
-			} else
+			} else {
 				assert false;
+			}
 
 			iter.remove();
 		}

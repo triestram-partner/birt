@@ -1,7 +1,7 @@
 /*************************************************************************************
  * Copyright (c) 2011, 2012, 2013 James Talbut.
  *  jim-emitters@spudsoft.co.uk
- *  
+ *
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -58,7 +58,7 @@ public class DateFormatConverter {
 		}
 
 		public static String[] tokenize(String format) {
-			List<String> result = new ArrayList<String>();
+			List<String> result = new ArrayList<>();
 
 			DateFormatTokenizer tokenizer = new DateFormatTokenizer(format);
 			String token;
@@ -69,6 +69,7 @@ public class DateFormatConverter {
 			return result.toArray(new String[0]);
 		}
 
+		@Override
 		public String toString() {
 			StringBuilder result = new StringBuilder();
 
@@ -89,7 +90,7 @@ public class DateFormatConverter {
 	private static Map<String, String> localePrefixes = prepareLocalePrefixes();
 
 	private static Map<String, String> prepareTokenConversions() {
-		Map<String, String> result = new HashMap<String, String>();
+		Map<String, String> result = new HashMap<>();
 
 		result.put("EEEE", "dddd");
 		result.put("EEE", "ddd");
@@ -111,7 +112,7 @@ public class DateFormatConverter {
 	}
 
 	private static Map<String, String> prepareLocalePrefixes() {
-		Map<String, String> result = new HashMap<String, String>();
+		Map<String, String> result = new HashMap<>();
 
 		result.put("af", "[$-1010436]");
 		result.put("am", "[$-101045E]");

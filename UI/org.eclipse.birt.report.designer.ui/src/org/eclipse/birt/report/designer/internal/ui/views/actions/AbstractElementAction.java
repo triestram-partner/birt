@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2004 Actuate Corporation.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * https://www.eclipse.org/legal/epl-2.0/.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  *
  * Contributors:
  *  Actuate Corporation  - initial API and implementation
@@ -44,11 +44,9 @@ public abstract class AbstractElementAction extends AbstractViewAction {
 	 * Runs this action. The detail implementation must define in the method
 	 * <code>doAction</code>
 	 */
+	@Override
 	public void run() {
-		if (!isEnabled()) {
-			return;
-		}
-		if (SessionHandleAdapter.getInstance().getReportDesignHandle() == null) {
+		if (!isEnabled() || (SessionHandleAdapter.getInstance().getReportDesignHandle() == null)) {
 			return;
 		}
 		CommandStack stack = getCommandStack();
@@ -107,7 +105,7 @@ public abstract class AbstractElementAction extends AbstractViewAction {
 	 */
 	@SuppressWarnings("nls")
 	protected String getTransactionLabel() {
-		return getText().replaceAll("&", "");
+		return getText().replace("&", "");
 	}
 
 	/**

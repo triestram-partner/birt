@@ -1,7 +1,7 @@
 /*************************************************************************************
  * Copyright (c) 2011, 2012, 2013 James Talbut.
  *  jim-emitters@spudsoft.co.uk
- *  
+ *
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -41,10 +41,12 @@ public class XlsxEmitter extends ExcelEmitter {
 		log.debug("Constructed XlsxEmitter");
 	}
 
+	@Override
 	public String getOutputFormat() {
 		return "xlsx";
 	}
 
+	@Override
 	protected Workbook createWorkbook() {
 		if( extractMode ) {
 			return new SXSSFWorkbook();
@@ -53,12 +55,11 @@ public class XlsxEmitter extends ExcelEmitter {
 		}
 	}
 
+	@Override
 	protected Workbook openWorkbook(File templateFile) throws IOException {
 		InputStream stream = new FileInputStream(templateFile);
-		try {
+		try (stream) {
 			return new XSSFWorkbook(stream);
-		} finally {
-			stream.close();
 		}
 	}
 

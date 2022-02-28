@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2004 Actuate Corporation.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * https://www.eclipse.org/legal/epl-2.0/.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  *
  * Contributors:
  *  Actuate Corporation  - initial API and implementation
@@ -74,6 +74,7 @@ abstract public class APITestCase extends BaseTestCase {
 	/*
 	 * @see TestCase#setUp()
 	 */
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 
@@ -85,6 +86,7 @@ abstract public class APITestCase extends BaseTestCase {
 	/*
 	 * @see TestCase#tearDown()
 	 */
+	@Override
 	protected void tearDown() throws Exception {
 		dataEngine.shutdown();
 		closeDataSource();
@@ -152,8 +154,9 @@ abstract public class APITestCase extends BaseTestCase {
 	 * @throws Exception
 	 */
 	private void prepareTestTable(String tableName, String createSql, String dataFileName) throws Exception {
-		if (dataSourceInstance == null)
+		if (dataSourceInstance == null) {
 			dataSourceInstance = JDBCDataSource.newInstance();
+		}
 
 		// create table
 		this.dataSourceInstance.createTable(tableName, createSql, true);
@@ -201,8 +204,9 @@ abstract public class APITestCase extends BaseTestCase {
 	 */
 	protected void closeDataSource() throws Exception {
 		if (this.dataSourceInstance != null) {
-			if (tableName != null)
+			if (tableName != null) {
 				dataSourceInstance.dropTable(tableName);
+			}
 			this.dataSourceInstance.close(true);
 			this.dataSourceInstance = null;
 		}
@@ -252,10 +256,11 @@ abstract public class APITestCase extends BaseTestCase {
 	 */
 	protected QueryDefinition newReportQuery(IBaseDataSetDesign dataset) {
 		QueryDefinition queryDefn = new QueryDefinition();
-		if (dataset == null)
+		if (dataset == null) {
 			queryDefn.setDataSetName(this.dataSet.getName());
-		else
+		} else {
 			queryDefn.setDataSetName(dataset.getName());
+		}
 
 		return queryDefn;
 	}
@@ -331,10 +336,11 @@ abstract public class APITestCase extends BaseTestCase {
 	protected String evalAsString(String name, IResultIterator result) {
 		try {
 			Object val = result.getValue(name);
-			if (val == null)
+			if (val == null) {
 				return "<null>";
-			else
+			} else {
 				return val.toString();
+			}
 		} catch (Exception e) {
 			// Not all expressions can be evaluated in all rows
 			// Print an error if it cannot be
@@ -406,8 +412,8 @@ abstract public class APITestCase extends BaseTestCase {
 			bindingExprGroup[0] = new ScriptExpression("dataSetRow.COL0");
 			bindingExprGroup[1] = new ScriptExpression("dataSetRow.COL1");
 			bindingExprGroup[2] = new ScriptExpression("dataSetRow.COL2");
-			GroupDefinition[] groupDefn = new GroupDefinition[] { new GroupDefinition("group1"),
-					new GroupDefinition("group2"), new GroupDefinition("group3") };
+			GroupDefinition[] groupDefn = { new GroupDefinition("group1"), new GroupDefinition("group2"),
+					new GroupDefinition("group3") };
 			groupDefn[0].setKeyExpression("row.GROUP_COL0");
 			groupDefn[1].setKeyExpression("row.GROUP_COL1");
 			groupDefn[2].setKeyExpression("row.GROUP_COL2");
@@ -416,7 +422,7 @@ abstract public class APITestCase extends BaseTestCase {
 			bindingNameSort[0] = "SORT_COL3";
 			IBaseExpression[] bindingExprSort = new IBaseExpression[1];
 			bindingExprSort[0] = new ScriptExpression("dataSetRow.COL3");
-			SortDefinition[] sortDefn = new SortDefinition[] { new SortDefinition() };
+			SortDefinition[] sortDefn = { new SortDefinition() };
 			sortDefn[0].setColumn("SORT_COL3");
 			sortDefn[0].setSortDirection(ISortDefinition.SORT_ASC);
 
@@ -444,25 +450,33 @@ abstract public class APITestCase extends BaseTestCase {
 
 			// add transformation definition
 			if (groupDefn != null) {
-				if (bindingNameGroup != null)
-					for (int i = 0; i < bindingNameGroup.length; i++)
+				if (bindingNameGroup != null) {
+					for (int i = 0; i < bindingNameGroup.length; i++) {
 						queryDefn.addResultSetExpression(bindingNameGroup[i], bindingExprGroup[i]);
-				for (int i = 0; i < groupDefn.length; i++)
+					}
+				}
+				for (int i = 0; i < groupDefn.length; i++) {
 					queryDefn.addGroup(groupDefn[i]);
+				}
 			}
 
 			if (sortDefn != null) {
-				if (bindingNameSort != null)
-					for (int i = 0; i < bindingNameSort.length; i++)
+				if (bindingNameSort != null) {
+					for (int i = 0; i < bindingNameSort.length; i++) {
 						queryDefn.addResultSetExpression(bindingNameSort[i], bindingExprSort[i]);
-				for (int i = 0; i < sortDefn.length; i++)
+					}
+				}
+				for (int i = 0; i < sortDefn.length; i++) {
 					queryDefn.addSort(sortDefn[i]);
+				}
 			}
 
 			// add value retrive tansformation
-			if (bindingNameRow != null)
-				for (int i = 0; i < bindingNameRow.length; i++)
+			if (bindingNameRow != null) {
+				for (int i = 0; i < bindingNameRow.length; i++) {
 					queryDefn.addResultSetExpression(bindingNameRow[i], expressions[i]);
+				}
+			}
 			return queryDefn;
 
 		}
@@ -486,17 +500,20 @@ abstract public class APITestCase extends BaseTestCase {
 			bindingNameGroup[0] = "GROUP_COL2";
 			IBaseExpression[] bindingExprGroup = new IBaseExpression[1];
 			bindingExprGroup[0] = new ScriptExpression("dataSetRow.COL2");
-			GroupDefinition[] subGroupDefn = new GroupDefinition[] { new GroupDefinition("group2") };
+			GroupDefinition[] subGroupDefn = { new GroupDefinition("group2") };
 			// subGroupDefn[0].setKeyExpression( "row.GROUP_COL2" );
 			subGroupDefn[0].setKeyExpression("row.GROUP_COL2");
 
 			for (int k = 0; k < subGroupDefn.length; k++) {
-				if (bindingNameGroup != null)
-					for (int i = 0; i < bindingNameGroup.length; i++)
+				if (bindingNameGroup != null) {
+					for (int i = 0; i < bindingNameGroup.length; i++) {
 						subqueryDefn.addResultSetExpression(bindingNameGroup[i], bindingExprGroup[i]);
+					}
+				}
 
-				for (int i = 0; i < subGroupDefn.length; i++)
+				for (int i = 0; i < subGroupDefn.length; i++) {
 					subqueryDefn.addGroup(subGroupDefn[i]);
+				}
 			}
 			populateQueryExprMapping(subqueryDefn);
 
@@ -508,17 +525,20 @@ abstract public class APITestCase extends BaseTestCase {
 			bindingNameGroup[0] = "GROUP_COL3";
 			bindingExprGroup = new IBaseExpression[1];
 			bindingExprGroup[0] = new ScriptExpression("dataSetRow.COL3");
-			GroupDefinition[] subSubGroupDefn = new GroupDefinition[] { new GroupDefinition("group3") };
+			GroupDefinition[] subSubGroupDefn = { new GroupDefinition("group3") };
 			// subSubGroupDefn[0].setKeyExpression( "row.GROUP_COL3" );
 			subSubGroupDefn[0].setKeyExpression("row.GROUP_COL3");
 
 			for (int k = 0; k < subSubGroupDefn.length; k++) {
-				if (bindingNameGroup != null)
-					for (int i = 0; i < bindingNameGroup.length; i++)
+				if (bindingNameGroup != null) {
+					for (int i = 0; i < bindingNameGroup.length; i++) {
 						subSubqueryDefn.addResultSetExpression(bindingNameGroup[i], bindingExprGroup[i]);
+					}
+				}
 
-				for (int i = 0; i < subSubGroupDefn.length; i++)
+				for (int i = 0; i < subSubGroupDefn.length; i++) {
 					subSubqueryDefn.addGroup(subSubGroupDefn[i]);
+				}
 			}
 			populateQueryExprMapping(subSubqueryDefn);
 			// --- sub query of sub query
@@ -530,9 +550,10 @@ abstract public class APITestCase extends BaseTestCase {
 
 		protected void populateQueryExprMapping(SubqueryDefinition subqueryDefn) {
 			// ///TODO remove in future
-			for (int i = 0; i < bindingNameRow.length; i++)
+			for (int i = 0; i < bindingNameRow.length; i++) {
 				subqueryDefn.addResultSetExpression(bindingNameRow[i], expressions[i]);
-			// ///////////////////////
+				// ///////////////////////
+			}
 		}
 
 		/**
@@ -596,33 +617,44 @@ abstract public class APITestCase extends BaseTestCase {
 
 		// add transformation definition
 		if (groupDefn != null) {
-			if (bindingNameGroup != null)
-				for (int i = 0; i < bindingNameGroup.length; i++)
+			if (bindingNameGroup != null) {
+				for (int i = 0; i < bindingNameGroup.length; i++) {
 					queryDefn.addResultSetExpression(bindingNameGroup[i], bindingExprGroup[i]);
-			for (int i = 0; i < groupDefn.length; i++)
+				}
+			}
+			for (int i = 0; i < groupDefn.length; i++) {
 				queryDefn.addGroup(groupDefn[i]);
+			}
 		}
 
 		if (sortDefn != null) {
-			if (bindingNameSort != null)
-				for (int i = 0; i < bindingNameSort.length; i++)
+			if (bindingNameSort != null) {
+				for (int i = 0; i < bindingNameSort.length; i++) {
 					queryDefn.addResultSetExpression(bindingNameSort[i], bindingExprSort[i]);
-			for (int i = 0; i < sortDefn.length; i++)
+				}
+			}
+			for (int i = 0; i < sortDefn.length; i++) {
 				queryDefn.addSort(sortDefn[i]);
+			}
 		}
 
 		if (filterDefn != null) {
-			if (bindingNameFilter != null)
-				for (int i = 0; i < bindingNameFilter.length; i++)
+			if (bindingNameFilter != null) {
+				for (int i = 0; i < bindingNameFilter.length; i++) {
 					queryDefn.addResultSetExpression(bindingNameFilter[i], bindingExprFilter[i]);
-			for (int i = 0; i < filterDefn.length; i++)
+				}
+			}
+			for (int i = 0; i < filterDefn.length; i++) {
 				queryDefn.addFilter(filterDefn[i]);
+			}
 		}
 
 		// add value retrive tansformation
-		if (bindingNameRow != null)
-			for (int i = 0; i < bindingNameRow.length; i++)
+		if (bindingNameRow != null) {
+			for (int i = 0; i < bindingNameRow.length; i++) {
 				queryDefn.addResultSetExpression(bindingNameRow[i], bindingExprRow[i]);
+			}
+		}
 
 		return queryDefn;
 	}
@@ -644,20 +676,18 @@ abstract public class APITestCase extends BaseTestCase {
 			for (int i = 1; i <= ColumnCount; i++) {
 				String value;
 
-				if (result.getString(i) != null)
-
+				if (result.getString(i) != null) {
 					// Convert date time according to the format as following
 					if (!result.getString(i).equals("DATE") && dateTypeColumnNum == i) {
 
 						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
 						value = sdf.format(result.getDate(i));
-					}
-
-					else
+					} else {
 						value = result.getString(i);
-
-				else
+					}
+				} else {
 					value = "";
+				}
 				rowData += formatStr(value, expectedLen);
 			}
 			sBuffer.append(rowData);
@@ -689,22 +719,25 @@ abstract public class APITestCase extends BaseTestCase {
 			// if there is one group, startlevel =2
 			int startLevel = ri.getStartingGroupLevel();
 			if (startLevel <= groupCount) {
-				if (startLevel == 0)
+				if (startLevel == 0) {
 					startLevel = 1;
+				}
 
 				for (int j = 0; j < startLevel - 1; j++) {
 					rowData += formatStr("", expectedLen);
 				}
 				for (int j = startLevel - 1; j < beArray.length; j++) {
 					String value;
-					if (ri.getValue(beArray[j]) != null)
+					if (ri.getValue(beArray[j]) != null) {
 						if (ri.getValue(beArray[j]) instanceof Date) {
 							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
 							value = sdf.format(ri.getValue(beArray[j]));
-						} else
+						} else {
 							value = ri.getValue(beArray[j]).toString();
-					else
+						}
+					} else {
 						value = "null";
+					}
 
 					rowData += formatStr(value, expectedLen);
 				}
@@ -714,15 +747,16 @@ abstract public class APITestCase extends BaseTestCase {
 			else {
 				for (int j = 0; j < groupCount; j++) {
 					rowData += formatStr("", expectedLen);
-					;
+
 				}
 				for (int j = groupCount; j < beArray.length; j++) {
 					String value;
 					if (ri.getValue(beArray[j]) instanceof Date) {
 						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
 						value = sdf.format(ri.getValue(beArray[j]));
-					} else
+					} else {
 						value = ri.getValue(beArray[j]).toString();
+					}
 					rowData += formatStr(value, expectedLen);
 				}
 			}
@@ -734,12 +768,14 @@ abstract public class APITestCase extends BaseTestCase {
 	}
 
 	private static String formatStr(String inputStr, int length) {
-		if (inputStr == null)
+		if (inputStr == null) {
 			return null;
+		}
 
 		int inputLen = inputStr.length();
-		if (inputLen >= length)
+		if (inputLen >= length) {
 			return inputStr;
+		}
 
 		int appendLen = length - inputLen;
 		char[] appendChar = new char[appendLen];
@@ -832,26 +868,30 @@ abstract public class APITestCase extends BaseTestCase {
 
 	protected String genOutputFile(String output) {
 		String tempDir = System.getProperty("java.io.tmpdir"); //$NON-NLS-1$
-		if (!tempDir.endsWith(File.separator))
+		if (!tempDir.endsWith(File.separator)) {
 			tempDir += File.separator;
+		}
 
 		String tempDirgetFullQualifiedClassName = tempDir + getFullQualifiedClassName();
 
 		File path = new File(tempDirgetFullQualifiedClassName);
 
-		if (path.exists())
+		if (path.exists()) {
 			path.deleteOnExit();
-		if (!path.exists())
+		}
+		if (!path.exists()) {
 			path.mkdir();
+		}
 
 		String outputFile = tempDir + getFullQualifiedClassName() // $NON-NLS-1$
 				+ "/" + OUTPUT_FOLDER + "/" + output;
 
 		File fullpath = new File(outputFile);
 
-		if (fullpath.exists())
+		if (fullpath.exists()) {
 			fullpath.delete();
-		// if()
+			// if()
+		}
 
 		return outputFile;
 	}

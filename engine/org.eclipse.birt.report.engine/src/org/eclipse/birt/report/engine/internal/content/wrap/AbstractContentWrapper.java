@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2004,2009 Actuate Corporation.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * https://www.eclipse.org/legal/epl-2.0/.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  *
  * Contributors:
  *  Actuate Corporation  - initial API and implementation
@@ -45,6 +45,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 * @see org.eclipse.birt.report.engine.content.IContent#accept(org.eclipse.birt.
 	 * report.engine.content.IContentVisitor, java.lang.Object)
 	 */
+	@Override
 	public Object accept(IContentVisitor visitor, Object value) throws BirtException {
 		return content.accept(visitor, value);
 	}
@@ -54,6 +55,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getBookmark()
 	 */
+	@Override
 	public String getBookmark() {
 		return content.getBookmark();
 	}
@@ -65,6 +67,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 * org.eclipse.birt.report.engine.css.engine.CSSStylableElement#getComputedStyle
 	 * ()
 	 */
+	@Override
 	public IStyle getComputedStyle() {
 		return content.getComputedStyle();
 	}
@@ -74,6 +77,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getContentType()
 	 */
+	@Override
 	public int getContentType() {
 		return content.getContentType();
 	}
@@ -84,6 +88,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 * @see
 	 * org.eclipse.birt.report.engine.css.engine.CSSStylableElement#getCSSEngine()
 	 */
+	@Override
 	public CSSEngine getCSSEngine() {
 		return content.getCSSEngine();
 	}
@@ -93,6 +98,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getGenerateBy()
 	 */
+	@Override
 	public Object getGenerateBy() {
 		return content.getGenerateBy();
 	}
@@ -102,6 +108,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getHeight()
 	 */
+	@Override
 	public DimensionType getHeight() {
 		return content.getHeight();
 	}
@@ -111,6 +118,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getAltText()
 	 */
+	@Override
 	public String getAltText() {
 		return content.getAltText();
 	}
@@ -120,6 +128,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getAltTextKey()
 	 */
+	@Override
 	public String getAltTextKey() {
 		return content.getAltTextKey();
 	}
@@ -129,6 +138,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getHelpText()
 	 */
+	@Override
 	public String getHelpText() {
 		return content.getHelpText();
 	}
@@ -138,6 +148,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getHyperlinkAction()
 	 */
+	@Override
 	public IHyperlinkAction getHyperlinkAction() {
 		return content.getHyperlinkAction();
 	}
@@ -147,6 +158,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getInlineStyle()
 	 */
+	@Override
 	public IStyle getInlineStyle() {
 		return content.getInlineStyle();
 	}
@@ -156,6 +168,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getInstanceID()
 	 */
+	@Override
 	public InstanceID getInstanceID() {
 		return content.getInstanceID();
 	}
@@ -165,6 +178,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getName()
 	 */
+	@Override
 	public String getName() {
 		return content.getName();
 	}
@@ -174,6 +188,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 *
 	 * @see org.eclipse.birt.report.engine.content.IElement#getParent()
 	 */
+	@Override
 	public IElement getParent() {
 		return content.getParent();
 	}
@@ -183,6 +198,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getReportContent()
 	 */
+	@Override
 	public IReportContent getReportContent() {
 		return content.getReportContent();
 	}
@@ -192,6 +208,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 *
 	 * @see org.eclipse.birt.report.engine.css.engine.CSSStylableElement#getStyle()
 	 */
+	@Override
 	public IStyle getStyle() {
 		return content.getStyle();
 	}
@@ -201,6 +218,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getStyleClass()
 	 */
+	@Override
 	public String getStyleClass() {
 		return content.getStyleClass();
 	}
@@ -210,6 +228,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getTOC()
 	 */
+	@Override
 	public Object getTOC() {
 		return content.getTOC();
 	}
@@ -219,6 +238,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getWidth()
 	 */
+	@Override
 	public DimensionType getWidth() {
 		return content.getWidth();
 	}
@@ -228,6 +248,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getX()
 	 */
+	@Override
 	public DimensionType getX() {
 		return content.getX();
 	}
@@ -237,14 +258,17 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#getY()
 	 */
+	@Override
 	public DimensionType getY() {
 		return content.getY();
 	}
 
+	@Override
 	public Object getExtension(int extension) {
 		return content.getExtension(extension);
 	}
 
+	@Override
 	public void setExtension(int extension, Object value) {
 		content.setExtension(extension, value);
 	}
@@ -256,6 +280,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 * DataInputStream)
 	 */
 	@SuppressWarnings("nls")
+	@Override
 	public void readContent(DataInputStream in, ClassLoader loader) throws IOException {
 		throw new IOException("Not supported");
 	}
@@ -266,6 +291,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 * @see
 	 * org.eclipse.birt.report.engine.content.IContent#setBookmark(java.lang.String)
 	 */
+	@Override
 	public void setBookmark(String bookmark) {
 		content.setBookmark(bookmark);
 	}
@@ -276,6 +302,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 * @see org.eclipse.birt.report.engine.content.IContent#setGenerateBy(java.lang.
 	 * Object)
 	 */
+	@Override
 	public void setGenerateBy(Object generateBy) {
 		content.setGenerateBy(generateBy);
 	}
@@ -287,6 +314,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 * org.eclipse.birt.report.engine.content.IContent#setHeight(org.eclipse.birt.
 	 * report.engine.ir.DimensionType)
 	 */
+	@Override
 	public void setHeight(DimensionType height) {
 		content.setHeight(height);
 	}
@@ -297,6 +325,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 * @see
 	 * org.eclipse.birt.report.engine.content.IContent#setAltText(java.lang.String)
 	 */
+	@Override
 	public void setAltText(String alt) {
 		content.setAltText(alt);
 	}
@@ -307,6 +336,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 * @see org.eclipse.birt.report.engine.content.IContent#setAltTextKey(java.lang.
 	 * String)
 	 */
+	@Override
 	public void setAltTextKey(String altKey) {
 		content.setAltText(altKey);
 	}
@@ -317,6 +347,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 * @see
 	 * org.eclipse.birt.report.engine.content.IContent#setHelpText(java.lang.String)
 	 */
+	@Override
 	public void setHelpText(String help) {
 		content.setHelpText(help);
 	}
@@ -327,6 +358,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 * @see org.eclipse.birt.report.engine.content.IContent#setHyperlinkAction(org.
 	 * eclipse.birt.report.engine.content.IHyperlinkAction)
 	 */
+	@Override
 	public void setHyperlinkAction(IHyperlinkAction hyperlink) {
 		content.setHyperlinkAction(hyperlink);
 	}
@@ -338,6 +370,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 * org.eclipse.birt.report.engine.content.IContent#setInlineStyle(org.eclipse.
 	 * birt.report.engine.content.IStyle)
 	 */
+	@Override
 	public void setInlineStyle(IStyle style) {
 		content.setInlineStyle(style);
 	}
@@ -349,6 +382,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 * org.eclipse.birt.report.engine.content.IContent#setInstanceID(org.eclipse.
 	 * birt.report.engine.api.InstanceID)
 	 */
+	@Override
 	public void setInstanceID(InstanceID id) {
 		content.setInstanceID(id);
 	}
@@ -359,6 +393,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 * @see
 	 * org.eclipse.birt.report.engine.content.IContent#setName(java.lang.String)
 	 */
+	@Override
 	public void setName(String name) {
 		content.setName(name);
 	}
@@ -370,6 +405,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 * org.eclipse.birt.report.engine.content.IElement#setParent(org.eclipse.birt.
 	 * report.engine.content.IElement)
 	 */
+	@Override
 	public void setParent(IElement parent) {
 		content.setParent(parent);
 	}
@@ -381,6 +417,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 * org.eclipse.birt.report.engine.content.IContent#setReportContent(org.eclipse.
 	 * birt.report.engine.content.IReportContent)
 	 */
+	@Override
 	public void setReportContent(IReportContent report) {
 		content.setReportContent(report);
 	}
@@ -391,6 +428,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 * @see org.eclipse.birt.report.engine.content.IContent#setStyleClass(java.lang.
 	 * String)
 	 */
+	@Override
 	public void setStyleClass(String styleClass) {
 		content.setStyleClass(styleClass);
 	}
@@ -400,6 +438,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#setTOC(java.lang.String)
 	 */
+	@Override
 	public void setTOC(Object toc) {
 		content.setTOC(toc);
 	}
@@ -411,6 +450,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 * org.eclipse.birt.report.engine.content.IContent#setWidth(org.eclipse.birt.
 	 * report.engine.ir.DimensionType)
 	 */
+	@Override
 	public void setWidth(DimensionType width) {
 		content.setWidth(width);
 	}
@@ -422,6 +462,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 * org.eclipse.birt.report.engine.content.IContent#setX(org.eclipse.birt.report.
 	 * engine.ir.DimensionType)
 	 */
+	@Override
 	public void setX(DimensionType x) {
 		content.setX(x);
 	}
@@ -433,6 +474,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 * org.eclipse.birt.report.engine.content.IContent#setY(org.eclipse.birt.report.
 	 * engine.ir.DimensionType)
 	 */
+	@Override
 	public void setY(DimensionType y) {
 		content.setY(y);
 	}
@@ -444,6 +486,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 * DataOutputStream)
 	 */
 	@SuppressWarnings("nls")
+	@Override
 	public void writeContent(DataOutputStream out) throws IOException {
 		throw new IOException("not supported");
 	}
@@ -453,6 +496,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 		throw new UnsupportedOperationException("Unsupported Exception");
 	}
 
+	@Override
 	public IContent cloneContent(boolean isDeep) {
 		throw new UnsupportedOperationException();
 	}
@@ -462,6 +506,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#isOrientationRTL()
 	 */
+	@Override
 	public boolean isRTL() {
 		return content.isRTL();
 	}
@@ -471,35 +516,43 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 *
 	 * @see org.eclipse.birt.report.engine.content.IContent#isTextDirectionRTL()
 	 */
+	@Override
 	public boolean isDirectionRTL() {
 		return content.isDirectionRTL();
 	}
 
+	@Override
 	public String getACL() {
 		return content.getACL();
 	}
 
 	@SuppressWarnings("nls")
+	@Override
 	public void setACL(String acl) {
 		throw new UnsupportedOperationException("setACL");
 	}
 
+	@Override
 	public IBaseResultSet getResultSet() {
 		return content.getResultSet();
 	}
 
+	@Override
 	public boolean isLastChild() {
 		return content.isLastChild();
 	}
 
+	@Override
 	public void setLastChild(boolean isLastChild) {
 		content.setLastChild(isLastChild);
 	}
 
+	@Override
 	public boolean hasChildren() {
 		return content.hasChildren();
 	}
 
+	@Override
 	public void setHasChildren(boolean hasChildren) {
 		content.setHasChildren(hasChildren);
 	}
@@ -508,18 +561,22 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 		return content;
 	}
 
+	@Override
 	public Map<String, Object> getUserProperties() {
 		return content.getUserProperties();
 	}
 
+	@Override
 	public void setUserProperties(Map<String, Object> properties) {
 		content.setUserProperties(properties);
 	}
 
+	@Override
 	public Map<String, Object> getExtensions() {
 		return content.getExtensions();
 	}
 
+	@Override
 	public void setExtensions(Map<String, Object> properties) {
 		content.setExtensions(properties);
 	}

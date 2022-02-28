@@ -46,21 +46,20 @@ public class Document extends BasicComponent {
 
 	private int wordVersion;
 
-	Document( IPart part, String backgroundColor, String backgroundImageUrl,
-			String backgroundHeight, String backgroundWidth,
-			boolean rtl, int wordVersion ) throws IOException
-	{
-		super( part );
+	Document(IPart part, String backgroundColor, String backgroundImageUrl, String backgroundHeight,
+			String backgroundWidth, boolean rtl, int wordVersion) throws IOException {
+		super(part);
 		this.backgroundColor = backgroundColor;
 		this.backgroundImageImgUrl = backgroundImageUrl;
 		this.backgroundHeight = backgroundHeight;
 		this.backgroundWidth = backgroundWidth;
 		this.wordVersion = wordVersion;
 		this.rtl = rtl;
-		writeStylesPart( );
-		writeSettingsPart( );
+		writeStylesPart();
+		writeSettingsPart();
 	}
 
+	@Override
 	void start() {
 		writer.startWriter();
 		writer.openTag("w:document"); //$NON-NLS-1$
@@ -186,8 +185,9 @@ public class Document extends BasicComponent {
 			stylesPartWriter.closeTag("w:styles"); //$NON-NLS-1$
 			stylesPartWriter.endWriter();
 		} finally {
-			if (stylesPartWriter != null)
+			if (stylesPartWriter != null) {
 				stylesPartWriter.close();
+			}
 		}
 	}
 
@@ -197,11 +197,10 @@ public class Document extends BasicComponent {
 		String relationshipType = RelationshipTypes.SETTINGS;
 		IPart settingsPart = part.getPart(uri, type, relationshipType);
 		OOXmlWriter settingsPartWriter = null;
-		try
-		{
-			settingsPartWriter = settingsPart.getWriter( );
-			settingsPartWriter.startWriter( );
-			switch(wordVersion) {
+		try {
+			settingsPartWriter = settingsPart.getWriter();
+			settingsPartWriter.startWriter();
+			switch (wordVersion) {
 			case 2010:
 				settingsPartWriter.openTag("w:settings"); //$NON-NLS-1$
 				settingsPartWriter.nameSpace("w", NameSpaces.WORD_PROCESSINGML); //$NON-NLS-1$
@@ -266,15 +265,15 @@ public class Document extends BasicComponent {
 				settingsPartWriter.closeTag("w:compat"); //$NON-NLS-1$
 				settingsPartWriter.closeTag("w:settings"); //$NON-NLS-1$
 			}
-			settingsPartWriter.endWriter( );
-		}
-		finally
-		{
-			if ( settingsPartWriter != null )
-				settingsPartWriter.close( );
+			settingsPartWriter.endWriter();
+		} finally {
+			if (settingsPartWriter != null) {
+				settingsPartWriter.close();
+			}
 		}
 	}
 
+	@Override
 	void end() {
 		writer.closeTag("w:body"); //$NON-NLS-1$
 		writer.closeTag("w:document"); //$NON-NLS-1$
@@ -366,6 +365,7 @@ public class Document extends BasicComponent {
 		return footerId++;
 	}
 
+	@Override
 	protected int nextImageID() {
 		return imageId++;
 	}

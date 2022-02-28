@@ -165,6 +165,7 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 		writer.closeTag("v:shape"); //$NON-NLS-1$
 	}
 
+	@Override
 	protected void openHyperlink(HyperlinkInfo info) {
 		if (info == null) {
 			return;
@@ -187,6 +188,7 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 		}
 	}
 
+	@Override
 	protected void closeHyperlink(HyperlinkInfo info) {
 		if ((info == null) || (info.getType() == HyperlinkInfo.DRILL)) {
 			return;
@@ -194,12 +196,14 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 		writer.closeTag("w:hyperlink"); //$NON-NLS-1$
 	}
 
+	@Override
 	protected void writeTableLayout() {
 		writer.openTag("w:tblLayout"); //$NON-NLS-1$
 		writer.attribute("w:type", "fixed"); //$NON-NLS-1$ //$NON-NLS-2$
 		writer.closeTag("w:tblLayout"); //$NON-NLS-1$
 	}
 
+	@Override
 	protected void writeFontSize(IStyle style) {
 		CSSValue fontSize = style.getProperty(StyleConstants.STYLE_FONT_SIZE);
 		int size = WordUtil.parseFontSize(PropertyUtil.getDimensionValue(fontSize));
@@ -207,6 +211,7 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 		writeAttrTag("w:szCs", size); //$NON-NLS-1$
 	}
 
+	@Override
 	protected void writeFont(String fontFamily) {
 		writer.openTag("w:rFonts"); //$NON-NLS-1$
 		writer.attribute("w:ascii", fontFamily); //$NON-NLS-1$
@@ -216,6 +221,7 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 		writer.closeTag("w:rFonts"); //$NON-NLS-1$
 	}
 
+	@Override
 	protected void writeFontStyle(IStyle style) {
 		String val = WordUtil.removeQuote(style.getFontStyle());
 		if (!"normal".equalsIgnoreCase(val)) { //$NON-NLS-1$
@@ -224,6 +230,7 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 		}
 	}
 
+	@Override
 	protected void writeFontWeight(IStyle style) {
 		String val = WordUtil.removeQuote(style.getFontWeight());
 		if (!"normal".equalsIgnoreCase(val)) { //$NON-NLS-1$
@@ -275,6 +282,7 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 		}
 	}
 
+	@Override
 	protected void writeVmerge(SpanInfo spanInfo) {
 		if (spanInfo.isStart()) {
 			writeAttrTag("w:vMerge", "restart"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -323,9 +331,7 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 			mhtPartWriter.println("Content-Type: multipart/related; type=\"text/html\"; boundary=\"" + BOUNDARY + "\""); //$NON-NLS-1$ //$NON-NLS-2$
 			writeHtmlText(foreignContent);
 			writeImages();
-		} catch (IOException e) {
-			logger.log(Level.WARNING, e.getMessage(), e);
-		} catch (EncoderException e) {
+		} catch (IOException | EncoderException e) {
 			logger.log(Level.WARNING, e.getMessage(), e);
 		} finally {
 			if (mhtPartWriter != null) {
@@ -802,7 +808,7 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 			}
 		}
 		if (cssStyle != null) {
-			StringBuffer buffer = new StringBuffer();
+			StringBuilder buffer = new StringBuilder();
 			Iterator ite = cssStyle.entrySet().iterator();
 			while (ite.hasNext()) {
 				Map.Entry entry = (Map.Entry) ite.next();
@@ -883,6 +889,7 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 		return part.getRelationshipId();
 	}
 
+	@Override
 	public void startTableRow(double height, boolean isHeader, boolean repeatHeader, boolean fixedLayout) {
 		writer.openTag("w:tr"); //$NON-NLS-1$
 
@@ -906,12 +913,14 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 		writer.closeTag("w:trPr"); //$NON-NLS-1$
 	}
 
+	@Override
 	protected void writeIndent(int textIndent) {
 		writer.openTag("w:ind"); //$NON-NLS-1$
 		writer.attribute("w:firstLine", textIndent); //$NON-NLS-1$
 		writer.closeTag("w:ind"); //$NON-NLS-1$
 	}
 
+	@Override
 	protected void writeIndent(int leftMargin, int rightMargin, int textIndent) {
 		if (leftMargin == 0 && rightMargin == 0 && textIndent == 0) {
 			return;

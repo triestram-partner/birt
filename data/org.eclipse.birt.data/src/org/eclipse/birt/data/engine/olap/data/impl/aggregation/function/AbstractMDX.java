@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2021 Contributors to the Eclipse Foundation
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * https://www.eclipse.org/legal/epl-2.0/.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *   See git history
  *******************************************************************************/
@@ -23,11 +23,10 @@ import com.ibm.icu.util.Calendar;
 /**
  * This abstract class used for MDX function. MTD,YTD,trailing,etc,,, will
  * extends this class, you can add some base method here.
- *
+ * 
  * @author peng.shi
- *
+ * 
  */
-@SuppressWarnings("nls")
 abstract public class AbstractMDX {
 
 	protected static final String YEAR = "year";
@@ -43,7 +42,7 @@ abstract public class AbstractMDX {
 	/**
 	 * translate the TimeMember.values to Calendar return the base
 	 * level("year","month","day"...)
-	 *
+	 * 
 	 * @param cal
 	 * @param levelTypes
 	 * @param values
@@ -150,7 +149,7 @@ abstract public class AbstractMDX {
 
 	/**
 	 * get the TimeMember.values from Calendar
-	 *
+	 * 
 	 * @param cal
 	 * @param levelTypes
 	 * @return
@@ -274,8 +273,8 @@ abstract public class AbstractMDX {
 	 * also add the extra week, 2011,12,week of month 0
 	 */
 	protected void addExtraWeek(List<TimeMember> timeMemberList, Calendar cal, TimeMember srcMember, String[] levels) {
-		int weekStart = 1;
-		int week = 1;
+		int weekStart;
+		int week;
 		int weekEnd = 1;
 		int[] newValues = null;
 		TimeMember newMember = null;

@@ -36,6 +36,7 @@ public class DocxEmitterDescriptor extends AbstractEmitterDescriptor {
 	protected static final String EMBED_HTML = "EmbedHtml"; //$NON-NLS-1$
 	protected static final String WORD_VERSION = "WordVersion"; //$NON-NLS-1$
 
+	@Override
 	protected void initOptions() {
 		loadDefaultValues("org.eclipse.birt.report.engine.emitter.config.docx"); //$NON-NLS-1$
 		// Initializes the option for chart DPI.
@@ -84,6 +85,7 @@ public class DocxEmitterDescriptor extends AbstractEmitterDescriptor {
 	 * @seeorg.eclipse.birt.report.engine.emitter.config.IEmitterDescriptor#
 	 * getDescription()
 	 */
+	@Override
 	public String getDescription() {
 		return getMessage("DocxEmitter.Description"); //$NON-NLS-1$
 	}
@@ -94,6 +96,7 @@ public class DocxEmitterDescriptor extends AbstractEmitterDescriptor {
 	 * @seeorg.eclipse.birt.report.engine.emitter.config.IEmitterDescriptor#
 	 * getDisplayName()
 	 */
+	@Override
 	public String getDisplayName() {
 		return getMessage("DocxEmitter.DisplayName"); //$NON-NLS-1$
 	}
@@ -103,6 +106,7 @@ public class DocxEmitterDescriptor extends AbstractEmitterDescriptor {
 	 *
 	 * @see org.eclipse.birt.report.engine.emitter.config.IEmitterDescriptor#getID()
 	 */
+	@Override
 	public String getID() {
 		return "org.eclipse.birt.report.engine.emitter.docx"; //$NON-NLS-1$
 	}

@@ -1,7 +1,7 @@
 /*************************************************************************************
  * Copyright (c) 2011, 2012, 2013 James Talbut.
  *  jim-emitters@spudsoft.co.uk
- *  
+ *
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -95,7 +95,7 @@ public class HyperlinksTest extends CellRangeTester {
 
 			for (Row row : sheet) {
 				for (Cell cell : row) {
-					if (cell.getCellType() == CellType.STRING) {
+					if (CellType.STRING /* Cell.CELL_TYPE_STRING */.equals(cell.getCellType())) {
 						String cellValue = cell.getStringCellValue();
 						Matcher matcher = pattern.matcher(cellValue);
 						if (matcher.matches()) {

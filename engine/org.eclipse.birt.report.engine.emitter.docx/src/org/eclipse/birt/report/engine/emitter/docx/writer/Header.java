@@ -40,6 +40,7 @@ public class Header extends BasicComponent {
 		this.headerWidth = headerWidth;
 	}
 
+	@Override
 	void start() {
 		writer.startWriter();
 		writer.openTag("w:hdr"); //$NON-NLS-1$
@@ -47,6 +48,7 @@ public class Header extends BasicComponent {
 		startHeaderFooterContainer(headerHeight, headerWidth, true);
 	}
 
+	@Override
 	void end() {
 		endHeaderFooterContainer();
 		writer.closeTag("w:hdr"); //$NON-NLS-1$
@@ -54,10 +56,12 @@ public class Header extends BasicComponent {
 		writer.close();
 	}
 
+	@Override
 	protected int nextImageID() {
 		return document.nextImageID();
 	}
 
+	@Override
 	protected int nextMhtTextId() {
 		return document.nextMhtTextId();
 	}

@@ -1,7 +1,7 @@
 /*************************************************************************************
  * Copyright (c) 2011, 2012, 2013 James Talbut.
  *  jim-emitters@spudsoft.co.uk
- *  
+ *
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -149,16 +149,16 @@ public abstract class ExcelEmitter implements IContentEmitter {
 	protected ExcelEmitter(StyleManagerUtils.Factory utilsFactory) {
 		this.utilsFactory = utilsFactory;
 		try {
-			if( ExcelEmitterPlugin.getDefault() != null ) {
+			if (ExcelEmitterPlugin.getDefault() != null) {
 				log = ExcelEmitterPlugin.getDefault().getLogger();
 			} else {
-				log = new Logger( this.getClass().getPackage().getName() );
+				log = new Logger(this.getClass().getPackage().getName());
 			}
 			log.debug("ExcelEmitter");
-		} catch( Exception ex ) {
+		} catch (Exception ex) {
 			Throwable t = ex;
-			while( t != null ) {
-				log.debug( t.getMessage() );
+			while (t != null) {
+				log.debug(t.getMessage());
 				t.printStackTrace();
 				t = t.getCause();
 			}
@@ -167,19 +167,18 @@ public abstract class ExcelEmitter implements IContentEmitter {
 
 	/**
 	 * Constructs a new workbook to be processed by the emitter.
-	 * @return
-	 * The new workbook.
+	 *
+	 * @return The new workbook.
 	 */
 	protected abstract Workbook createWorkbook();
 
 	/**
 	 * Constructs a new workbook to be processed by the emitter.
-	 * @param templateFile
-	 * The file to open as a template for the output file
-	 * @return
-	 * The new workbook.
+	 *
+	 * @param templateFile The file to open as a template for the output file
+	 * @return The new workbook.
 	 */
-	protected abstract Workbook openWorkbook( File templateFile ) throws IOException;
+	protected abstract Workbook openWorkbook(File templateFile) throws IOException;
 
 	/**
 	 * Return true if the emitter is in ExtractMode
@@ -188,79 +187,75 @@ public abstract class ExcelEmitter implements IContentEmitter {
 		return extractMode;
 	}
 
-	public void initialize( IEmitterServices service ) throws BirtException {
+	@Override	
+	public void initialize(IEmitterServices service) throws BirtException {
 		renderOptions = service.getRenderOption();
-		boolean debug = EmitterServices.booleanOption( renderOptions, (IContent)null, DEBUG, false );
+		boolean debug = EmitterServices.booleanOption(renderOptions, (IContent) null, DEBUG, false);
 		log.setDebug(debug);
 
 		log.debug("inintialize");
 		reportOutputStream = service.getRenderOption().getOutputStream();
 		reportOutputFilename = service.getRenderOption().getOutputFileName();
-		if( ( reportOutputStream == null )
-				&& ( ( reportOutputFilename == null ) || reportOutputFilename.isEmpty() ) ) {
-			throw new BirtException( EmitterServices.getPluginName()
-					, "Neither output stream nor output filename have been specified"
-					, null
-					);
+		if ((reportOutputStream == null) && ((reportOutputFilename == null) || reportOutputFilename.isEmpty())) {
+			throw new BirtException(EmitterServices.getPluginName(),
+					"Neither output stream nor output filename have been specified", null);
 		}
 	}
 
-	public void start( IReportContent report ) throws BirtException {
+	@Override
+	public void start(IReportContent report) throws BirtException {
 		log.addPrefix('>');
 		log.info( 0, "start:" + report.getTitle(), null);
 
-		extractMode = EmitterServices.booleanOption( renderOptions, report, EXTRACT_MODE, false );
-		String templatePath = extractMode ? null : EmitterServices.stringOption( renderOptions, report, TEMPLATE_FILE, null );
-	    Workbook wb;
-		if( templatePath != null ) {
-			URL templateURL = report.getReportContext().getResource( templatePath );
-			if( templateURL == null ) {
-				throw new BirtException( EmitterServices.getPluginName()
+		extractMode = EmitterServices.booleanOption(renderOptions, report, EXTRACT_MODE, false);
+		String templatePath = extractMode ? null : EmitterServices.stringOption(renderOptions, report, TEMPLATE_FILE, null);
+		Workbook wb;
+		if(templatePath != null) {
+			URL templateURL = report.getReportContext().getResource(templatePath);
+			if(templateURL == null) {
+				throw new BirtException(EmitterServices.getPluginName()
 						, "Unable locate template resource for " + templatePath
 						, null
 						);
 			}
 			File templateFile;
 			try {
-				templateFile = new File( templateURL.toURI() );
-			} catch( URISyntaxException ex ) {
-				throw new BirtException( EmitterServices.getPluginName()
-						, "Unable locate template file for " + templatePath
-						, ex
-						);
+				templateFile = new File(templateURL.toURI());
+			} catch (URISyntaxException ex) {
+				throw new BirtException(EmitterServices.getPluginName(),
+						"Unable locate template resource for " + templatePath, ex);
 			}
 			try {
-				wb = openWorkbook( templateFile );
-			} catch( IOException ex ) {
-				throw new BirtException( EmitterServices.getPluginName()
-						, "Unable to open template workbook for " + templateFile.toString()
-						, ex
-						);
+				wb = openWorkbook(templateFile);
+			} catch (IOException ex) {
+				throw new BirtException(EmitterServices.getPluginName(),
+						"Unable to open template workbook for " + templateFile.toString(), ex);
 			}
 		} else {
-		    wb = createWorkbook();
+			wb = createWorkbook();
 		}
 
 		if( EmitterServices.booleanOption( renderOptions, report, ExcelEmitter.FORCE_RECALCULATION, false ) ) {
 			wb.setForceFormulaRecalculation(true);
 		}
 
-	    CSSEngine cssEngine = report.getRoot().getCSSEngine();
+		CSSEngine cssEngine = report.getRoot().getCSSEngine();
 		StyleManagerUtils smu = utilsFactory.create(log);
 
-	    StyleManager sm = new StyleManager( wb, log, smu, cssEngine, report.getReportContext().getLocale() );
+		StyleManager sm = new StyleManager(wb, log, smu, cssEngine, report.getReportContext().getLocale());
 
 		handlerState = new HandlerState(this, log, smu, wb, sm, renderOptions);
-		handlerState.setHandler( new PageHandler(log, null) );
+		handlerState.setHandler(new PageHandler(log, null));
 
-		if( EmitterServices.booleanOption( handlerState.getRenderOptions(), report, ExcelEmitter.SINGLE_SHEET_PAGE_BREAKS, false ) ) {
+		if (EmitterServices.booleanOption(handlerState.getRenderOptions(), report, ExcelEmitter.SINGLE_SHEET_PAGE_BREAKS, false)) {
 			handlerState.getRenderOptions().setOption(ExcelEmitter.SINGLE_SHEET, Boolean.TRUE);
 		}
 	}
 
-	public void end( IReportContent report ) throws BirtException {
+	@Override
+	public void end(IReportContent report) throws BirtException {
 
-		if( EmitterServices.booleanOption( handlerState.getRenderOptions(), report, ExcelEmitter.SINGLE_SHEET, false ) ) {
+		if (EmitterServices.booleanOption(handlerState.getRenderOptions(), report, ExcelEmitter.SINGLE_SHEET, false)) {
 			handlerState.reportEnding = true;
 			handlerState.getHandler().endPage(handlerState, lastPage);
 		}
@@ -269,44 +264,37 @@ public abstract class ExcelEmitter implements IContentEmitter {
 		log.debug("end:", report);
 
 		String reportTitle = report.getTitle();
-		if( ( handlerState.getWb().getNumberOfSheets() == 1 )
-				&& ( reportTitle != null )) {
+		if ((handlerState.getWb().getNumberOfSheets() == 1)
+				&& (reportTitle != null)) {
 			handlerState.getWb().setSheetName(0, reportTitle);
 		}
 
 		OutputStream outputStream = reportOutputStream;
 		try {
-			if( outputStream == null ) {
-				if( ( reportOutputFilename != null ) && ! reportOutputFilename.isEmpty() ) {
+			if (outputStream == null) {
+				if ((reportOutputFilename != null) && !reportOutputFilename.isEmpty()) {
 					try {
-						outputStream = new FileOutputStream( reportOutputFilename );
-					} catch( IOException ex ) {
-						log.warn( 0, "File \"" + reportOutputFilename + "\" cannot be opened for writing", ex);
-						throw new BirtException( EmitterServices.getPluginName()
-								, "Unable to open file (\"{}\") for writing"
-								, new Object[] { reportOutputFilename }
-								, null
-								, ex
-								);
+						outputStream = new FileOutputStream(reportOutputFilename);
+					} catch (IOException ex) {
+						log.warn(0, "File \"" + reportOutputFilename + "\" cannot be opened for writing", ex);
+						throw new BirtException(EmitterServices.getPluginName(),
+								"Unable to open file (\"{}\") for writing", new Object[] { reportOutputFilename }, null,
+								ex);
 					}
 				}
 			}
 			handlerState.getWb().write(outputStream);
-		} catch( Throwable ex ) {
+		} catch (Throwable ex) {
 			log.debug("ex:", ex.toString());
 			ex.printStackTrace();
 
-			throw new BirtException( EmitterServices.getPluginName()
-					, reportOutputStream == null ?
-							"Unable to save file (\"" + reportOutputFilename + "\")"
-							: "Unable to save file to stream"
-					, ex
-					);
+			throw new BirtException(EmitterServices.getPluginName(), "Unable to save file (\"{}\")",
+					new Object[] { reportOutputFilename }, null, ex);
 		} finally {
-			if( reportOutputStream == null ) {
+			if (reportOutputStream == null) {
 				try {
 					outputStream.close();
-				} catch( IOException ex ) {
+				} catch (IOException ex) {
 					log.debug("ex:", ex.toString());
 				}
 			}
@@ -326,170 +314,209 @@ public abstract class ExcelEmitter implements IContentEmitter {
 
 	}
 
-	public void startPage( IPageContent page ) throws BirtException {
-		log.addPrefix( 'P' );
-		log.debug( handlerState, "startPage: " );
-		handlerState.getHandler().startPage(handlerState,page);
+	@Override
+	public void startPage(IPageContent page) throws BirtException {
+		log.addPrefix('P');
+		log.debug(handlerState, "startPage: ");
+		handlerState.getHandler().startPage(handlerState, page);
 	}
-	public void endPage( IPageContent page ) throws BirtException {
+
+	@Override
+	public void endPage(IPageContent page) throws BirtException {
 		lastPage = page;
-		log.debug( handlerState, "endPage: " );
-		handlerState.getHandler().endPage(handlerState,page);
-		log.removePrefix( 'P' );
+		log.debug(handlerState, "endPage: ");
+		handlerState.getHandler().endPage(handlerState, page);
+		log.removePrefix('P');
 	}
 
-	public void startTable( ITableContent table ) throws BirtException {
-		log.addPrefix( 'T' );
-		log.debug( handlerState, "startTable: " );
-		handlerState.getHandler().startTable(handlerState,table);
-	}
-	public void endTable( ITableContent table ) throws BirtException {
-		log.debug( handlerState, "endTable: " );
-		handlerState.getHandler().endTable(handlerState,table);
-		log.removePrefix( 'T' );
+	@Override
+	public void startTable(ITableContent table) throws BirtException {
+		log.addPrefix('T');
+		log.debug(handlerState, "startTable: ");
+		handlerState.getHandler().startTable(handlerState, table);
 	}
 
-	public void startTableBand( ITableBandContent band ) throws BirtException {
-		log.addPrefix( 'B' );
-		log.debug( handlerState, "startTableBand: " );
-		handlerState.getHandler().startTableBand(handlerState,band);
-	}
-	public void endTableBand( ITableBandContent band ) throws BirtException {
-		log.debug( handlerState, "endTableBand: " );
-		handlerState.getHandler().endTableBand(handlerState,band);
-		log.removePrefix( 'B' );
+	@Override
+	public void endTable(ITableContent table) throws BirtException {
+		log.debug(handlerState, "endTable: ");
+		handlerState.getHandler().endTable(handlerState, table);
+		log.removePrefix('T');
 	}
 
-	public void startRow( IRowContent row ) throws BirtException {
-		log.addPrefix( 'R' );
-		log.debug( handlerState, "startRow: " );
-		handlerState.getHandler().startRow(handlerState,row);
-	}
-	public void endRow( IRowContent row ) throws BirtException {
-		log.debug( handlerState, "endRow: " );
-		handlerState.getHandler().endRow(handlerState,row);
-		log.removePrefix( 'R' );
+	@Override
+	public void startTableBand(ITableBandContent band) throws BirtException {
+		log.addPrefix('B');
+		log.debug(handlerState, "startTableBand: ");
+		handlerState.getHandler().startTableBand(handlerState, band);
 	}
 
-	public void startCell( ICellContent cell ) throws BirtException {
-		log.addPrefix( 'C' );
-		log.debug( handlerState, "startCell: " );
-		handlerState.getHandler().startCell(handlerState,cell);
-	}
-	public void endCell( ICellContent cell ) throws BirtException {
-		log.debug( handlerState, "endCell: " );
-		handlerState.getHandler().endCell(handlerState,cell);
-		log.removePrefix( 'C' );
+	@Override
+	public void endTableBand(ITableBandContent band) throws BirtException {
+		log.debug(handlerState, "endTableBand: ");
+		handlerState.getHandler().endTableBand(handlerState, band);
+		log.removePrefix('B');
 	}
 
-	public void startList( IListContent list ) throws BirtException {
-		log.addPrefix( 'L' );
-		log.debug( handlerState, "startList: " );
-		handlerState.getHandler().startList(handlerState,list);
-	}
-	public void endList( IListContent list ) throws BirtException {
-		log.debug( handlerState, "endList: " );
-		handlerState.getHandler().endList(handlerState,list);
-		log.removePrefix( 'L' );
+	@Override
+	public void startRow(IRowContent row) throws BirtException {
+		log.addPrefix('R');
+		log.debug(handlerState, "startRow: ");
+		handlerState.getHandler().startRow(handlerState, row);
 	}
 
-	public void startListBand( IListBandContent listBand ) throws BirtException {
-		log.addPrefix( 'B' );
-		log.debug( handlerState, "startListBand: " );
-		handlerState.getHandler().startListBand(handlerState,listBand);
-	}
-	public void endListBand( IListBandContent listBand ) throws BirtException {
-		log.debug( handlerState, "endListBand: " );
-		handlerState.getHandler().endListBand(handlerState,listBand);
-		log.removePrefix( 'B' );
+	@Override
+	public void endRow(IRowContent row) throws BirtException {
+		log.debug(handlerState, "endRow: ");
+		handlerState.getHandler().endRow(handlerState, row);
+		log.removePrefix('R');
 	}
 
-	public void startContainer( IContainerContent container ) throws BirtException {
-		log.addPrefix( 'O' );
-		log.debug( handlerState, "startContainer: " );
-		handlerState.getHandler().startContainer(handlerState,container);
-	}
-	public void endContainer( IContainerContent container ) throws BirtException {
-		log.debug( handlerState, "endContainer: " );
-		handlerState.getHandler().endContainer(handlerState,container);
-		log.removePrefix( 'O' );
+	@Override
+	public void startCell(ICellContent cell) throws BirtException {
+		log.addPrefix('C');
+		log.debug(handlerState, "startCell: ");
+		handlerState.getHandler().startCell(handlerState, cell);
 	}
 
-	public void startText( ITextContent text ) throws BirtException {
-		log.debug( handlerState, "startText: " );
-		handlerState.getHandler().emitText(handlerState,text);
+	@Override
+	public void endCell(ICellContent cell) throws BirtException {
+		log.debug(handlerState, "endCell: ");
+		handlerState.getHandler().endCell(handlerState, cell);
+		log.removePrefix('C');
 	}
 
-	public void startData( IDataContent data ) throws BirtException {
-		log.debug( handlerState, "startData: " );
-		handlerState.getHandler().emitData(handlerState,data);
+	@Override
+	public void startList(IListContent list) throws BirtException {
+		log.addPrefix('L');
+		log.debug(handlerState, "startList: ");
+		handlerState.getHandler().startList(handlerState, list);
 	}
 
-	public void startLabel( ILabelContent label ) throws BirtException {
-		log.debug( handlerState, "startLabel: " );
-		handlerState.getHandler().emitLabel(handlerState,label);
+	@Override
+	public void endList(IListContent list) throws BirtException {
+		log.debug(handlerState, "endList: ");
+		handlerState.getHandler().endList(handlerState, list);
+		log.removePrefix('L');
 	}
 
-	public void startAutoText ( IAutoTextContent autoText ) throws BirtException {
-		log.debug( handlerState, "startAutoText: " );
-		handlerState.getHandler().emitAutoText(handlerState,autoText);
+	@Override
+	public void startListBand(IListBandContent listBand) throws BirtException {
+		log.addPrefix('B');
+		log.debug(handlerState, "startListBand: ");
+		handlerState.getHandler().startListBand(handlerState, listBand);
 	}
 
-	public void startForeign( IForeignContent foreign ) throws BirtException {
-		log.debug( handlerState, "startForeign: " );
-		handlerState.getHandler().emitForeign(handlerState,foreign);
+	@Override
+	public void endListBand(IListBandContent listBand) throws BirtException {
+		log.debug(handlerState, "endListBand: ");
+		handlerState.getHandler().endListBand(handlerState, listBand);
+		log.removePrefix('B');
 	}
 
-	public void startImage( IImageContent image ) throws BirtException {
-		log.debug( handlerState, "startImage: " );
-		if( ! extractMode ) {
+	@Override
+	public void startContainer(IContainerContent container) throws BirtException {
+		log.addPrefix('O');
+		log.debug(handlerState, "startContainer: ");
+		handlerState.getHandler().startContainer(handlerState, container);
+	}
+
+	@Override
+	public void endContainer(IContainerContent container) throws BirtException {
+		log.debug(handlerState, "endContainer: ");
+		handlerState.getHandler().endContainer(handlerState, container);
+		log.removePrefix('O');
+	}
+
+	@Override
+	public void startText(ITextContent text) throws BirtException {
+		log.debug(handlerState, "startText: ");
+		handlerState.getHandler().emitText(handlerState, text);
+	}
+
+	@Override
+	public void startData(IDataContent data) throws BirtException {
+		log.debug(handlerState, "startData: ");
+		handlerState.getHandler().emitData(handlerState, data);
+	}
+
+	@Override
+	public void startLabel(ILabelContent label) throws BirtException {
+		log.debug(handlerState, "startLabel: ");
+		handlerState.getHandler().emitLabel(handlerState, label);
+	}
+
+	@Override
+	public void startAutoText(IAutoTextContent autoText) throws BirtException {
+		log.debug(handlerState, "startAutoText: ");
+		handlerState.getHandler().emitAutoText(handlerState, autoText);
+	}
+
+	@Override
+	public void startForeign(IForeignContent foreign) throws BirtException {
+		log.debug(handlerState, "startForeign: ");
+		handlerState.getHandler().emitForeign(handlerState, foreign);
+	}
+
+	@Override
+	public void startImage(IImageContent image) throws BirtException {
+		log.debug(handlerState, "startImage: ");
+		if (!extractMode) {
 			handlerState.getHandler().emitImage(handlerState,image);
 		}
 	}
 
-	public void startContent( IContent content ) throws BirtException {
-		log.addPrefix( 'N' );
-		log.debug( handlerState, "startContent: " );
-		handlerState.getHandler().startContent(handlerState,content);
-	}
-	public void endContent( IContent content) throws BirtException {
-		log.debug( handlerState, "endContent: " );
-		handlerState.getHandler().endContent(handlerState,content);
-		log.removePrefix( 'N' );
+	@Override
+	public void startContent(IContent content) throws BirtException {
+		log.addPrefix('N');
+		log.debug(handlerState, "startContent: ");
+		handlerState.getHandler().startContent(handlerState, content);
 	}
 
-	public void startGroup( IGroupContent group ) throws BirtException {
-		log.debug( handlerState, "startGroup: " );
-		handlerState.getHandler().startGroup(handlerState,group);
-	}
-	public void endGroup( IGroupContent group ) throws BirtException {
-		log.debug( handlerState, "endGroup: " );
-		handlerState.getHandler().endGroup(handlerState,group);
+	@Override
+	public void endContent(IContent content) throws BirtException {
+		log.debug(handlerState, "endContent: ");
+		handlerState.getHandler().endContent(handlerState, content);
+		log.removePrefix('N');
 	}
 
-	public void startTableGroup( ITableGroupContent group ) throws BirtException {
-		log.addPrefix( 'G' );
-		log.debug( handlerState, "startTableGroup: " );
-		handlerState.getHandler().startTableGroup(handlerState,group);
-	}
-	public void endTableGroup( ITableGroupContent group ) throws BirtException {
-		log.debug( handlerState, "endTableGroup: " );
-		handlerState.getHandler().endTableGroup(handlerState,group);
-		log.removePrefix( 'G' );
+	@Override
+	public void startGroup(IGroupContent group) throws BirtException {
+		log.debug(handlerState, "startGroup: ");
+		handlerState.getHandler().startGroup(handlerState, group);
 	}
 
-	public void startListGroup( IListGroupContent group ) throws BirtException {
-		log.addPrefix( 'G' );
-		log.debug( handlerState, "startListGroup: " );
-		handlerState.getHandler().startListGroup(handlerState,group);
-	}
-	public void endListGroup( IListGroupContent group ) throws BirtException {
-		log.debug( handlerState, "endListGroup: " );
-		handlerState.getHandler().endListGroup(handlerState,group);
-		log.removePrefix( 'G' );
+	@Override
+	public void endGroup(IGroupContent group) throws BirtException {
+		log.debug(handlerState, "endGroup: ");
+		handlerState.getHandler().endGroup(handlerState, group);
 	}
 
+	@Override
+	public void startTableGroup(ITableGroupContent group) throws BirtException {
+		log.addPrefix('G');
+		log.debug(handlerState, "startTableGroup: ");
+		handlerState.getHandler().startTableGroup(handlerState, group);
+	}
 
+	@Override
+	public void endTableGroup(ITableGroupContent group) throws BirtException {
+		log.debug(handlerState, "endTableGroup: ");
+		handlerState.getHandler().endTableGroup(handlerState, group);
+		log.removePrefix('G');
+	}
 
+	@Override
+	public void startListGroup(IListGroupContent group) throws BirtException {
+		log.addPrefix('G');
+		log.debug(handlerState, "startListGroup: ");
+		handlerState.getHandler().startListGroup(handlerState, group);
+	}
+
+	@Override
+	public void endListGroup(IListGroupContent group) throws BirtException {
+		log.debug(handlerState, "endListGroup: ");
+		handlerState.getHandler().endListGroup(handlerState, group);
+		log.removePrefix('G');
+	}
 
 }

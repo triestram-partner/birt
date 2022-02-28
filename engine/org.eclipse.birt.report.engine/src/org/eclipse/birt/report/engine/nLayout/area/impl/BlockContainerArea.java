@@ -1,12 +1,12 @@
 /***********************************************************************
  * Copyright (c) 2009 Actuate Corporation.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * https://www.eclipse.org/legal/epl-2.0/.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  *
  * Contributors:
  * Actuate Corporation - initial API and implementation
@@ -50,6 +50,7 @@ public class BlockContainerArea extends ContainerArea implements IContainerArea 
 		super(area);
 	}
 
+	@Override
 	public void add(AbstractArea area) {
 		if (area instanceof ContainerArea) {
 			ContainerArea c = (ContainerArea)area;
@@ -83,6 +84,7 @@ public class BlockContainerArea extends ContainerArea implements IContainerArea 
 
 	}
 
+	@Override
 	public void update(AbstractArea area) throws BirtException {
 		int aHeight = area.getAllocatedHeight();
 		currentBP += aHeight;
@@ -92,6 +94,7 @@ public class BlockContainerArea extends ContainerArea implements IContainerArea 
 		}
 	}
 
+	@Override
 	public void close() throws BirtException {
 		if (hasStyle) {
 			int height = currentBP + localProperties.getPaddingTop() + boxStyle.getTopBorderWidth()
@@ -119,12 +122,10 @@ public class BlockContainerArea extends ContainerArea implements IContainerArea 
 			}
 			this.height = height;
 			updateBackgroundImage();
+		} else if (specifiedHeight > currentBP) {
+			height = specifiedHeight;
 		} else {
-			if (specifiedHeight > currentBP) {
-				height = specifiedHeight;
-			} else {
-				height = currentBP;
-			}
+			height = currentBP;
 		}
 		update();
 		finished = true;
@@ -142,6 +143,7 @@ public class BlockContainerArea extends ContainerArea implements IContainerArea 
 		}
 	}
 
+	@Override
 	public void initialize() throws BirtException {
 		if (content == null) {
 			this.maxAvaWidth = width;
@@ -157,10 +159,8 @@ public class BlockContainerArea extends ContainerArea implements IContainerArea 
 			localProperties = LocalProperties.DEFAULT;
 			if (specifiedWidth > 0) {
 				setContentWidth(specifiedWidth);
-			} else {
-				if (parent != null) {
-					this.width = parent.getMaxAvaWidth();
-				}
+			} else if (parent != null) {
+				this.width = parent.getMaxAvaWidth();
 			}
 			this.maxAvaWidth = width;
 		} else {
@@ -173,10 +173,8 @@ public class BlockContainerArea extends ContainerArea implements IContainerArea 
 
 			if (specifiedWidth > 0) {
 				setContentWidth(specifiedWidth);
-			} else {
-				if (parent != null) {
-					setAllocatedWidth(parent.getMaxAvaWidth());
-				}
+			} else if (parent != null) {
+				setAllocatedWidth(parent.getMaxAvaWidth());
 			}
 			maxAvaWidth = getContentWidth();
 		}
@@ -186,10 +184,12 @@ public class BlockContainerArea extends ContainerArea implements IContainerArea 
 		parent.add(this);
 	}
 
+	@Override
 	public BlockContainerArea cloneArea() {
 		return new BlockContainerArea(this);
 	}
 
+	@Override
 	public SplitResult splitLines(int lineCount) throws BirtException {
 		if (isPageBreakInsideAvoid()) {
 			if (isPageBreakBeforeAvoid()) {
@@ -234,12 +234,10 @@ public class BlockContainerArea extends ContainerArea implements IContainerArea 
 						updateChildrenPosition();
 						return new SplitResult(newContainer, SplitResult.SPLIT_SUCCEED_WITH_PART);
 					}
+				} else if (isPageBreakBeforeAvoid()) {
+					return SplitResult.BEFORE_AVOID_WITH_NULL;
 				} else {
-					if (isPageBreakBeforeAvoid()) {
-						return SplitResult.BEFORE_AVOID_WITH_NULL;
-					} else {
-						return SplitResult.SUCCEED_WITH_NULL;
-					}
+					return SplitResult.SUCCEED_WITH_NULL;
 				}
 			} else if (childSplit.status == SplitResult.SPLIT_SUCCEED_WITH_PART) {
 				result.addFirst(child);
@@ -265,6 +263,7 @@ public class BlockContainerArea extends ContainerArea implements IContainerArea 
 		return SplitResult.BEFORE_AVOID_WITH_NULL;
 	}
 
+	@Override
 	public SplitResult split(int height, boolean force) throws BirtException {
 		if (force) {
 			return _split(height, true);
@@ -336,17 +335,15 @@ public class BlockContainerArea extends ContainerArea implements IContainerArea 
 								break;
 							}
 						}
+					} else if (force) {
+						// error status
+						status = SplitResult.SPLIT_SUCCEED_WITH_PART;
+						break;
 					} else {
-						if (force) {
-							// error status
-							status = SplitResult.SPLIT_SUCCEED_WITH_PART;
-							break;
+						if (isPageBreakBeforeAvoid()) {
+							return SplitResult.BEFORE_AVOID_WITH_NULL;
 						} else {
-							if (isPageBreakBeforeAvoid()) {
-								return SplitResult.BEFORE_AVOID_WITH_NULL;
-							} else {
-								return SplitResult.SUCCEED_WITH_NULL;
-							}
+							return SplitResult.SUCCEED_WITH_NULL;
 						}
 					}
 				}
@@ -390,12 +387,10 @@ public class BlockContainerArea extends ContainerArea implements IContainerArea 
 							status = SplitResult.SPLIT_SUCCEED_WITH_PART;
 							break;
 						}
+					} else if (isPageBreakBeforeAvoid()) {
+						return SplitResult.BEFORE_AVOID_WITH_NULL;
 					} else {
-						if (isPageBreakBeforeAvoid()) {
-							return SplitResult.BEFORE_AVOID_WITH_NULL;
-						} else {
-							return SplitResult.SUCCEED_WITH_NULL;
-						}
+						return SplitResult.SUCCEED_WITH_NULL;
 					}
 				}
 			}
@@ -421,7 +416,7 @@ public class BlockContainerArea extends ContainerArea implements IContainerArea 
 
 	/**
 	 * Gets the area which is split from the original area.
-	 * 
+	 *
 	 * @param ablatedChildren the children which is split off the original area.
 	 * @param newHeight       the new content height
 	 * @return
@@ -479,6 +474,7 @@ public class BlockContainerArea extends ContainerArea implements IContainerArea 
 		return result.size() > 0;
 	}
 
+	@Override
 	public int getBaseLine() {
 		if (baseLine == 0) {
 			// use the first child baseline.
@@ -492,6 +488,7 @@ public class BlockContainerArea extends ContainerArea implements IContainerArea 
 		return baseLine;
 	}
 
+	@Override
 	public boolean isPageBreakInsideAvoid() {
 		if (context.isFixedLayout() && specifiedHeight > 0) {
 			return true;
@@ -499,6 +496,7 @@ public class BlockContainerArea extends ContainerArea implements IContainerArea 
 		return super.isPageBreakInsideAvoid();
 	}
 
+	@Override
 	public void updateChildrenPosition() throws BirtException {
 		first = false;
 		currentBP = 0;

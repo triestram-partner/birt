@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2008,2009 Actuate Corporation.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * https://www.eclipse.org/legal/epl-2.0/.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  *
  * Contributors:
  *  Actuate Corporation  - initial API and implementation
@@ -338,8 +338,9 @@ public abstract class AbstractWordXmlWriter {
 	private int validateBorderSpace(int margin) {
 		// word only accept 0-31 pt
 		int space = (int) WordUtil.twipToPt(margin);
-		if (space > 31)
+		if (space > 31) {
 			space = 31;
+		}
 		return space;
 	}
 
@@ -354,14 +355,16 @@ public abstract class AbstractWordXmlWriter {
 
 		// Need to swap 'left' and 'right' when orientation is RTL.
 		if (CSSConstants.CSS_RTL_VALUE.equalsIgnoreCase(direction)) {
-			if (IStyle.CSS_RIGHT_VALUE.equals(textAlign))
+			if (IStyle.CSS_RIGHT_VALUE.equals(textAlign)) {
 				writeAttrTag("w:jc", IStyle.CSS_LEFT_VALUE); //$NON-NLS-1$
-			else if (IStyle.CSS_LEFT_VALUE.equals(textAlign))
+			} else if (IStyle.CSS_LEFT_VALUE.equals(textAlign)) {
 				writeAttrTag("w:jc", IStyle.CSS_RIGHT_VALUE); //$NON-NLS-1$
-			else
+			} else {
 				writeAttrTag("w:jc", textAlign); //$NON-NLS-1$
-		} else
+			}
+		} else {
 			writeAttrTag("w:jc", textAlign); //$NON-NLS-1$
+		}
 	}
 
 	protected void writeBackgroundColor(String color) {
@@ -414,7 +417,6 @@ public abstract class AbstractWordXmlWriter {
 		if (hasBorder(borderStyle)) {
 			writeRunBorder(borderStyle, style.getBorderRightColor(),
 					style.getProperty(StyleConstants.STYLE_BORDER_RIGHT_WIDTH));
-			return;
 		}
 	}
 
@@ -729,8 +731,9 @@ public abstract class AbstractWordXmlWriter {
 		}
 		String direction = style.getDirection(); // bidi_hcg
 		if (CSSConstants.CSS_LEFT_VALUE.equals(align)) {
-			if (!CSSConstants.CSS_RTL_VALUE.equals(direction))
+			if (!CSSConstants.CSS_RTL_VALUE.equals(direction)) {
 				return;
+			}
 		}
 		writer.openTag("w:pPr"); //$NON-NLS-1$
 		writeAlign(align, direction);
@@ -1093,8 +1096,9 @@ public abstract class AbstractWordXmlWriter {
 		int wordlength = fm.stringWidth(word);
 		if (wordlength > containerPointAdvWidth) {
 			int cropEnd = (containerPointAdvWidth * word.length()) / wordlength;
-			if (cropEnd == 0)
+			if (cropEnd == 0) {
 				return ""; //$NON-NLS-1$
+			}
 			return word.substring(0, cropEnd);
 		}
 		return word;
@@ -1252,8 +1256,9 @@ public abstract class AbstractWordXmlWriter {
 	}
 
 	public void drawDiagonalLine(DiagonalLineInfo diagonalLineInfo) {
-		if (diagonalLineInfo.getDiagonalNumber() <= 0 && diagonalLineInfo.getAntiDiagonalNumber() <= 0)
+		if (diagonalLineInfo.getDiagonalNumber() <= 0 && diagonalLineInfo.getAntiDiagonalNumber() <= 0) {
 			return;
+		}
 		writer.openTag("w:p"); //$NON-NLS-1$
 		writer.openTag("w:r"); //$NON-NLS-1$
 		writer.openTag("w:pict"); //$NON-NLS-1$

@@ -2,13 +2,13 @@
  * Copyright (c) 2011, 2012, 2013 James Talbut.
  *  jim-emitters@spudsoft.co.uk
  *
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * https://www.eclipse.org/legal/epl-2.0/.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     James Talbut - Initial implementation.
  ************************************************************************************/
@@ -17,6 +17,7 @@ package uk.co.spudsoft.birt.emitters.excel.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -27,7 +28,7 @@ import org.eclipse.birt.core.exception.BirtException;
 import org.junit.Test;
 
 public class MegaSizeTest extends ReportRunner {
-	
+
 	/*
 	 * No point in trying to do this warmup until using junit 4.11 which allows the order of tests to be controlled.
 	@Test
@@ -37,14 +38,14 @@ public class MegaSizeTest extends ReportRunner {
 		InputStream inputStream = runAndRenderReport("MegaSize.rptdesign", "xlsx");
 		assertNotNull(inputStream);
 		try {
-			
-			
+
+
 		} finally {
 			inputStream.close();
 		}
 	}
 	*/
-	
+
 	@Test
 	public void testMegaXlsx() throws BirtException, IOException {
 
@@ -52,13 +53,13 @@ public class MegaSizeTest extends ReportRunner {
 		InputStream inputStream = runAndRenderReport("MegaSize.rptdesign", "xlsx");
 		assertNotNull(inputStream);
 		try {
-			
-			
+
+
 		} finally {
 			inputStream.close();
 		}
 	}
-	
+
 	@Test
 	public void testMegaXlsxExtract() throws BirtException, IOException {
 
@@ -68,8 +69,8 @@ public class MegaSizeTest extends ReportRunner {
 			InputStream inputStream = runAndRenderReport("MegaSize.rptdesign", "xlsx");
 			assertNotNull(inputStream);
 			try {
-				
-				
+
+
 			} finally {
 				inputStream.close();
 			}
@@ -77,7 +78,7 @@ public class MegaSizeTest extends ReportRunner {
 			extractMode = false;
 		}
 	}
-	
+
 	@Test
 	public void testMegaXlsxExtractNoStyles() throws BirtException, IOException {
 
@@ -88,8 +89,8 @@ public class MegaSizeTest extends ReportRunner {
 			InputStream inputStream = runAndRenderReport("MegaSize.rptdesign", "xlsx");
 			assertNotNull(inputStream);
 			try {
-				
-				
+
+
 			} finally {
 				inputStream.close();
 			}
@@ -98,7 +99,7 @@ public class MegaSizeTest extends ReportRunner {
 			noStyles = false;
 		}
 	}
-	
+
 	@Test
 	public void testMegaXlsxNoStyles() throws BirtException, IOException {
 
@@ -106,53 +107,53 @@ public class MegaSizeTest extends ReportRunner {
 		InputStream inputStream = runAndRenderReport("MegaSizeNoStyles.rptdesign", "xlsx");
 		assertNotNull(inputStream);
 		try {
-			
-			
+
+
 		} finally {
 			inputStream.close();
 		}
 	}
-	
+
 	@Test
 	public void testMegaXlsxTemplateNoStyles() throws BirtException, IOException {
 
 		debug = false;
 		String file = deriveFilepath( "MegaSizeTemplate.xlsx" );
 		File template = new File( file );
-		
+
 		assertTrue( template.exists() );
 		templateFile = template.getAbsolutePath();
 
 		InputStream inputStream = runAndRenderReport("MegaSizeNoStyles.rptdesign", "xlsx");
 		assertNotNull(inputStream);
 		try {
-			
-			
+
+
 		} finally {
 			inputStream.close();
 		}
 	}
-	
+
 	@Test
 	public void testMegaXlsxTemplate() throws BirtException, IOException {
 
 		debug = false;
 		String file = deriveFilepath( "MegaSizeTemplate.xlsx" );
 		File template = new File( file );
-		
+
 		assertTrue( template.exists() );
 		templateFile = template.getAbsolutePath();
 
 		InputStream inputStream = runAndRenderReport("MegaSize.rptdesign", "xlsx");
 		assertNotNull(inputStream);
 		try {
-			
-			
+
+
 		} finally {
 			inputStream.close();
 		}
 	}
-	
+
 	@Test
 	public void testMegaXlsxFixedLayout() throws BirtException, IOException {
 
@@ -160,13 +161,13 @@ public class MegaSizeTest extends ReportRunner {
 		InputStream inputStream = runAndRenderReport("MegaSizeFixedLayout.rptdesign", "xlsx");
 		assertNotNull(inputStream);
 		try {
-			
-			
+
+
 		} finally {
 			inputStream.close();
 		}
 	}
-	
+
 	@Test
 	public void testMegaXls() throws BirtException, IOException {
 
@@ -179,17 +180,17 @@ public class MegaSizeTest extends ReportRunner {
 			assertEquals( "Invalid row number (65536) outside allowable range (0..65535)", ex.getMessage() );
 		}
 	}
-	
+
 	@Test
 	public void testMegaXls60000() throws BirtException, IOException {
 
 		InputStream inputStream = runAndRenderReport("MegaSize60000.rptdesign", "xls");
 		assertNotNull(inputStream);
 		try {
-			
+
 		} finally {
 			inputStream.close();
 		}
 	}
-	
+
 }

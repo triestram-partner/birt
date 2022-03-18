@@ -1,4 +1,4 @@
-# Eclipse BIRT [![Build Status](https://travis-ci.com/hvbtup/birt.svg?branch=flugtiger_master)](https://travis-ci.com/hvbtup/birt)
+# Eclipse BIRT [![Build Status](https://travis-ci.com/hvbtup/birt.svg?branch=tup_main)](https://travis-ci.com/hvbtup/birt)
 The open source Eclipse BIRT reporting and data visualization project.
 
 **This is not the official Eclipse repository!**
@@ -26,7 +26,8 @@ If you just want to start creating reports, you can use a pre-built BIRT version
 See the releases page for the all-in-one designer and the POJO runtime.
 
 Binary releases of the official BIRT are available on the Eclipse web site.
-An official 4.9.0 release is planned in Q1/Q2 2022, in the meantime you can find binary artifacts for each PR on https://github.com/eclipse/birt/actions
+An official 4.9.0 release is available since 2022-03-16.
+You can find binary artifacts for each PR on https://github.com/eclipse/birt/actions
 
 ## Building BIRT
 

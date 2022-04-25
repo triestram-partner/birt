@@ -1,4 +1,4 @@
-# Eclipse BIRT [![Build Status](https://travis-ci.com/hvbtup/birt.svg?branch=tup_main)](https://travis-ci.com/hvbtup/birt)
+# Eclipse BIRT [![Build Status](https://travis-ci.com/triestram-partner/birt.svg?branch=tup_main)](https://travis-ci.com/triestram-partner/birt)
 The open source Eclipse BIRT reporting and data visualization project.
 
 **This is not the official Eclipse repository!**
@@ -10,9 +10,15 @@ this repo's `tup_main` branch with the official `master` branch.
 
 ## Reasons for this fork and differences to the official Eclipse repository
 
-For more information about this repository see our [wiki pages](https://github.com/hvbtup/birt/wiki)
+For more information about this repository see our [wiki pages](https://github.com/triestram-partner/birt/wiki)
 
 If you are just looking for the official BIRT, don't use this - instead use the [official repo](https://github.com/eclipse/birt/)
+
+## Important branches
+
+`tup_main` is what lisa.lims reports are using, with some differences to eclipse/birt.
+
+`master` is to keep in sync with eclipse/birt and a starting point for other branches aiming at the eclipse/birt master branch.
 
 ## BIRT documentation ##
 
@@ -34,4 +40,4 @@ You can find binary artifacts for each PR on https://github.com/eclipse/birt/act
 Building BIRT has become relatively easy since 2021/2022. Just [see eclipse/birt](https://github.com/eclipse/birt/).
 Wim Jongman also created an excellent video tutorial.
 
-Just remember to replace `eclipse/birt` with `hvbtup/birt` and the `master` branch with `tup_main` when configuring GIT.
+Just remember to replace `eclipse/birt` with `triestram-partner/birt` and the `master` branch with `tup_main` when configuring GIT.

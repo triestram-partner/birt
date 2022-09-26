@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 import java.util.logging.Level;
@@ -70,6 +71,8 @@ import org.eclipse.birt.report.engine.i18n.EngineResourceHandle;
 import org.eclipse.birt.report.engine.i18n.MessageConstants;
 import org.eclipse.birt.report.engine.ir.DimensionType;
 import org.eclipse.birt.report.engine.ir.EngineIRConstants;
+import org.eclipse.birt.report.engine.ir.Expression;
+import org.eclipse.birt.report.engine.ir.ReportItemDesign;
 import org.eclipse.birt.report.engine.ir.SimpleMasterPageDesign;
 import org.eclipse.birt.report.engine.layout.emitter.Image;
 import org.eclipse.birt.report.engine.layout.pdf.font.FontMappingManager;
@@ -88,9 +91,11 @@ import org.w3c.dom.css.CSSValueList;
 
 import com.ibm.icu.util.ULocale;
 
+@SuppressWarnings("nls")
 public abstract class AbstractEmitterImpl {
 
 	public final static int NORMAL = -1;
+	public final static int CUSTOM_FIELD = -2;
 
 	public enum InlineFlag {
 		FIRST_INLINE, MIDDLE_INLINE, BLOCK
@@ -102,7 +107,13 @@ public abstract class AbstractEmitterImpl {
 
 	private static Set<Integer> nonInherityStyles = new HashSet<>();
 
-	static {
+	private static final String LAYOUTMODE_NONE = "NONE"; //$NON-NLS-1$
+	private static final String PROP_NAME_LAYOUTMODE = "WordEmitter.LayoutMode"; //$NON-NLS-1$
+	private static final String PROP_NAME_FIELDFUNCTION = "WordEmitter.FieldFunction"; //$NON-NLS-1$
+	protected static final String PROP_NAME_NESTED_TABLE = "WordEmitter.NestedTable"; //$NON-NLS-1$
+
+	static
+	{
 		nonInherityStyles.add(IStyle.STYLE_BORDER_BOTTOM_COLOR);
 		nonInherityStyles.add(IStyle.STYLE_BORDER_BOTTOM_STYLE);
 		nonInherityStyles.add(IStyle.STYLE_BORDER_BOTTOM_WIDTH);
@@ -142,6 +153,8 @@ public abstract class AbstractEmitterImpl {
 	protected IReportContent reportContent;
 
 	protected Stack<IStyle> styles = new Stack<>();
+
+	protected Stack<String> listLayouts = new Stack<String>();
 
 	private int pageWidth = 0;
 
@@ -359,7 +372,38 @@ public abstract class AbstractEmitterImpl {
 		orientation = page.getOrientation();
 	}
 
-	public void startAutoText(IAutoTextContent autoText) {
+	/**
+	 * @param elem      a report element, e.g. a IListContent
+	 * @param propName  a property name.
+	 * @return
+	 */
+	protected Object getUserProperty(IContent elem, String propName) {
+		Object val = null;
+		Map<String, Object> userprops = elem.getUserProperties();
+		if (userprops != null) {
+			val = userprops.get(propName);
+		}
+		if (val == null) {
+			// Necessary for BIRT 4.2.1:
+			// This version does not promote automatically the user-properties
+			// from the design Element to the runtime element (4.3 does!).
+			ReportItemDesign designElem = (ReportItemDesign )elem.getGenerateBy();
+			if (designElem != null) {
+				Map<String,Expression> designUserprops = designElem.getUserProperties();
+				if (designUserprops != null) {
+					Expression expression = designUserprops.get(propName);
+					if( expression instanceof Expression.Constant ) {
+						Expression.Constant constant = (Expression.Constant)expression;
+						val = constant.getValue();
+					}
+				}
+			}
+		}
+		return val;
+	}
+
+	public void startAutoText(IAutoTextContent autoText)
+	{
 		writeContent(autoText.getType(), autoText.getText(), autoText);
 	}
 
@@ -370,7 +414,13 @@ public abstract class AbstractEmitterImpl {
 	public void startLabel(ILabelContent label) {
 		String txt = label.getText() == null ? label.getLabelText() : label.getText();
 		txt = txt == null ? "" : txt;
-		writeContent(AbstractEmitterImpl.NORMAL, txt, label);
+		int type = AbstractEmitterImpl.NORMAL;
+		String fieldFunction = (String)getUserProperty(label, PROP_NAME_FIELDFUNCTION);
+		if (fieldFunction != null && !(fieldFunction.isEmpty())){
+			type = AbstractEmitterImpl.CUSTOM_FIELD;
+			// TODO It would be nice to use fieldFunction as the the Word field funtion and output the label text as a placeholder.
+		}
+		writeContent(type, txt, label);
 	}
 
 	public void startText(ITextContent text) {
@@ -380,30 +430,45 @@ public abstract class AbstractEmitterImpl {
 	public void startList(IListContent list) {
 		adjustInline();
 
-		styles.push(list.getComputedStyle());
-		writeBookmark(list);
-		Object listToc = list.getTOC();
-		if (listToc != null && !hasTocOutputed(list)) {
-			tableTocs.add(new TocInfo(listToc.toString(), tocLevel));
-		}
-		increaseTOCLevel(list);
+		String layoutMode = (String) getUserProperty(list,  PROP_NAME_LAYOUTMODE);
+		listLayouts.push(layoutMode);
+		styles.push( list.getComputedStyle());
+		if (LAYOUTMODE_NONE.equals(layoutMode)) {
+			;
+		} else {
+			writeBookmark(list);
+			Object listToc = list.getTOC();
+			if (listToc != null && !hasTocOutputed(list)) {
+				tableTocs.add(new TocInfo(listToc.toString(), tocLevel));
+			}
+			increaseTOCLevel(list);
 
-		if (context.isAfterTable()) {
-			wordWriter.insertHiddenParagraph();
-			context.setIsAfterTable(false);
-		}
+			if (context.isAfterTable()) {
+				wordWriter.insertHiddenParagraph();
+				context.setIsAfterTable(false);
+			}
 
-		int width = WordUtil.convertTo(list.getWidth(), context.getCurrentWidth(), reportDpi);
-		width = Math.min(width, context.getCurrentWidth());
-		wordWriter.startTable(list.getComputedStyle(), width);
-		context.startCell();
-		wordWriter.startTableRow(-1);
-		IStyle style = computeStyle(list.getComputedStyle());
-		wordWriter.startTableCell(context.getCurrentWidth(), style, null);
-		writeTableToc();
+			int width = WordUtil.convertTo(list.getWidth(), context.getCurrentWidth(), reportDpi);
+			width = Math.min(width, context.getCurrentWidth());
+			if (LAYOUTMODE_NONE.equals(layoutMode)) {
+				;
+			} else {
+				wordWriter.startTable(list.getComputedStyle(), width);
+			}
+		}
 	}
 
 	public void startListBand(IListBandContent listBand) {
+		if (!listLayouts.empty() && LAYOUTMODE_NONE.equals(listLayouts.peek())) {
+			;
+		} else {
+			context.startCell( );
+			wordWriter.startTableRow( -1 );
+
+			IStyle style = computeStyle( listBand.getComputedStyle( ) );
+			wordWriter.startTableCell( context.getCurrentWidth( ), style, null );
+			writeTableToc( );
+		}
 	}
 
 	public void startListGroup(IListGroupContent group) {
@@ -415,15 +480,21 @@ public abstract class AbstractEmitterImpl {
 			writeBookmark(row);
 			rowFilledFlag = false;
 			boolean isHeader = false;
-			styles.push(row.getComputedStyle());
-			if (row.getBand() != null && row.getBand().getBandType() == IBandContent.BAND_HEADER) {
+			IStyle style = row.getComputedStyle();
+			styles.push(style);
+			if ( row.getBand() != null && row.getBand().getBandType() == IBandContent.BAND_HEADER) {
 				isHeader = true;
 			}
 
 			double height = WordUtil.convertTo(row.getHeight(), reportDpi);
 
-			wordWriter.startTableRow(height, isHeader, row.getTable().isHeaderRepeat(), fixedLayout);
-			context.newRow();
+			boolean cantSplit = false;
+			if ("avoid".equals(computeStyle(style).getPageBreakInside())) { // $NON-NLS-1$
+				cantSplit = true;
+			}
+
+			wordWriter.startTableRow(height, isHeader, row.getTable().isHeaderRepeat(), fixedLayout, cantSplit);
+			context.newRow( );
 		}
 	}
 
@@ -451,7 +522,6 @@ public abstract class AbstractEmitterImpl {
 		int cellWidth = context.getCellWidth(columnId, columnSpan);
 
 		IStyle style = computeStyle(cell.getComputedStyle());
-//		style.get
 
 		if (rowSpan > 1) {
 			context.addSpan(columnId, columnSpan, cellWidth, rowSpan, style);
@@ -586,21 +656,32 @@ public abstract class AbstractEmitterImpl {
 	}
 
 	public void endList(IListContent list) {
-		adjustInline();
-		wordWriter.endTableCell(context.needEmptyP());
-		context.endCell();
-		wordWriter.endTableRow();
-		if (!styles.isEmpty()) {
+		String layoutMode = null;
+		if (!listLayouts.isEmpty()) {
+			layoutMode = listLayouts.pop();
+		}
+		if ( !styles.isEmpty()) {
 			styles.pop();
 		}
-
 		context.addContainer(true);
-		wordWriter.endTable();
-		context.setIsAfterTable(true);
-		decreaseTOCLevel(list);
+		if (LAYOUTMODE_NONE.equals(layoutMode)) {
+			;
+		} else {
+			wordWriter.endTable();
+			context.setIsAfterTable(true);
+			decreaseTOCLevel(list);
+		}
 	}
 
 	public void endListBand(IListBandContent listBand) {
+		adjustInline();
+		if (!listLayouts.empty() && LAYOUTMODE_NONE.equals(listLayouts.peek())) {
+			;
+		} else {
+			wordWriter.endTableCell( context.needEmptyP() );
+			context.endCell( );
+			wordWriter.endTableRow( );
+		}
 	}
 
 	public void endListGroup(IListGroupContent group) {
@@ -1005,9 +1086,11 @@ public abstract class AbstractEmitterImpl {
 
 		SimpleMasterPageDesign master = (SimpleMasterPageDesign) previousPage.getGenerateBy();
 
+		boolean showHeaderOnFirst = true;
+
 		if (previousPage.getPageHeader() != null || backgroundHeight != null || backgroundWidth != null) {
-			wordWriter.startHeader(!master.isShowHeaderOnFirst() && previousPage.getPageNumber() == 1, headerHeight,
-					contentWidth);
+			showHeaderOnFirst = master.isShowHeaderOnFirst() || previousPage.getPageNumber() > 1;
+			wordWriter.startHeader(showHeaderOnFirst, headerHeight, contentWidth);
 
 			if (backgroundHeight != null || backgroundWidth != null) {
 				String backgroundImageUrl = EmitterUtil.getBackgroundImageUrl(style,
@@ -1021,19 +1104,31 @@ public abstract class AbstractEmitterImpl {
 			wordWriter.endHeader();
 		}
 		if (previousPage.getPageFooter() != null) {
-			if (!master.isShowFooterOnLast() && previousPage.getPageNumber() == reportContent.getTotalPage()) {
-				IContent footer = previousPage.getPageFooter();
-				ILabelContent emptyContent = footer.getReportContent().createLabelContent();
-				emptyContent.setText(this.EMPTY_FOOTER);
-				wordWriter.startFooter(footerHeight, contentWidth);
-				contentVisitor.visit(emptyContent, null);
-				wordWriter.endFooter();
-			} else {
-				wordWriter.startFooter(footerHeight, contentWidth);
-				contentVisitor.visitChildren(previousPage.getPageFooter(), null);
+			// MS word does not support hiding the footer on the last page.
+			// The only option would be to create a different section just
+			// for the last page.
+			// This in turn could only work with separate RunTask and RenderTask
+			// and it would prevent the user from making page-breaking changes.
+			// Thus supporting showFooterOnLast is more dangerous than useful.
+			if (!master.isShowFooterOnLast()) {
+				logger.warning("Hiding the footer on the last page is not supported for MS Word output.");
+			}
+			wordWriter.startFooter(false, footerHeight, contentWidth);
+			contentVisitor.visitChildren(previousPage.getPageFooter(), null);
+			wordWriter.endFooter();
+			if (!showHeaderOnFirst) {
+				wordWriter.startFooter( true, footerHeight, contentWidth);
+				if (wordWriter.mustCloneFooter()) {
+					contentVisitor.visitChildren( previousPage.getPageFooter(), null);
+				}
 				wordWriter.endFooter();
 			}
 		}
+
+		if (!showHeaderOnFirst) {
+			wordWriter.writeEmptyElement("w:titlePg");
+		}
+
 	}
 
 	/**

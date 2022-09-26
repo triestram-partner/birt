@@ -19,6 +19,7 @@ import org.eclipse.birt.report.engine.css.engine.StyleConstants;
 import org.eclipse.birt.report.engine.css.engine.value.css.CSSConstants;
 import org.w3c.dom.css.CSSValue;
 
+@SuppressWarnings("nls")
 public class AreaBorders {
 	public boolean isMergedCells;
 

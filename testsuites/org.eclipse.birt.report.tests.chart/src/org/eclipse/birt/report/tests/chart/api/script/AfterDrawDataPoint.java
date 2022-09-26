@@ -54,6 +54,7 @@ import org.eclipse.birt.report.tests.chart.ChartTestCase;
  * </p>
  */
 
+@SuppressWarnings("nls")
 public class AfterDrawDataPoint extends ChartTestCase {
 
 	private static String OUTPUT = "AfterDrawDataPoint.jpg"; //$NON-NLS-1$

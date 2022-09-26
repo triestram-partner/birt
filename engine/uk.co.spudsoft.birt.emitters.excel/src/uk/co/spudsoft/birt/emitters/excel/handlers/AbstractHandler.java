@@ -47,6 +47,7 @@ import org.w3c.dom.css.CSSValue;
 import uk.co.spudsoft.birt.emitters.excel.HandlerState;
 import uk.co.spudsoft.birt.emitters.excel.framework.Logger;
 
+@SuppressWarnings("nls")
 public class AbstractHandler implements IHandler {
 
 	protected Logger log;
@@ -119,6 +120,10 @@ public class AbstractHandler implements IHandler {
 
 	protected static String prepareName(String name) {
 		char c = name.charAt(0);
+		if( Character.isDigit(c) ) {
+			name = "_" + name;
+		}
+
 		boolean requirePreparation = (!(c == '_' || Character.isLetter(c)) || name.indexOf(' ') != -1);
 		if (!requirePreparation) {
 			for (int i = 1; i < name.length(); ++i) {

@@ -26,17 +26,17 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.eclipse.birt.core.exception.BirtException;
 import org.eclipse.birt.report.engine.api.IRenderOption;
 import org.eclipse.birt.report.engine.api.ReportEngine;
-import org.eclipse.birt.report.engine.emitter.IContentEmitter;
 
 import uk.co.spudsoft.birt.emitters.excel.framework.Logger;
 import uk.co.spudsoft.birt.emitters.excel.handlers.IHandler;
 
+@SuppressWarnings("nls")
 public class HandlerState {
 
 	/**
 	 * The emitter itself
 	 */
-	private IContentEmitter emitter;
+	private ExcelEmitter emitter;
 	/**
 	 * Logger.
 	 */
@@ -78,7 +78,7 @@ public class HandlerState {
 	 */
 	public List<CellImage> images = new ArrayList<>();
 	/**
-	 * Possible name for the current sheet
+	 * Possible rename for the current sheet
 	 */
 	public String sheetName;
 	/**
@@ -131,7 +131,7 @@ public class HandlerState {
 	 * @param wb
 	 * @param sm
 	 */
-	public HandlerState(IContentEmitter emitter, Logger log, StyleManagerUtils smu, Workbook wb, StyleManager sm,
+	public HandlerState(ExcelEmitter emitter, Logger log, StyleManagerUtils smu, Workbook wb, StyleManager sm,
 			IRenderOption renderOptions) {
 		super();
 		this.emitter = emitter;
@@ -142,7 +142,7 @@ public class HandlerState {
 		this.renderOptions = renderOptions;
 	}
 
-	public IContentEmitter getEmitter() {
+	public ExcelEmitter getEmitter() {
 		return emitter;
 	}
 

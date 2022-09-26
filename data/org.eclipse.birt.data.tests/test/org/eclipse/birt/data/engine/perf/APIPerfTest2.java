@@ -39,6 +39,7 @@ import org.junit.Test;
  * Make sure your defined datasource is available when running test.
  */
 @Ignore("ignore performance test")
+@SuppressWarnings("nls")
 public class APIPerfTest2 {
 	/** instance of performance test utility */
 	private APIPerfTestUtil perfTest = APIPerfTestUtil.newInstance();

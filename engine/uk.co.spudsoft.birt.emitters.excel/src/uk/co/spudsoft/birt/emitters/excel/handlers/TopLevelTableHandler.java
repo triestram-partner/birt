@@ -1,7 +1,7 @@
 /*************************************************************************************
  * Copyright (c) 2011, 2012, 2013 James Talbut.
  *  jim-emitters@spudsoft.co.uk
- *
+ *  
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -30,6 +30,7 @@ import uk.co.spudsoft.birt.emitters.excel.ExcelEmitter;
 import uk.co.spudsoft.birt.emitters.excel.HandlerState;
 import uk.co.spudsoft.birt.emitters.excel.framework.Logger;
 
+@SuppressWarnings("nls")
 public class TopLevelTableHandler extends AbstractRealTableHandler {
 
 	private Stack<Integer> groupStarts;
@@ -77,6 +78,8 @@ public class TopLevelTableHandler extends AbstractRealTableHandler {
 		}
 
 		state.setHandler(parent);
+
+		state.colNum = 0;
 	}
 
 	@Override
@@ -89,7 +92,7 @@ public class TopLevelTableHandler extends AbstractRealTableHandler {
 	public void startTableGroup(HandlerState state, ITableGroupContent group) throws BirtException {
 		log.debug("startTableGroup @" + state.rowNum + " called " + group.getBookmark());
 		if (groupStarts == null) {
-			groupStarts = new Stack<>();
+			groupStarts = new Stack<Integer>();
 		}
 		groupStarts.push(state.rowNum);
 

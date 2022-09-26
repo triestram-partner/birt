@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
@@ -30,6 +31,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * @author Jim Talbut
  *
  */
+@SuppressWarnings("nls")
 public class XlsxEmitter extends ExcelEmitter {
 
 	/**
@@ -46,7 +48,11 @@ public class XlsxEmitter extends ExcelEmitter {
 
 	@Override
 	protected Workbook createWorkbook() {
-		return new XSSFWorkbook();
+		if( extractMode ) {
+			return new SXSSFWorkbook();
+		} else {
+			return new XSSFWorkbook();
+		}
 	}
 
 	@Override

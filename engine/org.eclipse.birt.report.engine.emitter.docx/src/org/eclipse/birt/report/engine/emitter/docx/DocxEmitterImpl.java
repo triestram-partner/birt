@@ -35,7 +35,7 @@ import org.eclipse.birt.report.engine.presentation.ContentEmitterVisitor;
 
 public class DocxEmitterImpl extends AbstractEmitterImpl {
 
-	private static final String OUTPUT_FORMAT = "docx";
+	private static final String OUTPUT_FORMAT = "docx"; //$NON-NLS-1$
 
 	private boolean embedHtml = true;
 
@@ -121,7 +121,7 @@ public class DocxEmitterImpl extends AbstractEmitterImpl {
 
 		} else {
 			Object rawValue = foreign.getRawValue();
-			String foreignText = rawValue == null ? "" : rawValue.toString();
+			String foreignText = rawValue == null ? "" : rawValue.toString(); //$NON-NLS-1$
 			writeContent(AbstractEmitterImpl.NORMAL, foreignText, foreign);
 		}
 	}
@@ -146,7 +146,7 @@ public class DocxEmitterImpl extends AbstractEmitterImpl {
 		IStyle inlineStyle = null;
 		InlineFlag inlineFlag = InlineFlag.BLOCK;
 		String textAlign = null;
-		if ("inline".equalsIgnoreCase(content.getComputedStyle().getDisplay())) {
+		if ("inline".equalsIgnoreCase(content.getComputedStyle().getDisplay())) { //$NON-NLS-1$
 			if (context.isFirstInline()) {
 				context.startInline();
 				inlineFlag = InlineFlag.FIRST_INLINE;

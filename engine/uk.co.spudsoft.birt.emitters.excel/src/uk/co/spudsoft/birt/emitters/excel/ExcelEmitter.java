@@ -13,6 +13,7 @@
  *     James Talbut - Initial implementation.
  ************************************************************************************/
 
+
 package uk.co.spudsoft.birt.emitters.excel;
 
 import java.io.File;
@@ -23,6 +24,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.eclipse.birt.core.exception.BirtException;
 import org.eclipse.birt.report.engine.api.IRenderOption;
 import org.eclipse.birt.report.engine.content.IAutoTextContent;
@@ -52,12 +54,15 @@ import uk.co.spudsoft.birt.emitters.excel.framework.ExcelEmitterPlugin;
 import uk.co.spudsoft.birt.emitters.excel.framework.Logger;
 import uk.co.spudsoft.birt.emitters.excel.handlers.PageHandler;
 
+@SuppressWarnings("nls")
 public abstract class ExcelEmitter implements IContentEmitter {
 
 	public static final String DEBUG = "ExcelEmitter.DEBUG";
 	public static final String REMOVE_BLANK_ROWS = "ExcelEmitter.RemoveBlankRows";
 	public static final String ROTATION_PROP = "ExcelEmitter.Rotation";
 	public static final String FORCEAUTOCOLWIDTHS_PROP = "ExcelEmitter.ForceAutoColWidths";
+	public static final String AUTO_COL_WIDTHS_HEADER = "ExcelEmitter.AutoColWidthsIncludeTableHeader";
+	public static final String AUTO_COL_WIDTHS_FOOTER = "ExcelEmitter.AutoColWidthsIncludeTableFooter";
 	public static final String SINGLE_SHEET = "ExcelEmitter.SingleSheet";
 	public static final String SINGLE_SHEET_PAGE_BREAKS = "ExcelEmitter.SingleSheetWithPageBreaks";
 	public static final String PRINT_BREAK_AFTER = "ExcelEmitter.InsertPrintBreakAfter";
@@ -71,6 +76,7 @@ public abstract class ExcelEmitter implements IContentEmitter {
 	public static final String BLANK_ROW_AFTER_TOP_LEVEL_TABLE = "ExcelEmitter.BlankRowAfterTopLevelTable";
 	public static final String SPANNED_ROW_HEIGHT = "ExcelEmitter.SpannedRowHeight";
 	public static final String NEST_TABLE_IN_LAST_CELL = "ExcelEmitter.NestedTableInLastCell";
+	public static final String NO_STYLES = "ExcelEmitter.NoStyles";
 	public static final int SPANNED_ROW_HEIGHT_SPREAD = 0;
 	public static final int SPANNED_ROW_HEIGHT_FIRST = 1;
 	public static final int SPANNED_ROW_HEIGHT_IGNORED = 2;
@@ -84,7 +90,13 @@ public abstract class ExcelEmitter implements IContentEmitter {
 	public static final String DISPLAYROWCOLHEADINGS_PROP = "ExcelEmitter.DisplayRowColHeadings";
 	public static final String DISPLAYZEROS_PROP = "ExcelEmitter.DisplayZeros";
 
+	public static final String VALUE_AS_FORMULA = "ExcelEmitter.ValueAsFormula";
+	public static final String FORMULA = "ExcelEmitter.Formula";
+
 	public static final String TEMPLATE_FILE = "ExcelEmitter.TemplateFile";
+	public static final String FORCE_RECALCULATION = "ExcelEmitter.ForceRecalculation";
+
+	public static final String EXTRACT_MODE = "ExcelEmitter.ExtractMode";
 
 	/**
 	 * Logger.
@@ -93,27 +105,22 @@ public abstract class ExcelEmitter implements IContentEmitter {
 	/**
 	 * <p>
 	 * Output stream that the report is to be written to.
-	 * </p>
-	 * <p>
-	 * This is set in initialize() and reset in end() and must not be set anywhere
-	 * else.
+	 * </p><p>
+	 * This is set in initialize() and reset in end() and must not be set anywhere else.
 	 * </p>
 	 */
 	protected OutputStream reportOutputStream;
 	/**
 	 * <p>
-	 * Record of whether the emitter opened the report output stream itself, and it
-	 * thus responsible for closing it.
+	 * Record of whether the emitter opened the report output stream itself, and it thus responsible for closing it.
 	 * </p>
 	 */
 	protected boolean outputStreamOpened;
 	/**
 	 * <p>
 	 * Name of the file that the report is to be written to (for tracking only).
-	 * </p>
-	 * <p>
-	 * This is set in initialize() and reset in end() and must not be set anywhere
-	 * else.
+	 * </p><p>
+	 * This is set in initialize() and reset in end() and must not be set anywhere else.
 	 * </p>
 	 */
 	protected String reportOutputFilename;
@@ -133,6 +140,11 @@ public abstract class ExcelEmitter implements IContentEmitter {
 	 * Factory for creating the appropriate StyleManagerUtils object
 	 */
 	private StyleManagerUtils.Factory utilsFactory;
+
+	/**
+	 * Extract mode is enabled
+	 */
+	protected boolean extractMode;
 
 	protected ExcelEmitter(StyleManagerUtils.Factory utilsFactory) {
 		this.utilsFactory = utilsFactory;
@@ -168,7 +180,14 @@ public abstract class ExcelEmitter implements IContentEmitter {
 	 */
 	protected abstract Workbook openWorkbook(File templateFile) throws IOException;
 
-	@Override
+	/**
+	 * Return true if the emitter is in ExtractMode
+	 */
+	public boolean isExtractMode() {
+		return extractMode;
+	}
+
+	@Override	
 	public void initialize(IEmitterServices service) throws BirtException {
 		renderOptions = service.getRenderOption();
 		boolean debug = EmitterServices.booleanOption(renderOptions, (IContent) null, DEBUG, false);
@@ -186,12 +205,19 @@ public abstract class ExcelEmitter implements IContentEmitter {
 	@Override
 	public void start(IReportContent report) throws BirtException {
 		log.addPrefix('>');
-		log.info(0, "start:" + report.toString(), null);
+		log.info( 0, "start:" + report.getTitle(), null);
 
-		String templatePath = EmitterServices.stringOption(renderOptions, report, TEMPLATE_FILE, null);
+		extractMode = EmitterServices.booleanOption(renderOptions, report, EXTRACT_MODE, false);
+		String templatePath = extractMode ? null : EmitterServices.stringOption(renderOptions, report, TEMPLATE_FILE, null);
 		Workbook wb;
-		if (templatePath != null) {
+		if(templatePath != null) {
 			URL templateURL = report.getReportContext().getResource(templatePath);
+			if(templateURL == null) {
+				throw new BirtException(EmitterServices.getPluginName()
+						, "Unable locate template resource for " + templatePath
+						, null
+						);
+			}
 			File templateFile;
 			try {
 				templateFile = new File(templateURL.toURI());
@@ -209,6 +235,10 @@ public abstract class ExcelEmitter implements IContentEmitter {
 			wb = createWorkbook();
 		}
 
+		if( EmitterServices.booleanOption( renderOptions, report, ExcelEmitter.FORCE_RECALCULATION, false ) ) {
+			wb.setForceFormulaRecalculation(true);
+		}
+
 		CSSEngine cssEngine = report.getRoot().getCSSEngine();
 		StyleManagerUtils smu = utilsFactory.create(log);
 
@@ -217,8 +247,7 @@ public abstract class ExcelEmitter implements IContentEmitter {
 		handlerState = new HandlerState(this, log, smu, wb, sm, renderOptions);
 		handlerState.setHandler(new PageHandler(log, null));
 
-		if (EmitterServices.booleanOption(handlerState.getRenderOptions(), report,
-				ExcelEmitter.SINGLE_SHEET_PAGE_BREAKS, false)) {
+		if (EmitterServices.booleanOption(handlerState.getRenderOptions(), report, ExcelEmitter.SINGLE_SHEET_PAGE_BREAKS, false)) {
 			handlerState.getRenderOptions().setOption(ExcelEmitter.SINGLE_SHEET, Boolean.TRUE);
 		}
 	}
@@ -234,8 +263,9 @@ public abstract class ExcelEmitter implements IContentEmitter {
 		log.removePrefix('>');
 		log.debug("end:", report);
 
-		String reportTitle = handlerState.correctSheetName(report.getTitle());
-		if ((handlerState.getWb().getNumberOfSheets() == 1) && (reportTitle != null)) {
+		String reportTitle = report.getTitle();
+		if ((handlerState.getWb().getNumberOfSheets() == 1)
+				&& (reportTitle != null)) {
 			handlerState.getWb().setSheetName(0, reportTitle);
 		}
 
@@ -268,6 +298,15 @@ public abstract class ExcelEmitter implements IContentEmitter {
 					log.debug("ex:", ex.toString());
 				}
 			}
+
+			if (handlerState.getWb() instanceof SXSSFWorkbook) {
+				// dispose SXSSFWorkbook to let it removing temporary files
+				SXSSFWorkbook wb = (SXSSFWorkbook) handlerState.getWb();
+				if (!wb.dispose()) {
+					log.error(0, "Failed to dispose SXSSFWorkbook.", new Exception("SXSSFWorkbook.dispose() has returned false."));
+				}
+			}
+
 			handlerState = null;
 			reportOutputFilename = null;
 			reportOutputStream = null;
@@ -421,7 +460,9 @@ public abstract class ExcelEmitter implements IContentEmitter {
 	@Override
 	public void startImage(IImageContent image) throws BirtException {
 		log.debug(handlerState, "startImage: ");
-		handlerState.getHandler().emitImage(handlerState, image);
+		if (!extractMode) {
+			handlerState.getHandler().emitImage(handlerState,image);
+		}
 	}
 
 	@Override

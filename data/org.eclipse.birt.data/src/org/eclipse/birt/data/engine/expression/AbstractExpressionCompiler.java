@@ -43,6 +43,7 @@ import org.mozilla.javascript.ast.ScriptNode;
  * This class provides default implementations for the compilation of ROM
  * JavaScript expressions interface.
  */
+@SuppressWarnings("nls")
 abstract class AbstractExpressionCompiler {
 
 	private CompilerEnvirons m_compilerEnv;

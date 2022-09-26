@@ -26,6 +26,7 @@ import org.eclipse.birt.report.engine.content.impl.DrillThroughAction;
  *
  */
 
+@SuppressWarnings("nls")
 public class ActionInstance implements IActionInstance {
 
 	IHyperlinkAction hyperlink;

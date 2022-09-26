@@ -19,6 +19,7 @@
 
 package org.eclipse.birt.report.soapengine.api;
 
+@SuppressWarnings("nls")
 public class AggregateDefinition implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private java.lang.String func;

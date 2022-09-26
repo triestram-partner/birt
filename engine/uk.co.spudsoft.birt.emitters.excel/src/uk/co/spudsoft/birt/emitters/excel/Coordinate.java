@@ -67,6 +67,7 @@ public class Coordinate {
 		return true;
 	}
 
+	@SuppressWarnings("nls")
 	@Override
 	public String toString() {
 		return "Coordinate [row=" + row + ", col=" + col + "]";

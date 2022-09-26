@@ -27,6 +27,7 @@ import org.mozilla.javascript.Scriptable;
  * A registry of aggregate expressions. Stores all aggregate expressions that
  * appears in a report query or subquery
  */
+@SuppressWarnings("nls")
 public final class AggregateTable {
 	/** Array of AggrExprInfo objects to record all aggregates */
 	private List aggrExprInfoList;

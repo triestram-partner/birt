@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -53,8 +54,11 @@ import org.eclipse.birt.report.engine.api.IRunTask;
 import org.eclipse.birt.report.engine.api.RenderOption;
 import org.eclipse.birt.report.engine.api.impl.ReportEngine;
 import org.eclipse.birt.report.model.api.IResourceLocator;
+import org.junit.Rule;
+import org.junit.rules.TestName;
 
 import uk.co.spudsoft.birt.emitters.bugfix.FixedRenderTask;
+import uk.co.spudsoft.birt.emitters.bugfix.FixedRunTask;
 import uk.co.spudsoft.birt.emitters.excel.ExcelEmitter;
 import uk.co.spudsoft.birt.emitters.excel.tests.framework.Activator;
 
@@ -68,6 +72,10 @@ public class ReportRunner {
 	protected boolean nestTableInLastCell;
 	protected boolean autoFilter;
 	protected boolean blankLineAfterTopLevelTable;
+	protected boolean extractMode;
+	protected boolean noStyles;
+	protected boolean forceRecalculation;
+
 
 	protected Boolean displayFormulas = null;
 	protected Boolean displayGridlines = null;
@@ -81,10 +89,15 @@ public class ReportRunner {
 
 	protected String templateFile = null;
 
-	protected Map<String, Object> parameters = new HashMap<>();
+	protected Locale defaultLocale = Locale.UK;
+
+	protected Map<String,Object> parameters = new HashMap<String, Object>();
 	protected long startTime;
 	protected long runTime;
 	protected long renderTime;
+
+	@Rule
+	public TestName testName = new TestName();
 
 	private static byte[] getBytesFromFile(File file) throws IOException {
 		InputStream is = new FileInputStream(file);
@@ -174,6 +187,8 @@ public class ReportRunner {
 	protected InputStream runAndRenderReportDefaultTask(String filename, String outputFormat)
 			throws BirtException, IOException {
 
+		Locale.setDefault(defaultLocale);
+
 		IReportEngine reportEngine = createReportEngine();
 
 		String filepath = deriveFilepath(filename);
@@ -235,6 +250,8 @@ public class ReportRunner {
 	protected InputStream runAndRenderReportFileNotStream(String filename, String outputFormat)
 			throws BirtException, IOException {
 
+		Locale.setDefault(defaultLocale);
+
 		IReportEngine reportEngine = createReportEngine();
 
 		String filepath = deriveFilepath(filename);
@@ -294,7 +311,9 @@ public class ReportRunner {
 	protected InputStream runAndRenderReportAsOne(String filename, String outputFormat)
 			throws BirtException, IOException {
 
-		IReportEngine reportEngine = createReportEngine();
+		Locale.setDefault(defaultLocale);
+
+	        IReportEngine reportEngine = createReportEngine();
 
 		String filepath = deriveFilepath(filename);
 
@@ -345,6 +364,8 @@ public class ReportRunner {
 	protected InputStream runAndRenderReportCustomTask(String filename, String outputFormat)
 			throws BirtException, IOException {
 
+		Locale.setDefault(defaultLocale);
+
 		IReportEngine reportEngine = createReportEngine();
 
 		String filepath = deriveFilepath(filename);
@@ -376,8 +397,7 @@ public class ReportRunner {
 					startTime = System.currentTimeMillis();
 					IReportDocument reportDocument = runReport(reportEngine, reportRunTask, tempDoc);
 					runTime = System.currentTimeMillis();
-					System.err
-							.println("Run " + baseFilename(filename) + " : " + ((runTime - startTime) / 1000.0) + "s");
+				        System.err.println("Initial run " + baseFilename(filename) + " : " + ((runTime - startTime) / 1000.0) + "s");
 
 					// IRenderTask renderTask = reportEngine.createRenderTask( reportDocument );
 					IRenderTask renderTask = new FixedRenderTask((ReportEngine) reportEngine, reportRunnable,
@@ -452,6 +472,7 @@ public class ReportRunner {
 			String resourceLocationFile = resourceLocation.getFile();
 			// System.err.println( "resourceLocationFile = " + resourceLocationFile );
 
+
 			filepath = bundleLocationFile + "bin" + resourceLocationFile;
 			// System.err.println( "filepath = " + filepath );
 		}
@@ -506,6 +527,11 @@ public class ReportRunner {
 		renderOptions.setOutputFormat(outputFormat);
 		if (outputStream != null) {
 			renderOptions.setOutputStream(outputStream);
+		}
+		if ("xls".equals(outputFormat)) {
+			renderOptions.setEmitterID("uk.co.spudsoft.birt.emitters.excel.XlsEmitter");
+		} else if ("xlsx".equals(outputFormat)) {
+			renderOptions.setEmitterID("uk.co.spudsoft.birt.emitters.excel.XlsxEmitter");
 		}
 		if (debug) {
 			renderOptions.setOption("ExcelEmitter.DEBUG", Boolean.TRUE);

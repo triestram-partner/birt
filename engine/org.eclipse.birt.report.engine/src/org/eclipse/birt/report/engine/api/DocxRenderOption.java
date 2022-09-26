@@ -20,7 +20,7 @@ public class DocxRenderOption extends RenderOption {
 
 	public static final String OPTION_EMBED_HTML = "EmbedHtml";
 
-	public static final String OPTION_WORD_VERSION = "WordVersion";
+	public static final String OPTION_WORD_VERSION = "WordVersion"; //$NON-NLS-1$
 
 	@SuppressWarnings("unchecked")
 	public void setCompressionMode(CompressionMode compressionMode) {

@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+@SuppressWarnings("nls")
 public class DateFormatConverter {
 
 	public static class DateFormatTokenizer {
@@ -327,7 +328,7 @@ public class DateFormatConverter {
 		String token;
 		while ((token = tokenizer.getNextToken()) != null) {
 			if (token.startsWith("'")) {
-				result.append(token.replace('\'', '"'));
+				result.append(token.replaceAll("'", "\""));
 			} else if (!Character.isLetter(token.charAt(0))) {
 				result.append(token);
 			} else {

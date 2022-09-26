@@ -45,6 +45,7 @@ import com.ibm.icu.text.SimpleDateFormat;
 /**
  * Base class for test cases that work with Data Engine public API
  */
+@SuppressWarnings("nls")
 abstract public class APITestCase extends BaseTestCase {
 
 	/** connection property */

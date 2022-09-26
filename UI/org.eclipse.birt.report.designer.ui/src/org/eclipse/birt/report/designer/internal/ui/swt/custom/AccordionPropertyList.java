@@ -62,6 +62,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.forms.FormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
+@SuppressWarnings("nls")
 public class AccordionPropertyList extends Canvas implements IPropertyList {
 
 	public static final Image ICON_COLLAPSE = UIHelper.getImage(ReportPlugin.getDefault().getBundle(),

@@ -74,7 +74,7 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 
 	protected IPart part;
 
-	private final String validHtml = "^\\s*(.*)<html(.*?)>(.*?)</html>\\s*$";
+	private final String validHtml = "^\\s*(.*)<html(.*?)>(.*?)</html>\\s*$"; //$NON-NLS-1$
 
 	private final int DISPLAY_BLOCK = 1;
 
@@ -90,9 +90,9 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 
 	private OOXmlWriter mhtPartWriter;
 
-	private final String BOUNDARY = "___Actuate_Content_Boundary___";
+	private final String BOUNDARY = "___Actuate_Content_Boundary___"; //$NON-NLS-1$
 
-	private List<String> imageSrc = new ArrayList<>();
+	private List<String> imageSrc = new ArrayList<String>();
 
 	private ReportDesignHandle handle;
 
@@ -104,20 +104,20 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 	}
 
 	protected void writeXmlns() {
-		ooxmlWriter.nameSpace("ve", NameSpaces.VE);
-		ooxmlWriter.nameSpace("o", NameSpaces.OFFICE);
-		ooxmlWriter.nameSpace("r", NameSpaces.RELATIONSHIPS);
-		ooxmlWriter.nameSpace("m", NameSpaces.MATH);
-		ooxmlWriter.nameSpace("v", NameSpaces.VML);
-		ooxmlWriter.nameSpace("wp", NameSpaces.WORD_DRAWING);
-		ooxmlWriter.nameSpace("w10", NameSpaces.WORD);
-		ooxmlWriter.nameSpace("w", NameSpaces.WORD_PROCESSINGML);
-		ooxmlWriter.nameSpace("wne", NameSpaces.WORDML);
+		ooxmlWriter.nameSpace("ve", NameSpaces.VE); //$NON-NLS-1$
+		ooxmlWriter.nameSpace("o", NameSpaces.OFFICE); //$NON-NLS-1$
+		ooxmlWriter.nameSpace("r", NameSpaces.RELATIONSHIPS); //$NON-NLS-1$
+		ooxmlWriter.nameSpace("m", NameSpaces.MATH); //$NON-NLS-1$
+		ooxmlWriter.nameSpace("v", NameSpaces.VML); //$NON-NLS-1$
+		ooxmlWriter.nameSpace("wp", NameSpaces.WORD_DRAWING); //$NON-NLS-1$
+		ooxmlWriter.nameSpace("w10", NameSpaces.WORD); //$NON-NLS-1$
+		ooxmlWriter.nameSpace("w", NameSpaces.WORD_PROCESSINGML); //$NON-NLS-1$
+		ooxmlWriter.nameSpace("wne", NameSpaces.WORDML); //$NON-NLS-1$
 	}
 
 	protected void drawImage(byte[] data, double height, double width, HyperlinkInfo hyper, IStyle style,
 			InlineFlag inlineFlag, String altText, String uri) {
-		int imageId = getImageID();
+		int imageId = nextImageID();
 		IPart imagePart = null;
 		if (data != null) {
 			try {
@@ -128,41 +128,41 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 			}
 		}
 		if (inlineFlag == InlineFlag.FIRST_INLINE || inlineFlag == InlineFlag.BLOCK) {
-			writer.openTag("w:p");
+			writer.openTag("w:p"); //$NON-NLS-1$
 		}
 
 		openHyperlink(hyper);
-		writer.openTag("w:r");
-		writer.openTag("w:pict");
+		writer.openTag("w:r"); //$NON-NLS-1$
+		writer.openTag("w:pict"); //$NON-NLS-1$
 		drawImageShapeType(imageId);
 		drawImageShape(height, width, style, altText, imageId, imagePart);
-		writer.closeTag("w:pict");
-		writer.closeTag("w:r");
+		writer.closeTag("w:pict"); //$NON-NLS-1$
+		writer.closeTag("w:r"); //$NON-NLS-1$
 		closeHyperlink(hyper);
 
 		if (inlineFlag == InlineFlag.BLOCK) {
-			writer.closeTag("w:p");
+			writer.closeTag("w:p"); //$NON-NLS-1$
 		}
 	}
 
 	private void drawImageShape(double height, double width, IStyle style, String altText, int imageId,
 			IPart imagePart) {
-		writer.openTag("v:shape");
-		writer.attribute("id", "_x0000_i10" + imageId);
-		writer.attribute("type", "#_x0000_t" + imageId);
-		writer.attribute("alt", altText);
-		writer.attribute("style", "width:" + width + "pt;height:" + height + "pt");
+		writer.openTag("v:shape"); //$NON-NLS-1$
+		writer.attribute("id", "_x0000_i10" + imageId); //$NON-NLS-1$ //$NON-NLS-2$
+		writer.attribute("type", "#_x0000_t" + imageId); //$NON-NLS-1$ //$NON-NLS-2$
+		writer.attribute("alt", altText); //$NON-NLS-1$
+		writer.attribute("style", "width:" + width + "pt;height:" + height + "pt"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		drawImageBordersColor(style);
-		writer.openTag("v:imagedata");
+		writer.openTag("v:imagedata"); //$NON-NLS-1$
 		if (imagePart != null) {
-			writer.attribute("r:id", imagePart.getRelationshipId());
-			writer.attribute("r:href", part.getExternalImageId("ooxWord:/" + imagePart.getAbsoluteUri()));
+			writer.attribute("r:id", imagePart.getRelationshipId()); //$NON-NLS-1$
+			writer.attribute("r:href", part.getExternalImageId("ooxWord:/" + imagePart.getAbsoluteUri())); //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
-			writer.attribute("r:id", part.getExternalImageId("wordml://" + imageId + ".png"));
+			writer.attribute("r:id", part.getExternalImageId("wordml://" + imageId + ".png")); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 		}
-		writer.closeTag("v:imagedata");
+		writer.closeTag("v:imagedata"); //$NON-NLS-1$
 		drawImageBordersStyle(style);
-		writer.closeTag("v:shape");
+		writer.closeTag("v:shape"); //$NON-NLS-1$
 	}
 
 	@Override
@@ -170,21 +170,21 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 		if (info == null) {
 			return;
 		}
-		writer.openTag("w:hyperlink");
+		writer.openTag("w:hyperlink"); //$NON-NLS-1$
 
 		if (HyperlinkInfo.BOOKMARK == info.getType()) {
-			writer.attribute("w:anchor", info.getUrl());
+			writer.attribute("w:anchor", info.getUrl()); //$NON-NLS-1$
 		} else if (HyperlinkInfo.HYPERLINK == info.getType()) {
 			if (info.getUrl() != null) {
-				String url = info.getUrl().replace(" ", "");
-				writer.attribute("r:id", part.getHyperlinkId(url));
+				String url = info.getUrl().replaceAll(" ", ""); //$NON-NLS-1$ //$NON-NLS-2$
+				writer.attribute("r:id", part.getHyperlinkId(url)); //$NON-NLS-1$
 			}
 			if (info.getBookmark() != null) {
-				writer.attribute("w:anchor", info.getBookmark());
+				writer.attribute("w:anchor", info.getBookmark()); //$NON-NLS-1$
 			}
 		}
 		if (info.getTooltip() != null) {
-			writer.attribute("w:tooltip", info.getTooltip());
+			writer.attribute("w:tooltip", info.getTooltip()); //$NON-NLS-1$
 		}
 	}
 
@@ -193,49 +193,49 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 		if ((info == null) || (info.getType() == HyperlinkInfo.DRILL)) {
 			return;
 		}
-		writer.closeTag("w:hyperlink");
+		writer.closeTag("w:hyperlink"); //$NON-NLS-1$
 	}
 
 	@Override
 	protected void writeTableLayout() {
-		writer.openTag("w:tblLayout");
-		writer.attribute("w:type", "fixed");
-		writer.closeTag("w:tblLayout");
+		writer.openTag("w:tblLayout"); //$NON-NLS-1$
+		writer.attribute("w:type", "fixed"); //$NON-NLS-1$ //$NON-NLS-2$
+		writer.closeTag("w:tblLayout"); //$NON-NLS-1$
 	}
 
 	@Override
 	protected void writeFontSize(IStyle style) {
 		CSSValue fontSize = style.getProperty(StyleConstants.STYLE_FONT_SIZE);
 		int size = WordUtil.parseFontSize(PropertyUtil.getDimensionValue(fontSize));
-		writeAttrTag("w:sz", size);
-		writeAttrTag("w:szCs", size);
+		writeAttrTag("w:sz", size); //$NON-NLS-1$
+		writeAttrTag("w:szCs", size); //$NON-NLS-1$
 	}
 
 	@Override
 	protected void writeFont(String fontFamily) {
-		writer.openTag("w:rFonts");
-		writer.attribute("w:ascii", fontFamily);
-		writer.attribute("w:eastAsia", fontFamily);
-		writer.attribute("w:hAnsi", fontFamily);
-		writer.attribute("w:cs", fontFamily);
-		writer.closeTag("w:rFonts");
+		writer.openTag("w:rFonts"); //$NON-NLS-1$
+		writer.attribute("w:ascii", fontFamily); //$NON-NLS-1$
+		writer.attribute("w:eastAsia", fontFamily); //$NON-NLS-1$
+		writer.attribute("w:hAnsi", fontFamily); //$NON-NLS-1$
+		writer.attribute("w:cs", fontFamily); //$NON-NLS-1$
+		writer.closeTag("w:rFonts"); //$NON-NLS-1$
 	}
 
 	@Override
 	protected void writeFontStyle(IStyle style) {
 		String val = WordUtil.removeQuote(style.getFontStyle());
-		if (!"normal".equalsIgnoreCase(val)) {
-			writeAttrTag("w:i", "on");
-			writeAttrTag("w:iCs", "on");
+		if (!"normal".equalsIgnoreCase(val)) { //$NON-NLS-1$
+			writeAttrTag("w:i", "on"); //$NON-NLS-1$ //$NON-NLS-2$
+			writeAttrTag("w:iCs", "on"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
 	@Override
 	protected void writeFontWeight(IStyle style) {
 		String val = WordUtil.removeQuote(style.getFontWeight());
-		if (!"normal".equalsIgnoreCase(val)) {
-			writeAttrTag("w:b", "on");
-			writeAttrTag("w:bCs", "on");
+		if (!"normal".equalsIgnoreCase(val)) { //$NON-NLS-1$
+			writeAttrTag("w:b", "on"); //$NON-NLS-1$ //$NON-NLS-2$
+			writeAttrTag("w:bCs", "on"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -245,90 +245,90 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 
 	protected void writeTOC(String tocText, String color, int level, boolean middleInline) {
 		if (!middleInline) {
-			writer.openTag("w:p");
+			writer.openTag("w:p"); //$NON-NLS-1$
 		}
 		if (color != null && color.length() != 0) {
-			writer.openTag("w:pPr");
-			writer.openTag("w:shd");
-			writer.attribute("w:val", "clear");
-			writer.attribute("w:color", "auto");
-			writer.attribute("w:fill", color);
-			writer.closeTag("w:shd");
-			writer.openTag("w:rPr");
-			writer.openTag("w:vanish");
-			writer.closeTag("w:vanish");
-			writer.closeTag("w:rPr");
-			writer.closeTag("w:pPr");
+			writer.openTag("w:pPr"); //$NON-NLS-1$
+			writer.openTag("w:shd"); //$NON-NLS-1$
+			writer.attribute("w:val", "clear"); //$NON-NLS-1$ //$NON-NLS-2$
+			writer.attribute("w:color", "auto"); //$NON-NLS-1$ //$NON-NLS-2$
+			writer.attribute("w:fill", color); //$NON-NLS-1$
+			writer.closeTag("w:shd"); //$NON-NLS-1$
+			writer.openTag("w:rPr"); //$NON-NLS-1$
+			writer.openTag("w:vanish"); //$NON-NLS-1$
+			writer.closeTag("w:vanish"); //$NON-NLS-1$
+			writer.closeTag("w:rPr"); //$NON-NLS-1$
+			writer.closeTag("w:pPr"); //$NON-NLS-1$
 		} else {
-			writer.openTag("w:rPr");
-			writer.openTag("w:vanish");
-			writer.closeTag("w:vanish");
-			writer.closeTag("w:rPr");
+			writer.openTag("w:rPr"); //$NON-NLS-1$
+			writer.openTag("w:vanish"); //$NON-NLS-1$
+			writer.closeTag("w:vanish"); //$NON-NLS-1$
+			writer.closeTag("w:rPr"); //$NON-NLS-1$
 		}
 
-		writer.openTag("w:bookmarkStart");
-		writer.attribute("w:id", bookmarkId);
-		writer.attribute("w:name", "_Toc" + tocText);
-		writer.closeTag("w:bookmarkStart");
-		writer.openTag("w:bookmarkEnd");
-		writer.attribute("w:id", bookmarkId);
-		writer.closeTag("w:bookmarkEnd");
+		writer.openTag("w:bookmarkStart"); //$NON-NLS-1$
+		writer.attribute("w:id", bookmarkId); //$NON-NLS-1$
+		writer.attribute("w:name", "_Toc" + tocText); //$NON-NLS-1$ //$NON-NLS-2$
+		writer.closeTag("w:bookmarkStart"); //$NON-NLS-1$
+		writer.openTag("w:bookmarkEnd"); //$NON-NLS-1$
+		writer.attribute("w:id", bookmarkId); //$NON-NLS-1$
+		writer.closeTag("w:bookmarkEnd"); //$NON-NLS-1$
 
 		writeField(true);
 		writeTocText(tocText, level);
 		writeField(false);
 		if (!middleInline) {
-			writer.closeTag("w:p");
+			writer.closeTag("w:p"); //$NON-NLS-1$
 		}
 	}
 
 	@Override
 	protected void writeVmerge(SpanInfo spanInfo) {
 		if (spanInfo.isStart()) {
-			writeAttrTag("w:vMerge", "restart");
+			writeAttrTag("w:vMerge", "restart"); //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
-			writer.openTag("w:vMerge");
-			writer.closeTag("w:vMerge");
+			writer.openTag("w:vMerge"); //$NON-NLS-1$
+			writer.closeTag("w:vMerge"); //$NON-NLS-1$
 		}
 	}
 
 	protected void writeBookmark(String bm) {
 		String bookmark = WordUtil.validBookmarkName(bm);
 
-		writer.openTag("w:bookmarkStart");
-		writer.attribute("w:id", bookmarkId);
-		writer.attribute("w:name", bookmark);
-		writer.closeTag("w:bookmarkStart");
+		writer.openTag("w:bookmarkStart"); //$NON-NLS-1$
+		writer.attribute("w:id", bookmarkId); //$NON-NLS-1$
+		writer.attribute("w:name", bookmark); //$NON-NLS-1$
+		writer.closeTag("w:bookmarkStart"); //$NON-NLS-1$
 
-		writer.openTag("w:bookmarkEnd");
-		writer.attribute("w:id", bookmarkId);
-		writer.closeTag("w:bookmarkEnd");
+		writer.openTag("w:bookmarkEnd"); //$NON-NLS-1$
+		writer.attribute("w:id", bookmarkId); //$NON-NLS-1$
+		writer.closeTag("w:bookmarkEnd"); //$NON-NLS-1$
 
 		bookmarkId++;
 	}
 
 	protected void writeForeign(IForeignContent foreignContent) {
 		if (foreignContent.getRawValue() != null) {
-			String uri = "mhtText" + getMhtTextId() + ".mht";
+			String uri = "mhtText" + nextMhtTextId() + ".mht"; //$NON-NLS-1$ //$NON-NLS-2$
 			MimeType type = MimeType.MHT;
 			String relationshipType = RelationshipTypes.AFCHUNK;
 			IPart mhtPart = part.getPart(uri, type, relationshipType);
 			handle = foreignContent.getReportContent().getDesign().getReportDesign();
 			writeMhtPart(mhtPart, foreignContent);
-			writer.openTag("w:altChunk");
-			writer.attribute("r:id", mhtPart.getRelationshipId());
-			writer.closeTag("w:altChunk");
+			writer.openTag("w:altChunk"); //$NON-NLS-1$
+			writer.attribute("r:id", mhtPart.getRelationshipId()); //$NON-NLS-1$
+			writer.closeTag("w:altChunk"); //$NON-NLS-1$
 		}
 	}
 
 	private void writeMhtPart(IPart mhtPart, IForeignContent foreignContent) {
 		try {
 			mhtPartWriter = mhtPart.getWriter();
-			mhtPartWriter.println("From:");
-			mhtPartWriter.println("Subject:");
-			mhtPartWriter.println("Date:");
-			mhtPartWriter.println("MIME-Version: 1.0");
-			mhtPartWriter.println("Content-Type: multipart/related; type=\"text/html\"; boundary=\"" + BOUNDARY + "\"");
+			mhtPartWriter.println("From:"); //$NON-NLS-1$
+			mhtPartWriter.println("Subject:"); //$NON-NLS-1$
+			mhtPartWriter.println("Date:"); //$NON-NLS-1$
+			mhtPartWriter.println("MIME-Version: 1.0"); //$NON-NLS-1$
+			mhtPartWriter.println("Content-Type: multipart/related; type=\"text/html\"; boundary=\"" + BOUNDARY + "\""); //$NON-NLS-1$ //$NON-NLS-2$
 			writeHtmlText(foreignContent);
 			writeImages();
 		} catch (IOException | EncoderException e) {
@@ -343,7 +343,7 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 
 	private void buildHtmlBody(IForeignContent foreignContent, String foreignText, IStyle style,
 			StringBuffer htmlBuffer) throws EncoderException, UnsupportedEncodingException {
-		htmlBuffer.append("<body>");
+		htmlBuffer.append("<body>"); //$NON-NLS-1$
 		DimensionType x = foreignContent.getX();
 		DimensionType y = foreignContent.getY();
 		DimensionType width = foreignContent.getWidth();
@@ -351,27 +351,27 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 		int display = getElementType(x, y, width, height, style);
 		String tagName = getTagByType(display, DISPLAY_FLAG_ALL);
 		if (null != tagName) {
-			htmlBuffer.append("<div");
-			if (tagName.equalsIgnoreCase("span")) {
-				htmlBuffer.append(" style=\"display: inline\" ");
+			htmlBuffer.append("<div"); //$NON-NLS-1$
+			if (tagName.equalsIgnoreCase("span")) { //$NON-NLS-1$
+				htmlBuffer.append(" style=\"display: inline\" "); //$NON-NLS-1$
 			}
 		}
 		if (style != null && !style.isEmpty()) {
-			htmlBuffer.append(" class=\"styleForeign\"");
+			htmlBuffer.append(" class=\"styleForeign\""); //$NON-NLS-1$
 		}
 		StringBuffer foreignStyles = new StringBuffer();
 		buildForeignStyles(foreignContent, foreignStyles, display);
 		if (foreignStyles.length() > 0) {
-			htmlBuffer.append(" style =\"");
-			htmlBuffer.append(foreignStyles + "\"");
+			htmlBuffer.append(" style =\""); //$NON-NLS-1$
+			htmlBuffer.append(foreignStyles + "\""); //$NON-NLS-1$
 		}
-		htmlBuffer.append(">");
+		htmlBuffer.append(">"); //$NON-NLS-1$
 
 		Map appContext = foreignContent.getReportContent().getReportContext() == null ? null
 				: foreignContent.getReportContent().getReportContext().getAppContext();
 		htmlBuffer.append(normalize(foreignText, appContext));
-		htmlBuffer.append("</" + tagName + ">");
-		htmlBuffer.append("</body>");
+		htmlBuffer.append("</" + tagName + ">"); //$NON-NLS-1$//$NON-NLS-2$
+		htmlBuffer.append("</body>"); //$NON-NLS-1$
 		String quotedPritableHtml = encodcAsQuotedPrintable(htmlBuffer.toString());
 		mhtPartWriter.println(quotedPritableHtml);
 	}
@@ -383,14 +383,14 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 	private String normalize(String foreignText, Map appContext) throws UnsupportedEncodingException {
 		Document doc = new TextParser().parse(foreignText, TextParser.TEXT_TYPE_HTML);
 		HTMLProcessor htmlProcessor = new HTMLProcessor(handle, appContext);
-		HashMap<String, String> styleMap = new HashMap<>();
+		HashMap<String, String> styleMap = new HashMap<String, String>();
 		Element body = null;
 		ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
 		HTMLWriter htmlWriter = new HTMLWriter();
 		htmlWriter.setEnableCompactMode(true); // HVB, bug 519375
 		htmlWriter.open(byteOut);
 		if (doc != null) {
-			NodeList bodys = doc.getElementsByTagName("body");
+			NodeList bodys = doc.getElementsByTagName("body"); //$NON-NLS-1$
 			if (bodys.getLength() > 0) {
 				body = (Element) bodys.item(0);
 			}
@@ -401,21 +401,21 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 		}
 
 		htmlWriter.close();
-		return new String(byteOut.toByteArray(), "UTF-8");
+		return new String(byteOut.toByteArray(), "UTF-8"); //$NON-NLS-1$
 	}
 
 	private void buildStyleClass(IStyle style, StringBuffer htmlBuffer) {
 		StringBuffer styleBuffer = new StringBuffer();
 		buildStyle(styleBuffer, style);
 		if (styleBuffer.length() > 0) {
-			htmlBuffer.append("<head>");
-			htmlBuffer.append("<style type=" + "\"text/css\"" + ">");
-			htmlBuffer.append(".styleForeign");
+			htmlBuffer.append("<head>"); //$NON-NLS-1$
+			htmlBuffer.append("<style type=" + "\"text/css\"" + ">"); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+			htmlBuffer.append(".styleForeign"); //$NON-NLS-1$
 			htmlBuffer.append('{');
 			htmlBuffer.append(styleBuffer.toString());
 			htmlBuffer.append('}');
-			htmlBuffer.append("</style>");
-			htmlBuffer.append("</head>");
+			htmlBuffer.append("</style>"); //$NON-NLS-1$
+			htmlBuffer.append("</head>"); //$NON-NLS-1$
 		}
 	}
 
@@ -436,10 +436,10 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 		String direction = style.getDirection();
 		if (CSSConstants.CSS_RTL_VALUE.equals(style.getDirection())) {
 			// set direction to rtl
-			styleBuffer.append(" direction:");
+			styleBuffer.append(" direction:"); //$NON-NLS-1$
 			styleBuffer.append(direction);
-			styleBuffer.append(";");
-			styleBuffer.append("unicode-bidi:didi-override;");
+			styleBuffer.append(";"); //$NON-NLS-1$
+			styleBuffer.append("unicode-bidi:didi-override;"); //$NON-NLS-1$
 		}
 	}
 
@@ -508,9 +508,9 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 		// build the text-align
 		String textAlign = style.getTextAlign();
 		if (textAlign != null) {
-			foreignStyles.append(" text-align:");
+			foreignStyles.append(" text-align:"); //$NON-NLS-1$
 			foreignStyles.append(textAlign);
-			foreignStyles.append(";");
+			foreignStyles.append(";"); //$NON-NLS-1$
 		}
 	}
 
@@ -681,13 +681,13 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 				|| overline == IStyle.OVERLINE_VALUE) {
 			styleBuffer.append(" text-decoration:"); //$NON-NLS-1$
 			if (IStyle.LINE_THROUGH_VALUE == linethrough) {
-				addPropValue(styleBuffer, "line-through");
+				addPropValue(styleBuffer, "line-through"); //$NON-NLS-1$
 			}
 			if (IStyle.UNDERLINE_VALUE == underline) {
-				addPropValue(styleBuffer, "underline");
+				addPropValue(styleBuffer, "underline"); //$NON-NLS-1$
 			}
 			if (IStyle.OVERLINE_VALUE == overline) {
-				addPropValue(styleBuffer, "overline");
+				addPropValue(styleBuffer, "overline"); //$NON-NLS-1$
 			}
 			styleBuffer.append(';');
 		}
@@ -697,10 +697,10 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 		for (String uri : imageSrc) {
 			String imageType = uri.substring(uri.indexOf('.') + 1);
 			mhtPartWriter.println();
-			mhtPartWriter.println("--" + BOUNDARY);
-			mhtPartWriter.println("Content-Type: image/" + imageType);
-			mhtPartWriter.println("Content-Transfer-Encoding: base64");
-			mhtPartWriter.println("Content-Location:" + uri);
+			mhtPartWriter.println("--" + BOUNDARY); //$NON-NLS-1$
+			mhtPartWriter.println("Content-Type: image/" + imageType); //$NON-NLS-1$
+			mhtPartWriter.println("Content-Transfer-Encoding: base64"); //$NON-NLS-1$
+			mhtPartWriter.println("Content-Location:" + uri); //$NON-NLS-1$
 			mhtPartWriter.println();
 
 			try {
@@ -715,14 +715,14 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 			}
 		}
 		mhtPartWriter.println();
-		mhtPartWriter.println("--" + BOUNDARY + "--");
+		mhtPartWriter.println("--" + BOUNDARY + "--"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	private void writeHtmlText(IForeignContent foreignContent) throws EncoderException, UnsupportedEncodingException {
 		mhtPartWriter.println();
-		mhtPartWriter.println("--" + BOUNDARY);
-		mhtPartWriter.println("Content-Type: text/html; charset=\"gb2312\"");
-		mhtPartWriter.println("Content-Transfer-Encoding: quoted-printable");
+		mhtPartWriter.println("--" + BOUNDARY); //$NON-NLS-1$
+		mhtPartWriter.println("Content-Type: text/html; charset=\"gb2312\""); //$NON-NLS-1$
+		mhtPartWriter.println("Content-Transfer-Encoding: quoted-printable"); //$NON-NLS-1$
 		mhtPartWriter.println();
 
 		StringBuffer htmlBuffer = new StringBuffer();
@@ -736,19 +736,19 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 			htmlAttribute = matcher.group(2);
 			foreignText = matcher.group(3);
 		}
-		mhtPartWriter.print("=EF=BB=BF");
+		mhtPartWriter.print("=EF=BB=BF"); //$NON-NLS-1$
 		if (headInformation != null) {
-			htmlBuffer.append(headInformation + " ");
+			htmlBuffer.append(headInformation + " "); //$NON-NLS-1$
 		}
-		htmlBuffer.append("<html");
+		htmlBuffer.append("<html"); //$NON-NLS-1$
 		if (htmlAttribute != null) {
-			htmlBuffer.append(" " + htmlAttribute);
+			htmlBuffer.append(" " + htmlAttribute); //$NON-NLS-1$
 		}
-		htmlBuffer.append(">");
+		htmlBuffer.append(">"); //$NON-NLS-1$
 		IStyle style = foreignContent.getComputedStyle();
 		buildStyleClass(style, htmlBuffer);
 		buildHtmlBody(foreignContent, foreignText, style, htmlBuffer);
-		mhtPartWriter.print("</html>");
+		mhtPartWriter.print("</html>"); //$NON-NLS-1$
 	}
 
 	private void processNodes(Element ele, HashMap cssStyles, HTMLWriter writer, Map appContext) {
@@ -768,7 +768,7 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 				writer.comment(node.getNodeValue());
 			} else if (nodeType == Node.ELEMENT_NODE) {
 				Element element = (Element) node;
-				if ("br".equalsIgnoreCase(node.getNodeName())) {
+				if ("br".equalsIgnoreCase(node.getNodeName())) { //$NON-NLS-1$
 					// <br/> is correct. <br></br> is not correct. The brower
 					// will treat the <br></br> as <br><br>
 					boolean bImplicitCloseTag = writer.isImplicitCloseTag();
@@ -798,7 +798,7 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 				String attrValue = attribute.getNodeValue();
 
 				if (attrValue != null) {
-					if ("img".equalsIgnoreCase(nodeName) && "src".equalsIgnoreCase(attrName)) {
+					if ("img".equalsIgnoreCase(nodeName) && "src".equalsIgnoreCase(attrName)) { //$NON-NLS-1$ //$NON-NLS-2$
 						String attrValueTrue = handleStyleImage(attrValue, appContext);
 						if (attrValueTrue != null) {
 							attrValue = attrValueTrue;
@@ -821,22 +821,22 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 				String key = keyObj.toString();
 				String value = valueObj.toString();
 				buffer.append(key);
-				buffer.append(":");
-				if ("background-image".equalsIgnoreCase(key)) {
+				buffer.append(":"); //$NON-NLS-1$
+				if ("background-image".equalsIgnoreCase(key)) { //$NON-NLS-1$
 					String valueTrue = handleStyleImage(value, appContext);
 					if (valueTrue != null) {
 						value = valueTrue;
 					}
-					buffer.append("url(");
+					buffer.append("url("); //$NON-NLS-1$
 					buffer.append(value);
-					buffer.append(")");
+					buffer.append(")"); //$NON-NLS-1$
 				} else {
 					buffer.append(value);
 				}
-				buffer.append(";");
+				buffer.append(";"); //$NON-NLS-1$
 			}
 			if (buffer.length() != 0) {
-				writer.attribute("style", buffer.toString());
+				writer.attribute("style", buffer.toString()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -882,9 +882,8 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 		Matcher matcher = pattern.matcher(foreignText);
 		if (matcher.matches()) {
 			return foreignText;
-		} else {
-			return "<html>" + foreignText + "</html>";
-		}
+		} else
+			return "<html>" + foreignText + "</html>"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	protected String getRelationshipId() {
@@ -892,34 +891,35 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 	}
 
 	@Override
-	public void startTableRow(double height, boolean isHeader, boolean repeatHeader, boolean fixedLayout) {
-		writer.openTag("w:tr");
+	public void startTableRow(double height, boolean isHeader, boolean repeatHeader, boolean fixedLayout,
+			boolean cantSplit) {
+		writer.openTag("w:tr"); //$NON-NLS-1$
 
 		// write the row height, unit: twips
-		writer.openTag("w:trPr");
+		writer.openTag("w:trPr"); //$NON-NLS-1$
 
 		if (height != -1) {
-			writer.openTag("w:trHeight");
+			writer.openTag("w:trHeight"); //$NON-NLS-1$
 			if (fixedLayout) {
-				writer.attribute("w:hRule", "exact");
+				writer.attribute("w:hRule", "exact"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-			writer.attribute("w:val", height);
-			writer.closeTag("w:trHeight");
+			writer.attribute("w:val", height); //$NON-NLS-1$
+			writer.closeTag("w:trHeight"); //$NON-NLS-1$
 		}
 
 		// if value is "off",the header will be not repeated
 		if (isHeader) {
-			String headerOnOff = repeatHeader ? "on" : "off";
-			writeAttrTag("w:tblHeader", headerOnOff);
+			String headerOnOff = repeatHeader ? "on" : "off"; //$NON-NLS-1$ //$NON-NLS-2$
+			writeAttrTag("w:tblHeader", headerOnOff); //$NON-NLS-1$
 		}
-		writer.closeTag("w:trPr");
+		writer.closeTag("w:trPr"); //$NON-NLS-1$
 	}
 
 	@Override
 	protected void writeIndent(int textIndent) {
-		writer.openTag("w:ind");
-		writer.attribute("w:firstLine", textIndent);
-		writer.closeTag("w:ind");
+		writer.openTag("w:ind"); //$NON-NLS-1$
+		writer.attribute("w:firstLine", textIndent); //$NON-NLS-1$
+		writer.closeTag("w:ind"); //$NON-NLS-1$
 	}
 
 	@Override
@@ -927,24 +927,24 @@ public abstract class BasicComponent extends AbstractWordXmlWriter {
 		if (leftMargin == 0 && rightMargin == 0 && textIndent == 0) {
 			return;
 		}
-		writer.openTag("w:ind");
+		writer.openTag("w:ind"); //$NON-NLS-1$
 		if (leftMargin != 0) {
-			writer.attribute("w:left", leftMargin);
+			writer.attribute("w:left", leftMargin); //$NON-NLS-1$
 		}
 
 		if (rightMargin != 0) {
-			writer.attribute("w:right", rightMargin);
+			writer.attribute("w:right", rightMargin); //$NON-NLS-1$
 		}
 
 		if (textIndent != 0) {
-			writer.attribute("w:firstLine", textIndent);
+			writer.attribute("w:firstLine", textIndent); //$NON-NLS-1$
 		}
-		writer.closeTag("w:ind");
+		writer.closeTag("w:ind"); //$NON-NLS-1$
 	}
 
 	abstract void start();
 
 	abstract void end();
 
-	abstract protected int getMhtTextId();
+	abstract protected int nextMhtTextId();
 }

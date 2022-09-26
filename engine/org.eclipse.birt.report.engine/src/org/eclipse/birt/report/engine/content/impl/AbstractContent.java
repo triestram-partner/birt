@@ -46,6 +46,7 @@ import org.eclipse.birt.report.engine.ir.ReportItemDesign;
 import org.eclipse.birt.report.engine.ir.StyledElementDesign;
 import org.w3c.dom.css.CSSValue;
 
+@SuppressWarnings("nls")
 abstract public class AbstractContent extends AbstractElement implements IContent {
 
 	private static final DimensionType EMPTY_DIMENSION = new DimensionType("NONE");

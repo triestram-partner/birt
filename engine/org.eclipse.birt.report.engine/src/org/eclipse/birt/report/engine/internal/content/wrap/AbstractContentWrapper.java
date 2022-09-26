@@ -279,6 +279,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 * @see org.eclipse.birt.report.engine.content.IContent#readContent(java.io.
 	 * DataInputStream)
 	 */
+	@SuppressWarnings("nls")
 	@Override
 	public void readContent(DataInputStream in, ClassLoader loader) throws IOException {
 		throw new IOException("Not supported");
@@ -484,11 +485,13 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 	 * @see org.eclipse.birt.report.engine.content.IContent#writeContent(java.io.
 	 * DataOutputStream)
 	 */
+	@SuppressWarnings("nls")
 	@Override
 	public void writeContent(DataOutputStream out) throws IOException {
 		throw new IOException("not supported");
 	}
 
+	@SuppressWarnings("nls")
 	protected void throwUnsupportedException() {
 		throw new UnsupportedOperationException("Unsupported Exception");
 	}
@@ -523,6 +526,7 @@ abstract public class AbstractContentWrapper extends AbstractElement implements 
 		return content.getACL();
 	}
 
+	@SuppressWarnings("nls")
 	@Override
 	public void setACL(String acl) {
 		throw new UnsupportedOperationException("setACL");

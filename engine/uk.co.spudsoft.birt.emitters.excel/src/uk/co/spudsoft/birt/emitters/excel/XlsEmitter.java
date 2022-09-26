@@ -30,6 +30,7 @@ import org.apache.poi.ss.usermodel.Workbook;
  * @author Jim Talbut
  *
  */
+@SuppressWarnings("nls")
 public class XlsEmitter extends ExcelEmitter {
 
 	/**

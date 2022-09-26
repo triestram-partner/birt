@@ -34,6 +34,7 @@ import org.eclipse.core.runtime.Status;
  * @author Jim Talbut
  *
  */
+@SuppressWarnings("nls")
 public class Logger {
 
 	private ILog eclipseLog;

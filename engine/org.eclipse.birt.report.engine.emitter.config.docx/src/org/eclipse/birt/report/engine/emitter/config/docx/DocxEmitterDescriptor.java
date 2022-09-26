@@ -32,28 +32,28 @@ import org.eclipse.birt.report.engine.emitter.config.docx.i18n.Messages;
  * This class is a descriptor of word emitter.
  */
 public class DocxEmitterDescriptor extends AbstractEmitterDescriptor {
-	protected static final String CHART_DPI = "ChartDpi";
-	protected static final String EMBED_HTML = "EmbedHtml";
-	protected static final String WORD_VERSION = "WordVersion";
+	protected static final String CHART_DPI = "ChartDpi"; //$NON-NLS-1$
+	protected static final String EMBED_HTML = "EmbedHtml"; //$NON-NLS-1$
+	protected static final String WORD_VERSION = "WordVersion"; //$NON-NLS-1$
 
 	@Override
 	protected void initOptions() {
-		loadDefaultValues("org.eclipse.birt.report.engine.emitter.config.docx");
+		loadDefaultValues("org.eclipse.birt.report.engine.emitter.config.docx"); //$NON-NLS-1$
 		// Initializes the option for chart DPI.
 		ConfigurableOption chartDpi = new ConfigurableOption(CHART_DPI);
 		chartDpi.setDisplayName(getMessage("OptionDisplayValue.ChartDpi")); //$NON-NLS-1$
 		chartDpi.setDataType(IConfigurableOption.DataType.INTEGER);
 		chartDpi.setDisplayType(IConfigurableOption.DisplayType.TEXT);
 		chartDpi.setDefaultValue(new Integer(192));
-		chartDpi.setToolTip(getMessage("Tooltip.ChartDpi"));
+		chartDpi.setToolTip(getMessage("Tooltip.ChartDpi")); //$NON-NLS-1$
 		chartDpi.setDescription(getMessage("OptionDescription.ChartDpi")); //$NON-NLS-1$
 
 		ConfigurableOption embedHtml = new ConfigurableOption(EMBED_HTML);
 		embedHtml.setDisplayName(getMessage("OptionDisplayValue.EmbedHtml")); //$NON-NLS-1$
 		embedHtml.setDataType(IConfigurableOption.DataType.BOOLEAN);
 		embedHtml.setDisplayType(IConfigurableOption.DisplayType.CHECKBOX);
-		embedHtml.setDefaultValue(new Boolean(true));
-		embedHtml.setToolTip(getMessage("Tooltip.EmbedHtml"));
+		embedHtml.setDefaultValue(new Boolean(Boolean.TRUE));
+		embedHtml.setToolTip(getMessage("Tooltip.EmbedHtml")); //$NON-NLS-1$
 		embedHtml.setDescription(getMessage("OptionDescription.EmbedHtml")); //$NON-NLS-1$
 
 		ConfigurableOption wordVersion = new ConfigurableOption(WORD_VERSION);
@@ -63,7 +63,7 @@ public class DocxEmitterDescriptor extends AbstractEmitterDescriptor {
 		wordVersion.setDefaultValue(new Integer(2016));
 		IOptionValue[] choices = { new OptionValue(2010), new OptionValue(2016) };
 		wordVersion.setChoices(choices);
-		wordVersion.setToolTip(getMessage("Tooltip.WordVersion"));
+		wordVersion.setToolTip(getMessage("Tooltip.WordVersion")); //$NON-NLS-1$
 		wordVersion.setDescription(getMessage("OptionDescription.WordVersion")); //$NON-NLS-1$
 
 		options = new IConfigurableOption[] { chartDpi, embedHtml, wordVersion };

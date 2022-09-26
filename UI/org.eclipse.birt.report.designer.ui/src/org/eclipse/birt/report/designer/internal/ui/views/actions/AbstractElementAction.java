@@ -103,6 +103,7 @@ public abstract class AbstractElementAction extends AbstractViewAction {
 	 *
 	 * @return Returns the label for the transaction
 	 */
+	@SuppressWarnings("nls")
 	protected String getTransactionLabel() {
 		return getText().replace("&", "");
 	}

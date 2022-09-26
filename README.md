@@ -1,37 +1,43 @@
-# Eclipse BIRT [![Build Status](https://github.com/eclipse/birt/workflows/CI/badge.svg)](https://github.com/eclipse/birt/actions)
-The open source Eclipse BIRT reporting and data visualization project. 
+# Eclipse BIRT [![Build Status](https://travis-ci.com/triestram-partner/birt.svg?branch=tup_main)](https://travis-ci.com/triestram-partner/birt)
+The open source Eclipse BIRT reporting and data visualization project.
 
-## Website
-https://eclipse.org/birt  
+**This is not the official Eclipse repository!**
 
-## Create a BIRT Development Environment
-* [![yt](https://user-images.githubusercontent.com/180969/143874274-9221c016-846b-4e60-8e06-7f90cb72fc8f.png)](https://www.youtube.com/watch?v=FqfrG2I0AIw)
+This repository was originally forked from `flugtiger/birt`, because at that time that was the only BIRT repo that seemed to work.
+As of today (March 2022), it is more or less up-to-date with the official Eclipse repo `eclipse/BIRT`,
+so if you want to compare it at the source level, you should compare
+this repo's `tup_main` branch with the official `master` branch.
 
-* [![Create Eclipse Development Environment for Eclipse BIRT](https://download.eclipse.org/oomph/www/setups/svg/birt.svg)](https://www.eclipse.org/setups/installer/?url=https://raw.githubusercontent.com/eclipse/birt/master/build/org.eclipse.birt.releng/BIRTConfiguration.setup&show=true "Click to open Eclipse-Installer Auto Launch or drag into your running installer")
+## Reasons for this fork and differences to the official Eclipse repository
+
+For more information about this repository see our [wiki pages](https://github.com/triestram-partner/birt/wiki)
+
+If you are just looking for the official BIRT, don't use this - instead use the [official repo](https://github.com/eclipse/birt/)
+
+## Important branches
+
+`tup_main` is what lisa.lims reports are using, with some differences to eclipse/birt.
+
+`master` is to keep in sync with eclipse/birt and a starting point for other branches aiming at the eclipse/birt master branch.
+
+## BIRT documentation ##
+
+The new [BIRT website](https://eclipse.org/birt) contains a lot of useful information.
+It is in fact a wiki, though not as open as other wikis.
+The web site still could use a lot of improvement - your help is welcome.
+
+## Using a pre-built BIRT
+
+If you just want to start creating reports, you can use a pre-built BIRT version.
+See the releases page for the all-in-one designer and the POJO runtime.
+
+Binary releases of the official BIRT are available on the Eclipse web site.
+An official 4.9.0 release is available since 2022-03-16.
+You can find binary artifacts for each PR on https://github.com/eclipse/birt/actions
 
 ## Building BIRT
-BIRT is built with [Apache Maven](http://maven.apache.org) through [Tycho](https://github.com/eclipse/tycho) on [Eclipse CI](https://ci.eclipse.org/birt).
 
-To build BIRT with the latest Eclipse platform, run:
+Building BIRT has become relatively easy since 2021/2022. Just [see eclipse/birt](https://github.com/eclipse/birt/).
+Wim Jongman also created an excellent video tutorial.
 
-    mvn package -DskipTests 
-    
-### Building environment
-* JDK 11
-* Maven 3.6.3
-
-## Eclipse Version 4.23
-If you want to install BIRT as a plugin, please be aware that BIRT 4.9 requires Eclipse 4.23
-
-## Latest version 4.9.0
-* https://download.eclipse.org/birt/downloads/drops/latest
-* https://download.eclipse.org/birt/update-site/latest
-
-## Current version 4.9.0
-* https://download.eclipse.org/birt/downloads/drops/R-R1-4.9.0-202203161719
-* https://download.eclipse.org/birt/update-site/4.9.0/
-
-## Latest snapshots towards 4.10.0
-* https://download.eclipse.org/birt/downloads/drops/snapshot/
-* https://download.eclipse.org/birt/update-site/snapshot/
-
+Just remember to replace `eclipse/birt` with `triestram-partner/birt` and the `master` branch with `tup_main` when configuring GIT.

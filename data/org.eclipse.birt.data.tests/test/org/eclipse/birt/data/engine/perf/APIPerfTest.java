@@ -36,6 +36,7 @@ import testutil.ConfigText;
  * The test data is input from text file, and then can be done independently.
  */
 @Ignore("Ignore performance test")
+@SuppressWarnings("nls")
 public class APIPerfTest extends APITestCase {
 	/** defined query defintion */
 	private QueryDefinition queryDefn;

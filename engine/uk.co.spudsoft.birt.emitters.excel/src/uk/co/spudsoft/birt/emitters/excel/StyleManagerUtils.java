@@ -1,14 +1,14 @@
 /*************************************************************************************
  * Copyright (c) 2011, 2012, 2013 James Talbut.
  *  jim-emitters@spudsoft.co.uk
- *
- *
+ *  
+ * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * https://www.eclipse.org/legal/epl-2.0/.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *
+ * 
  * Contributors:
  *     James Talbut - Initial implementation.
  ************************************************************************************/
@@ -19,6 +19,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextAttribute;
 import java.awt.font.TextLayout;
+import java.awt.font.TextMeasurer;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,11 +46,11 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder.BorderSide;
 import org.eclipse.birt.report.engine.content.IPageContent;
-import org.eclipse.birt.report.engine.css.engine.StyleConstants;
 import org.eclipse.birt.report.engine.css.engine.value.DataFormatValue;
 import org.eclipse.birt.report.engine.css.engine.value.StringValue;
 import org.eclipse.birt.report.engine.css.engine.value.css.CSSConstants;
 import org.eclipse.birt.report.engine.ir.DimensionType;
+import org.eclipse.birt.report.model.api.elements.DesignChoiceConstants;
 import org.eclipse.birt.report.model.api.util.ColorUtil;
 import org.w3c.dom.css.CSSValue;
 
@@ -67,6 +68,7 @@ import uk.co.spudsoft.birt.emitters.excel.framework.Logger;
  * @author Jim Talbut
  *
  */
+@SuppressWarnings("nls")
 public abstract class StyleManagerUtils {
 
 	protected Logger log;
@@ -103,6 +105,33 @@ public abstract class StyleManagerUtils {
 		return (lhs == null) ? (rhs == null) : lhs.equals(rhs);
 	}
 
+	public static int dataFormatHash(DataFormatValue dataFormat) {
+		final int prime = 31;
+		int result = 1;
+
+		result = prime * result
+				+ ((dataFormat.getStringLocale() == null) ? 0 : dataFormat.getStringLocale().hashCode());
+		result = prime * result
+				+ ((dataFormat.getStringPattern() == null) ? 0 : dataFormat.getStringPattern().hashCode());
+
+		result = prime * result + ((dataFormat.getDateLocale() == null) ? 0 : dataFormat.getDateLocale().hashCode());
+		result = prime * result + ((dataFormat.getDatePattern() == null) ? 0 : dataFormat.getDatePattern().hashCode());
+
+		result = prime * result
+				+ ((dataFormat.getDateTimeLocale() == null) ? 0 : dataFormat.getDateTimeLocale().hashCode());
+		result = prime * result
+				+ ((dataFormat.getDateTimePattern() == null) ? 0 : dataFormat.getDateTimePattern().hashCode());
+
+		result = prime * result + ((dataFormat.getTimeLocale() == null) ? 0 : dataFormat.getTimeLocale().hashCode());
+		result = prime * result + ((dataFormat.getTimePattern() == null) ? 0 : dataFormat.getTimePattern().hashCode());
+
+		result = prime * result
+				+ ((dataFormat.getNumberLocale() == null) ? 0 : dataFormat.getNumberLocale().hashCode());
+		result = prime * result
+				+ ((dataFormat.getNumberPattern() == null) ? 0 : dataFormat.getNumberPattern().hashCode());
+		return result;
+	}
+
 	public static boolean dataFormatsEquivalent(DataFormatValue dataFormat1, DataFormatValue dataFormat2) {
 		if (dataFormat1 == null) {
 			return (dataFormat2 == null);
@@ -127,15 +156,15 @@ public abstract class StyleManagerUtils {
 	 */
 	public HorizontalAlignment poiAlignmentFromBirtAlignment(String alignment) {
 		if (CSSConstants.CSS_LEFT_VALUE.equals(alignment)) {
-			return HorizontalAlignment.LEFT; // CellStyle.ALIGN_LEFT;
+			return HorizontalAlignment.LEFT;
 		}
 		if (CSSConstants.CSS_RIGHT_VALUE.equals(alignment)) {
-			return HorizontalAlignment.RIGHT; // CellStyle.ALIGN_RIGHT;
+			return HorizontalAlignment.RIGHT;
 		}
 		if (CSSConstants.CSS_CENTER_VALUE.equals(alignment)) {
-			return HorizontalAlignment.CENTER; // CellStyle.ALIGN_CENTER;
+			return HorizontalAlignment.CENTER;
 		}
-		return HorizontalAlignment.GENERAL; // CellStyle.ALIGN_GENERAL;
+		return HorizontalAlignment.GENERAL;
 	}
 
 	/**
@@ -218,12 +247,12 @@ public abstract class StyleManagerUtils {
 	 */
 	public boolean poiFontWeightFromBirt(String fontWeight) {
 		if (fontWeight == null) {
-			return false; // 0;
+			return false;
 		}
 		if ("bold".equals(fontWeight)) {
-			return true; // Font.BOLDWEIGHT_BOLD;
+			return true;
 		}
-		return false; // Font.BOLDWEIGHT_NORMAL;
+		return false;
 	}
 
 	/**
@@ -285,13 +314,14 @@ public abstract class StyleManagerUtils {
 	 * @return true is the cell is empty and has no style or has no background fill.
 	 */
 	public static boolean cellIsEmpty(Cell cell) {
-		// if (cell.getCellType() != Cell.CELL_TYPE_BLANK) {
-		if (!CellType.BLANK.equals(cell.getCellType())) {
+		if (cell.getCellType() != CellType.BLANK) {
 			return false;
 		}
 		CellStyle cellStyle = cell.getCellStyle();
-		// if (cellStyle.getFillPattern() == CellStyle.NO_FILL) {
-		if ((cellStyle == null) || FillPatternType.NO_FILL.equals(cellStyle.getFillPattern())) {
+		if (cellStyle == null) {
+			return true;
+		}
+		if (cellStyle.getFillPattern() == FillPatternType.NO_FILL) {
 			return true;
 		}
 		return false;
@@ -332,8 +362,6 @@ public abstract class StyleManagerUtils {
 			return Workbook.PICTURE_TYPE_JPEG;
 		} else if ("image/png".equals(mimeType)) {
 			return Workbook.PICTURE_TYPE_PNG;
-		} else if ("image/bmp".equals(mimeType)) {
-			return Workbook.PICTURE_TYPE_DIB;
 		} else {
 			if (null != data) {
 				log.debug("Data bytes: " + " " + Integer.toHexString(data[0]).toUpperCase() + " "
@@ -391,9 +419,14 @@ public abstract class StyleManagerUtils {
 		try {
 			int contentLength = conn.getContentLength();
 			InputStream imageStream = conn.getInputStream();
-			try (imageStream) {
+			try {
 				return streamToByteArray(imageStream, contentLength);
+			} finally {
+				imageStream.close();
 			}
+		} catch (MalformedURLException ex) {
+			log.debug(ex.getClass(), ": ", ex.getMessage());
+			return null;
 		} catch (IOException ex) {
 			log.debug(ex.getClass(), ": ", ex.getMessage());
 			return null;
@@ -458,7 +491,25 @@ public abstract class StyleManagerUtils {
 	 * @return A string representing a data format in Excel.
 	 */
 	private String poiNumberFormatFromBirt(String birtFormat) {
-		if ("General Number".equalsIgnoreCase(birtFormat)) {
+		// The following formats are hard-coded copies of the non-localised values
+		// stored in
+		// org.eclipse.birt.report.designer.util.FormatNumberPattern.
+		// Accessing the subclasses directly, or using getPatternForCategory from
+		// FormatNumberPattern would
+		// introduce unacceptable dependencies.
+		if (birtFormat.equalsIgnoreCase(DesignChoiceConstants.NUMBER_FORMAT_TYPE_CURRENCY)) {
+			birtFormat = "#,##0.00";
+		} else if (birtFormat.equalsIgnoreCase(DesignChoiceConstants.NUMBER_FORMAT_TYPE_FIXED)) {
+			birtFormat = "###0.00";
+		} else if (birtFormat.equalsIgnoreCase(DesignChoiceConstants.NUMBER_FORMAT_TYPE_GENERAL_NUMBER)) {
+			return null;
+		} else if (birtFormat.equalsIgnoreCase(DesignChoiceConstants.NUMBER_FORMAT_TYPE_PERCENT)) {
+			birtFormat = "###0.00%";
+		} else if (birtFormat.equalsIgnoreCase(DesignChoiceConstants.NUMBER_FORMAT_TYPE_SCIENTIFIC)) {
+			birtFormat = "0.00E00";
+		} else if (birtFormat.equalsIgnoreCase(DesignChoiceConstants.NUMBER_FORMAT_TYPE_STANDARD)) {
+			return null;
+		} else if (birtFormat.equalsIgnoreCase(DesignChoiceConstants.NUMBER_FORMAT_TYPE_UNFORMATTED)) {
 			return null;
 		}
 		if (birtFormat.startsWith(ExcelEmitter.CUSTOM_NUMBER_FORMAT)) {
@@ -513,7 +564,7 @@ public abstract class StyleManagerUtils {
 	}
 
 	public static String getNumberFormat(BirtStyle style) {
-		CSSValue dataFormat = style.getProperty(StyleConstants.STYLE_DATA_FORMAT);
+		CSSValue dataFormat = style.getProperty(StylePropertyIndexes.STYLE_DATA_FORMAT);
 		if (dataFormat instanceof DataFormatValue) {
 			DataFormatValue dataFormatValue = (DataFormatValue) dataFormat;
 			return dataFormatValue.getNumberPattern();
@@ -522,7 +573,7 @@ public abstract class StyleManagerUtils {
 	}
 
 	public static String getDateFormat(BirtStyle style) {
-		CSSValue dataFormat = style.getProperty(StyleConstants.STYLE_DATA_FORMAT);
+		CSSValue dataFormat = style.getProperty(StylePropertyIndexes.STYLE_DATA_FORMAT);
 		if (dataFormat instanceof DataFormatValue) {
 			DataFormatValue dataFormatValue = (DataFormatValue) dataFormat;
 			return dataFormatValue.getDatePattern();
@@ -531,7 +582,7 @@ public abstract class StyleManagerUtils {
 	}
 
 	public static String getDateTimeFormat(BirtStyle style) {
-		CSSValue dataFormat = style.getProperty(StyleConstants.STYLE_DATA_FORMAT);
+		CSSValue dataFormat = style.getProperty(StylePropertyIndexes.STYLE_DATA_FORMAT);
 		if (dataFormat instanceof DataFormatValue) {
 			DataFormatValue dataFormatValue = (DataFormatValue) dataFormat;
 			return dataFormatValue.getDateTimePattern();
@@ -540,7 +591,7 @@ public abstract class StyleManagerUtils {
 	}
 
 	public static String getTimeFormat(BirtStyle style) {
-		CSSValue dataFormat = style.getProperty(StyleConstants.STYLE_DATA_FORMAT);
+		CSSValue dataFormat = style.getProperty(StylePropertyIndexes.STYLE_DATA_FORMAT);
 		if (dataFormat instanceof DataFormatValue) {
 			DataFormatValue dataFormatValue = (DataFormatValue) dataFormat;
 			return dataFormatValue.getTimePattern();
@@ -559,47 +610,47 @@ public abstract class StyleManagerUtils {
 	}
 
 	public static void setNumberFormat(BirtStyle style, String pattern, String locale) {
-		DataFormatValue dfv = (DataFormatValue) style.getProperty(StyleConstants.STYLE_DATA_FORMAT);
+		DataFormatValue dfv = (DataFormatValue) style.getProperty(StylePropertyIndexes.STYLE_DATA_FORMAT);
 		if (dfv == null) {
 			dfv = new DataFormatValue();
 		} else {
 			dfv = cloneDataFormatValue(dfv);
 		}
 		dfv.setNumberFormat(pattern, locale);
-		style.setProperty(StyleConstants.STYLE_DATA_FORMAT, dfv);
+		style.setProperty(StylePropertyIndexes.STYLE_DATA_FORMAT, dfv);
 	}
 
 	public static void setDateFormat(BirtStyle style, String pattern, String locale) {
-		DataFormatValue dfv = (DataFormatValue) style.getProperty(StyleConstants.STYLE_DATA_FORMAT);
+		DataFormatValue dfv = (DataFormatValue) style.getProperty(StylePropertyIndexes.STYLE_DATA_FORMAT);
 		if (dfv == null) {
 			dfv = new DataFormatValue();
 		} else {
 			dfv = cloneDataFormatValue(dfv);
 		}
 		dfv.setDateFormat(pattern, locale);
-		style.setProperty(StyleConstants.STYLE_DATA_FORMAT, dfv);
+		style.setProperty(StylePropertyIndexes.STYLE_DATA_FORMAT, dfv);
 	}
 
 	public static void setDateTimeFormat(BirtStyle style, String pattern, String locale) {
-		DataFormatValue dfv = (DataFormatValue) style.getProperty(StyleConstants.STYLE_DATA_FORMAT);
+		DataFormatValue dfv = (DataFormatValue) style.getProperty(StylePropertyIndexes.STYLE_DATA_FORMAT);
 		if (dfv == null) {
 			dfv = new DataFormatValue();
 		} else {
 			dfv = cloneDataFormatValue(dfv);
 		}
 		dfv.setDateTimeFormat(pattern, locale);
-		style.setProperty(StyleConstants.STYLE_DATA_FORMAT, dfv);
+		style.setProperty(StylePropertyIndexes.STYLE_DATA_FORMAT, dfv);
 	}
 
 	public static void setTimeFormat(BirtStyle style, String pattern, String locale) {
-		DataFormatValue dfv = (DataFormatValue) style.getProperty(StyleConstants.STYLE_DATA_FORMAT);
+		DataFormatValue dfv = (DataFormatValue) style.getProperty(StylePropertyIndexes.STYLE_DATA_FORMAT);
 		if (dfv == null) {
 			dfv = new DataFormatValue();
 		} else {
 			dfv = cloneDataFormatValue(dfv);
 		}
 		dfv.setTimeFormat(pattern, locale);
-		style.setProperty(StyleConstants.STYLE_DATA_FORMAT, dfv);
+		style.setProperty(StylePropertyIndexes.STYLE_DATA_FORMAT, dfv);
 	}
 
 	/**
@@ -655,16 +706,12 @@ public abstract class StyleManagerUtils {
 	protected void addFontAttributes(AttributedString attrString, Font font, int startIdx, int endIdx) {
 		attrString.addAttribute(TextAttribute.FAMILY, font.getFontName(), startIdx, endIdx);
 		attrString.addAttribute(TextAttribute.SIZE, (float) font.getFontHeightInPoints(), startIdx, endIdx);
-		// if (font.getBoldweight() == Font.BOLDWEIGHT_BOLD)
-		if (font.getBold()) {
+		if (font.getBold())
 			attrString.addAttribute(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD, startIdx, endIdx);
-		}
-		if (font.getItalic()) {
+		if (font.getItalic())
 			attrString.addAttribute(TextAttribute.POSTURE, TextAttribute.POSTURE_OBLIQUE, startIdx, endIdx);
-		}
-		if (font.getUnderline() == Font.U_SINGLE) {
+		if (font.getUnderline() == Font.U_SINGLE)
 			attrString.addAttribute(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON, startIdx, endIdx);
-		}
 	}
 
 	/**
@@ -700,7 +747,7 @@ public abstract class StyleManagerUtils {
 	 *         sourceText.
 	 */
 	public float calculateTextHeightPoints(String sourceText, Font defaultFont, double widthMM,
-			List<RichTextRun> richTextRuns) {
+			List<RichTextRun> richTextRuns, boolean wrap) {
 		log.debug("Calculating height for ", sourceText);
 
 		final float widthPt = (float) (72 * Math.max(0, widthMM - 6) / 25.4);
@@ -753,21 +800,36 @@ public abstract class StyleManagerUtils {
 				}
 			}
 
-			LineBreakMeasurer measurer = new LineBreakMeasurer(attrString.getIterator(), frc);
+			try {
+				if (wrap) {
+					LineBreakMeasurer measurer = new LineBreakMeasurer(attrString.getIterator(), frc);
 
-			float heightAdjustment = 0.0F;
-			int lineLength = textLine.isEmpty() ? 1 : textLine.length();
-			while (measurer.getPosition() < lineLength) {
-				TextLayout layout = measurer.nextLayout(widthPt);
-				float lineHeight = layout.getAscent() + layout.getDescent() + layout.getLeading();
-				if (layout.getDescent() + layout.getLeading() > heightAdjustment) {
-					heightAdjustment = layout.getDescent() + layout.getLeading();
+					float heightAdjustment = 0.0F;
+					int lineLength = textLine.isEmpty() ? 1 : textLine.length();
+					while (measurer.getPosition() < lineLength) {
+						TextLayout layout = measurer.nextLayout(widthPt);
+						float lineHeight = layout.getAscent() + layout.getDescent() + layout.getLeading();
+						if (layout.getDescent() + layout.getLeading() > heightAdjustment) {
+							heightAdjustment = layout.getDescent() + layout.getLeading();
+						}
+						log.debug("Line: ", textLine, " gives height ", lineHeight, "(", layout.getAscent(), "/",
+								layout.getDescent(), "/", layout.getLeading(), ")");
+						totalHeight += lineHeight;
+					}
+					totalHeight += heightAdjustment;
+				} else {
+					if (textLine.length() > 0) {
+						TextMeasurer measurer = new TextMeasurer(attrString.getIterator(), frc);
+						TextLayout layout = measurer.getLayout(0, textLine.length());
+						float lineHeight = layout.getAscent() + 2 * (layout.getDescent() + layout.getLeading());
+						log.debug("Line: ", textLine, " gives height ", lineHeight, "(", layout.getAscent(), "/",
+								layout.getDescent(), "/", layout.getLeading(), ")");
+						totalHeight += lineHeight;
+					}
 				}
-				log.debug("Line: ", textLine, " gives height ", lineHeight, "(", layout.getAscent(), "/",
-						layout.getDescent(), "/", layout.getLeading(), ")");
-				totalHeight += lineHeight;
+			} catch (Throwable ex) {
+				log.error(0, "Calculating height of line \"" + textLine + "\" threw: ", ex);
 			}
-			totalHeight += heightAdjustment;
 
 		}
 		log.debug("Height calculated as ", totalHeight);
@@ -825,15 +887,17 @@ public abstract class StyleManagerUtils {
 	public abstract Font correctFontColorIfBackground(FontManager fm, Workbook wb, BirtStyle birtStyle, Font font);
 
 	public void correctFontColorIfBackground(BirtStyle birtStyle) {
-		CSSValue bgColour = birtStyle.getProperty(StyleConstants.STYLE_BACKGROUND_COLOR);
-		CSSValue fgColour = birtStyle.getProperty(StyleConstants.STYLE_COLOR);
+		if (birtStyle != null) {
+			CSSValue bgColour = birtStyle.getProperty(StylePropertyIndexes.STYLE_BACKGROUND_COLOR);
+			CSSValue fgColour = birtStyle.getProperty(StylePropertyIndexes.STYLE_COLOR);
 
-		int bgRgb[] = parseColour(bgColour == null ? null : bgColour.getCssText(), "white");
-		int fgRgb[] = parseColour(fgColour == null ? null : fgColour.getCssText(), "black");
+			int bgRgb[] = parseColour(bgColour == null ? null : bgColour.getCssText(), "white");
+			int fgRgb[] = parseColour(fgColour == null ? null : fgColour.getCssText(), "black");
 
-		if ((bgRgb[0] == fgRgb[0]) && (bgRgb[1] == fgRgb[1]) && (bgRgb[2] == fgRgb[2])) {
-			CSSValue newColour = new StringValue(StringValue.CSS_STRING, contrastColour(bgRgb));
-			birtStyle.setProperty(StyleConstants.STYLE_COLOR, newColour);
+			if ((bgRgb[0] == fgRgb[0]) && (bgRgb[1] == fgRgb[1]) && (bgRgb[2] == fgRgb[2])) {
+				CSSValue newColour = new StringValue(StringValue.CSS_STRING, contrastColour(bgRgb));
+				birtStyle.setProperty(StylePropertyIndexes.STYLE_COLOR, newColour);
+			}
 		}
 	}
 
@@ -863,7 +927,42 @@ public abstract class StyleManagerUtils {
 	 *
 	 * @param page The BIRT page.
 	 */
-	public abstract void prepareMarginDimensions(Sheet sheet, IPageContent page);
+	public void prepareMarginDimensions(Sheet sheet, IPageContent page, boolean includeHeaderAndFooter) {
+
+		if ((page.getMarginLeft() != null) && isAbsolute(page.getMarginLeft())) {
+			sheet.setMargin(Sheet.LeftMargin, page.getMarginLeft().convertTo(DimensionType.UNITS_IN));
+		}
+
+		if ((page.getMarginRight() != null) && isAbsolute(page.getMarginRight())) {
+			sheet.setMargin(Sheet.RightMargin, page.getMarginRight().convertTo(DimensionType.UNITS_IN));
+		}
+
+		double headerHeight = 0;
+		if (includeHeaderAndFooter && (page.getHeaderHeight() != null) && isAbsolute(page.getHeaderHeight())) {
+			headerHeight = page.getHeaderHeight().convertTo(DimensionType.UNITS_IN);
+		}
+		double topMargin = 0;
+		if ((page.getMarginTop() != null) && isAbsolute(page.getMarginTop())) {
+			topMargin = page.getMarginTop().convertTo(DimensionType.UNITS_IN);
+		}
+		if ((topMargin > 0) || (headerHeight > 0)) {
+			sheet.setMargin(Sheet.TopMargin, headerHeight + topMargin);
+			sheet.setMargin(Sheet.HeaderMargin, topMargin);
+		}
+
+		double footerHeight = 0;
+		if (includeHeaderAndFooter && (page.getFooterHeight() != null) && isAbsolute(page.getFooterHeight())) {
+			footerHeight = page.getFooterHeight().convertTo(DimensionType.UNITS_IN);
+		}
+		double bottomMargin = 0;
+		if ((page.getMarginBottom() != null) && isAbsolute(page.getMarginBottom())) {
+			bottomMargin = page.getMarginBottom().convertTo(DimensionType.UNITS_IN);
+		}
+		if ((bottomMargin > 0) || (footerHeight > 0)) {
+			sheet.setMargin(Sheet.BottomMargin, footerHeight + bottomMargin);
+			sheet.setMargin(Sheet.FooterMargin, bottomMargin);
+		}
+	}
 
 	/**
 	 * Place a border around a region on the current sheet. This is used to apply
@@ -881,18 +980,18 @@ public abstract class StyleManagerUtils {
 		borderMsg.append("applyBordersToArea [").append(colStart).append(",").append(rowStart).append("]-[")
 				.append(colEnd).append(",").append(rowEnd).append("]");
 
-		CSSValue borderStyleBottom = borderStyle.getProperty(StyleConstants.STYLE_BORDER_BOTTOM_STYLE);
-		CSSValue borderWidthBottom = borderStyle.getProperty(StyleConstants.STYLE_BORDER_BOTTOM_WIDTH);
-		CSSValue borderColourBottom = borderStyle.getProperty(StyleConstants.STYLE_BORDER_BOTTOM_COLOR);
-		CSSValue borderStyleLeft = borderStyle.getProperty(StyleConstants.STYLE_BORDER_LEFT_STYLE);
-		CSSValue borderWidthLeft = borderStyle.getProperty(StyleConstants.STYLE_BORDER_LEFT_WIDTH);
-		CSSValue borderColourLeft = borderStyle.getProperty(StyleConstants.STYLE_BORDER_LEFT_COLOR);
-		CSSValue borderStyleRight = borderStyle.getProperty(StyleConstants.STYLE_BORDER_RIGHT_STYLE);
-		CSSValue borderWidthRight = borderStyle.getProperty(StyleConstants.STYLE_BORDER_RIGHT_WIDTH);
-		CSSValue borderColourRight = borderStyle.getProperty(StyleConstants.STYLE_BORDER_RIGHT_COLOR);
-		CSSValue borderStyleTop = borderStyle.getProperty(StyleConstants.STYLE_BORDER_TOP_STYLE);
-		CSSValue borderWidthTop = borderStyle.getProperty(StyleConstants.STYLE_BORDER_TOP_WIDTH);
-		CSSValue borderColourTop = borderStyle.getProperty(StyleConstants.STYLE_BORDER_TOP_COLOR);
+		CSSValue borderStyleBottom = borderStyle.getProperty(StylePropertyIndexes.STYLE_BORDER_BOTTOM_STYLE);
+		CSSValue borderWidthBottom = borderStyle.getProperty(StylePropertyIndexes.STYLE_BORDER_BOTTOM_WIDTH);
+		CSSValue borderColourBottom = borderStyle.getProperty(StylePropertyIndexes.STYLE_BORDER_BOTTOM_COLOR);
+		CSSValue borderStyleLeft = borderStyle.getProperty(StylePropertyIndexes.STYLE_BORDER_LEFT_STYLE);
+		CSSValue borderWidthLeft = borderStyle.getProperty(StylePropertyIndexes.STYLE_BORDER_LEFT_WIDTH);
+		CSSValue borderColourLeft = borderStyle.getProperty(StylePropertyIndexes.STYLE_BORDER_LEFT_COLOR);
+		CSSValue borderStyleRight = borderStyle.getProperty(StylePropertyIndexes.STYLE_BORDER_RIGHT_STYLE);
+		CSSValue borderWidthRight = borderStyle.getProperty(StylePropertyIndexes.STYLE_BORDER_RIGHT_WIDTH);
+		CSSValue borderColourRight = borderStyle.getProperty(StylePropertyIndexes.STYLE_BORDER_RIGHT_COLOR);
+		CSSValue borderStyleTop = borderStyle.getProperty(StylePropertyIndexes.STYLE_BORDER_TOP_STYLE);
+		CSSValue borderWidthTop = borderStyle.getProperty(StylePropertyIndexes.STYLE_BORDER_TOP_WIDTH);
+		CSSValue borderColourTop = borderStyle.getProperty(StylePropertyIndexes.STYLE_BORDER_TOP_COLOR);
 
 		/*
 		 * borderMsg.append( ", Bottom:" ).append( borderStyleBottom ).append( "/"
@@ -987,9 +1086,9 @@ public abstract class StyleManagerUtils {
 	 */
 	public void applyBottomBorderToRow(StyleManager sm, Sheet sheet, int colStart, int colEnd, int row,
 			BirtStyle borderStyle) {
-		CSSValue borderStyleBottom = borderStyle.getProperty(StyleConstants.STYLE_BORDER_BOTTOM_STYLE);
-		CSSValue borderWidthBottom = borderStyle.getProperty(StyleConstants.STYLE_BORDER_BOTTOM_WIDTH);
-		CSSValue borderColourBottom = borderStyle.getProperty(StyleConstants.STYLE_BORDER_BOTTOM_COLOR);
+		CSSValue borderStyleBottom = borderStyle.getProperty(StylePropertyIndexes.STYLE_BORDER_BOTTOM_STYLE);
+		CSSValue borderWidthBottom = borderStyle.getProperty(StylePropertyIndexes.STYLE_BORDER_BOTTOM_WIDTH);
+		CSSValue borderColourBottom = borderStyle.getProperty(StylePropertyIndexes.STYLE_BORDER_BOTTOM_COLOR);
 
 		if ((borderStyleBottom == null) || (CSSConstants.CSS_NONE_VALUE.equals(borderStyleBottom.getCssText()))
 				|| (borderWidthBottom == null) || ("0".equals(borderWidthBottom)) || (borderColourBottom == null)
@@ -1027,35 +1126,35 @@ public abstract class StyleManagerUtils {
 					&& ((areaBorders.left <= colIndex) && (areaBorders.right >= colIndex))) {
 				if ((areaBorders.cssStyle[0] != null) && (areaBorders.cssWidth[0] != null)
 						&& (areaBorders.cssColour[0] != null)) {
-					birtCellStyle.setProperty(StyleConstants.STYLE_BORDER_BOTTOM_STYLE, areaBorders.cssStyle[0]);
-					birtCellStyle.setProperty(StyleConstants.STYLE_BORDER_BOTTOM_WIDTH, areaBorders.cssWidth[0]);
-					birtCellStyle.setProperty(StyleConstants.STYLE_BORDER_BOTTOM_COLOR, areaBorders.cssColour[0]);
+					birtCellStyle.setProperty(StylePropertyIndexes.STYLE_BORDER_BOTTOM_STYLE, areaBorders.cssStyle[0]);
+					birtCellStyle.setProperty(StylePropertyIndexes.STYLE_BORDER_BOTTOM_WIDTH, areaBorders.cssWidth[0]);
+					birtCellStyle.setProperty(StylePropertyIndexes.STYLE_BORDER_BOTTOM_COLOR, areaBorders.cssColour[0]);
 				}
 			}
 			if ((areaBorders.left == colIndex) && ((areaBorders.top <= rowIndex)
 					&& ((areaBorders.bottom < 0) || (areaBorders.bottom >= rowIndex)))) {
 				if ((areaBorders.cssStyle[1] != null) && (areaBorders.cssWidth[1] != null)
 						&& (areaBorders.cssColour[1] != null)) {
-					birtCellStyle.setProperty(StyleConstants.STYLE_BORDER_LEFT_STYLE, areaBorders.cssStyle[1]);
-					birtCellStyle.setProperty(StyleConstants.STYLE_BORDER_LEFT_WIDTH, areaBorders.cssWidth[1]);
-					birtCellStyle.setProperty(StyleConstants.STYLE_BORDER_LEFT_COLOR, areaBorders.cssColour[1]);
+					birtCellStyle.setProperty(StylePropertyIndexes.STYLE_BORDER_LEFT_STYLE, areaBorders.cssStyle[1]);
+					birtCellStyle.setProperty(StylePropertyIndexes.STYLE_BORDER_LEFT_WIDTH, areaBorders.cssWidth[1]);
+					birtCellStyle.setProperty(StylePropertyIndexes.STYLE_BORDER_LEFT_COLOR, areaBorders.cssColour[1]);
 				}
 			}
 			if ((areaBorders.right == colIndex) && ((areaBorders.top <= rowIndex)
 					&& ((areaBorders.bottom < 0) || (areaBorders.bottom >= rowIndex)))) {
 				if ((areaBorders.cssStyle[2] != null) && (areaBorders.cssWidth[2] != null)
 						&& (areaBorders.cssColour[2] != null)) {
-					birtCellStyle.setProperty(StyleConstants.STYLE_BORDER_RIGHT_STYLE, areaBorders.cssStyle[2]);
-					birtCellStyle.setProperty(StyleConstants.STYLE_BORDER_RIGHT_WIDTH, areaBorders.cssWidth[2]);
-					birtCellStyle.setProperty(StyleConstants.STYLE_BORDER_RIGHT_COLOR, areaBorders.cssColour[2]);
+					birtCellStyle.setProperty(StylePropertyIndexes.STYLE_BORDER_RIGHT_STYLE, areaBorders.cssStyle[2]);
+					birtCellStyle.setProperty(StylePropertyIndexes.STYLE_BORDER_RIGHT_WIDTH, areaBorders.cssWidth[2]);
+					birtCellStyle.setProperty(StylePropertyIndexes.STYLE_BORDER_RIGHT_COLOR, areaBorders.cssColour[2]);
 				}
 			}
 			if ((areaBorders.top == rowIndex) && ((areaBorders.left <= colIndex) && (areaBorders.right >= colIndex))) {
 				if ((areaBorders.cssStyle[3] != null) && (areaBorders.cssWidth[3] != null)
 						&& (areaBorders.cssColour[3] != null)) {
-					birtCellStyle.setProperty(StyleConstants.STYLE_BORDER_TOP_STYLE, areaBorders.cssStyle[3]);
-					birtCellStyle.setProperty(StyleConstants.STYLE_BORDER_TOP_WIDTH, areaBorders.cssWidth[3]);
-					birtCellStyle.setProperty(StyleConstants.STYLE_BORDER_TOP_COLOR, areaBorders.cssColour[3]);
+					birtCellStyle.setProperty(StylePropertyIndexes.STYLE_BORDER_TOP_STYLE, areaBorders.cssStyle[3]);
+					birtCellStyle.setProperty(StylePropertyIndexes.STYLE_BORDER_TOP_WIDTH, areaBorders.cssWidth[3]);
+					birtCellStyle.setProperty(StylePropertyIndexes.STYLE_BORDER_TOP_COLOR, areaBorders.cssColour[3]);
 				}
 			}
 		}

@@ -50,6 +50,7 @@ import junit.framework.TestSuite;
  * </table>
  *
  */
+@SuppressWarnings("nls")
 public class ActionHandleTest extends BaseTestCase {
 
 	ActionHandle actionHandle = null;

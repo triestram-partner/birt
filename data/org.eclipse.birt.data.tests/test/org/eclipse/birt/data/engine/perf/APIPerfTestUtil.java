@@ -45,6 +45,7 @@ interface QueryInfo {
  *
  * This can also be used as an demonstration to design other performance test.
  */
+@SuppressWarnings("nls")
 public class APIPerfTestUtil {
 	/** query info provider */
 	private QueryInfo queryInfo;

@@ -292,7 +292,7 @@ public class EmitterServices {
 		if ((ExcelEmitterPlugin.getDefault() != null) && (ExcelEmitterPlugin.getDefault().getBundle() != null)) {
 			return ExcelEmitterPlugin.getDefault().getBundle().getSymbolicName();
 		} else {
-			return "uk.co.spudsoft.birt.emitters.excel";
+			return "uk.co.spudsoft.birt.emitters.excel"; //$NON-NLS-1$
 		}
 	}
 

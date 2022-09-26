@@ -16,6 +16,7 @@
 package uk.co.spudsoft.birt.emitters.excel.handlers;
 
 import org.eclipse.birt.core.exception.BirtException;
+import org.eclipse.birt.report.engine.content.IListContent;
 import org.eclipse.birt.report.engine.content.IRowContent;
 import org.eclipse.birt.report.engine.content.ITableBandContent;
 import org.eclipse.birt.report.engine.content.ITableContent;
@@ -34,6 +35,16 @@ public class FlattenedTableHandler extends AbstractHandler {
 		super(log, parent, table);
 		this.contentHandler = contentHandler;
 	}
+
+	
+	
+	@Override
+	public void startList(HandlerState state, IListContent list) throws BirtException {
+		state.setHandler(new FlattenedListHandler(contentHandler, log, this, list));
+		state.getHandler().startList(state, list);
+	}
+
+
 
 	@Override
 	public void startTable(HandlerState state, ITableContent table) throws BirtException {

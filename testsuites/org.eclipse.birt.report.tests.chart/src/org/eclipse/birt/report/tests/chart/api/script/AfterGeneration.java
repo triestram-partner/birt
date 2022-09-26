@@ -53,6 +53,7 @@ import org.eclipse.birt.report.tests.chart.ChartTestCase;
  * </p>
  */
 
+@SuppressWarnings("nls")
 public class AfterGeneration extends ChartTestCase {
 
 	private static String OUTPUT = "AfterGeneration.jpg"; //$NON-NLS-1$

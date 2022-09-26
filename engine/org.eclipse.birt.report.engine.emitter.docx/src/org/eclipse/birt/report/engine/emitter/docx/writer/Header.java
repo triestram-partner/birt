@@ -43,7 +43,7 @@ public class Header extends BasicComponent {
 	@Override
 	void start() {
 		writer.startWriter();
-		writer.openTag("w:hdr");
+		writer.openTag("w:hdr"); //$NON-NLS-1$
 		writeXmlns();
 		startHeaderFooterContainer(headerHeight, headerWidth, true);
 	}
@@ -51,24 +51,24 @@ public class Header extends BasicComponent {
 	@Override
 	void end() {
 		endHeaderFooterContainer();
-		writer.closeTag("w:hdr");
+		writer.closeTag("w:hdr"); //$NON-NLS-1$
 		writer.endWriter();
 		writer.close();
 	}
 
 	@Override
-	protected int getImageID() {
-		return document.getImageID();
+	protected int nextImageID() {
+		return document.nextImageID();
 	}
 
 	@Override
-	protected int getMhtTextId() {
-		return document.getMhtTextId();
+	protected int nextMhtTextId() {
+		return document.nextMhtTextId();
 	}
 
 	public void drawDocumentBackgroundImageWithSize(String backgroundImageUrl, String backgroundHeight,
 			String backgroundWidth, double topMargin, double leftMargin, double pageHeight, double pageWidth) {
-		int imageId = getImageID();
+		int imageId = nextImageID();
 		IPart imagePart = null;
 		if (backgroundImageUrl != null) {
 			try {
@@ -90,63 +90,64 @@ public class Header extends BasicComponent {
 
 	private void drawBackgroundImageShape(String[] size, double topMargin, double leftMargin, int imageId,
 			IPart imagePart) {
-		writer.openTag("w:sdt");
-		writer.openTag("w:sdtPr");
-		writer.openTag("w:id");
-		writer.attribute("w:val", "90701258");
-		writer.closeTag("w:id");
-		writer.openTag("w:docPartObj");
-		writer.openTag("w:docPartGallery");
-		writer.attribute("w:val", "Cover Pages");
-		writer.closeTag("w:docPartGallery");
-		writer.openTag("w:docPartUnique");
-		writer.closeTag("w:docPartUnique");
-		writer.closeTag("w:docPartObj");
-		writer.closeTag("w:sdtPr");
-		writer.openTag("w:sdtContent");
-		writer.openTag("w:p");
-		writer.attribute("w:rsidR", "00182958");
-		writer.attribute("w:rsidRDefault", "00182958");
-		writer.attribute("w:rsidP", "00182958");
-		writer.openTag("w:r");
-		writer.openTag("w:rPr");
-		writer.openTag("w:noProof");
-		writer.closeTag("w:noProof");
+		writer.openTag("w:sdt"); //$NON-NLS-1$
+		writer.openTag("w:sdtPr"); //$NON-NLS-1$
+		writer.openTag("w:id"); //$NON-NLS-1$
+		writer.attribute("w:val", "90701258"); //$NON-NLS-1$ //$NON-NLS-2$
+		writer.closeTag("w:id"); //$NON-NLS-1$
+		writer.openTag("w:docPartObj"); //$NON-NLS-1$
+		writer.openTag("w:docPartGallery"); //$NON-NLS-1$
+		writer.attribute("w:val", "Cover Pages"); //$NON-NLS-1$ //$NON-NLS-2$
+		writer.closeTag("w:docPartGallery"); //$NON-NLS-1$
+		writer.openTag("w:docPartUnique"); //$NON-NLS-1$
+		writer.closeTag("w:docPartUnique"); //$NON-NLS-1$
+		writer.closeTag("w:docPartObj"); //$NON-NLS-1$
+		writer.closeTag("w:sdtPr"); //$NON-NLS-1$
+		writer.openTag("w:sdtContent"); //$NON-NLS-1$
+		writer.openTag("w:p"); //$NON-NLS-1$
+		writer.attribute("w:rsidR", "00182958"); //$NON-NLS-1$ //$NON-NLS-2$
+		writer.attribute("w:rsidRDefault", "00182958"); //$NON-NLS-1$ //$NON-NLS-2$
+		writer.attribute("w:rsidP", "00182958"); //$NON-NLS-1$//$NON-NLS-2$
+		writer.openTag("w:r"); //$NON-NLS-1$
+		writer.openTag("w:rPr"); //$NON-NLS-1$
+		writer.openTag("w:noProof"); //$NON-NLS-1$
+		writer.closeTag("w:noProof"); //$NON-NLS-1$
 //		writer.openTag("w:lang");
 //		writer.attribute("w:eastAsia", "zh-TW");
 //		writer.closeTag("w:lang");
-		writer.closeTag("w:rPr");
-		writer.openTag("w:pict");
-		writer.openTag("v:rect");
-		writer.attribute("id", "_x0000_s1041");
-		String attrValue = "position:absolute;left:0;text-align:left;margin-left:" + 0// Seems leftMargin should not be
+		writer.closeTag("w:rPr"); //$NON-NLS-1$
+		writer.openTag("w:pict"); //$NON-NLS-1$
+		writer.openTag("v:rect"); //$NON-NLS-1$
+		writer.attribute("id", "_x0000_s1041"); //$NON-NLS-1$ //$NON-NLS-2$
+		String attrValue = "position:absolute;left:0;text-align:left;margin-left:" + 0// Seems leftMargin //$NON-NLS-1$
+																						// should not be
 																						// used here.
-				+ "pt;margin-top:" + 0// Seems topMargin should not be used here.
-				+ "pt;width:" + size[1] + ";height:" + size[0]
-				+ ";z-index:-1;mso-width-percent:1000;mso-position-horizontal-relative:page;mso-position-vertical-relative:page;mso-width-percent:1000";
-		writer.attribute("style", attrValue);
-		writer.attribute("o:allowincell", "f");
-		writer.attribute("stroked", "f");
-		writer.openTag("v:fill");
-		writer.attribute("r:id", imagePart.getRelationshipId());
-		writer.attribute("o:title", "exposure");
-		writer.attribute("size", "0,0");
-		writer.attribute("aspect", "atLeast");
-		writer.attribute("origin", "-32767f,-32767f");
-		writer.attribute("position", "-32767f,-32767f");
-		writer.attribute("recolor", "t");
-		writer.attribute("rotate", "t");
-		writer.attribute("type", "frame");
-		writer.closeTag("v:fill");
-		writer.openTag("w10:wrap");
-		writer.attribute("anchorx", "page");
-		writer.attribute("anchory", "page");
-		writer.closeTag("w10:wrap");
-		writer.closeTag("v:rect");
-		writer.closeTag("w:pict");
-		writer.closeTag("w:r");
-		writer.closeTag("w:p");
-		writer.closeTag("w:sdtContent");
-		writer.closeTag("w:sdt");
+				+ "pt;margin-top:" + 0// Seems topMargin should not be used here. //$NON-NLS-1$
+				+ "pt;width:" + size[1] + ";height:" + size[0] //$NON-NLS-1$ //$NON-NLS-2$
+				+ ";z-index:-1;mso-width-percent:1000;mso-position-horizontal-relative:page;mso-position-vertical-relative:page;mso-width-percent:1000"; //$NON-NLS-1$
+		writer.attribute("style", attrValue); //$NON-NLS-1$
+		writer.attribute("o:allowincell", "f"); //$NON-NLS-1$ //$NON-NLS-2$
+		writer.attribute("stroked", "f"); //$NON-NLS-1$ //$NON-NLS-2$
+		writer.openTag("v:fill"); //$NON-NLS-1$
+		writer.attribute("r:id", imagePart.getRelationshipId()); //$NON-NLS-1$
+		writer.attribute("o:title", "exposure"); //$NON-NLS-1$ //$NON-NLS-2$
+		writer.attribute("size", "0,0"); //$NON-NLS-1$//$NON-NLS-2$
+		writer.attribute("aspect", "atLeast"); //$NON-NLS-1$ //$NON-NLS-2$
+		writer.attribute("origin", "-32767f,-32767f"); //$NON-NLS-1$//$NON-NLS-2$
+		writer.attribute("position", "-32767f,-32767f"); //$NON-NLS-1$ //$NON-NLS-2$
+		writer.attribute("recolor", "t"); //$NON-NLS-1$//$NON-NLS-2$
+		writer.attribute("rotate", "t"); //$NON-NLS-1$ //$NON-NLS-2$
+		writer.attribute("type", "frame"); //$NON-NLS-1$//$NON-NLS-2$
+		writer.closeTag("v:fill"); //$NON-NLS-1$
+		writer.openTag("w10:wrap"); //$NON-NLS-1$
+		writer.attribute("anchorx", "page"); //$NON-NLS-1$ //$NON-NLS-2$
+		writer.attribute("anchory", "page"); //$NON-NLS-1$//$NON-NLS-2$
+		writer.closeTag("w10:wrap"); //$NON-NLS-1$
+		writer.closeTag("v:rect"); //$NON-NLS-1$
+		writer.closeTag("w:pict"); //$NON-NLS-1$
+		writer.closeTag("w:r"); //$NON-NLS-1$
+		writer.closeTag("w:p"); //$NON-NLS-1$
+		writer.closeTag("w:sdtContent"); //$NON-NLS-1$
+		writer.closeTag("w:sdt"); //$NON-NLS-1$
 	}
 }

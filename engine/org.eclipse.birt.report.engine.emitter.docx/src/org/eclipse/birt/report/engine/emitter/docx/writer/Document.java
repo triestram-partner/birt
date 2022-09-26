@@ -62,14 +62,14 @@ public class Document extends BasicComponent {
 	@Override
 	void start() {
 		writer.startWriter();
-		writer.openTag("w:document");
+		writer.openTag("w:document"); //$NON-NLS-1$
 		writeXmlns();
 		drawDocumentBackground();
-		writer.openTag("w:body");
+		writer.openTag("w:body"); //$NON-NLS-1$
 	}
 
 	private void writeStylesPart() throws IOException {
-		String uri = "styles.xml";
+		String uri = "styles.xml"; //$NON-NLS-1$
 		String type = ContentTypes.WORD_STYLES;
 		String relationshipType = RelationshipTypes.STYLES;
 		IPart stylesPart = part.getPart(uri, type, relationshipType);
@@ -77,27 +77,27 @@ public class Document extends BasicComponent {
 		try {
 			stylesPartWriter = stylesPart.getWriter();
 			stylesPartWriter.startWriter();
-			stylesPartWriter.openTag("w:styles");
-			stylesPartWriter.nameSpace("w", NameSpaces.WORD_PROCESSINGML);
-			stylesPartWriter.openTag("w:docDefaults");
-			stylesPartWriter.openTag("w:rPrDefault");
-			stylesPartWriter.openTag("w:rPr");
-			stylesPartWriter.openTag("w:rFonts");
-			stylesPartWriter.attribute("w:ascii", "Times New Roman");
-			stylesPartWriter.attribute("w:eastAsia", "Times New Roman");
-			stylesPartWriter.attribute("w:hAnsi", "Times New Roman");
-			stylesPartWriter.attribute("w:cs", "Times New Roman");
-			stylesPartWriter.closeTag("w:rFonts");
-			stylesPartWriter.openTag("w:lang");
-			stylesPartWriter.attribute("w:val", "en-US");
-			stylesPartWriter.attribute("w:eastAsia", "zh-CN");
-			stylesPartWriter.attribute("w:bidi", "ar-SA");
-			stylesPartWriter.closeTag("w:lang");
-			stylesPartWriter.closeTag("w:rPr");
-			stylesPartWriter.closeTag("w:rPrDefault");
-			stylesPartWriter.openTag("w:pPrDefault");
-			stylesPartWriter.closeTag("w:pPrDefault");
-			stylesPartWriter.closeTag("w:docDefaults");
+			stylesPartWriter.openTag("w:styles"); //$NON-NLS-1$
+			stylesPartWriter.nameSpace("w", NameSpaces.WORD_PROCESSINGML); //$NON-NLS-1$
+			stylesPartWriter.openTag("w:docDefaults"); //$NON-NLS-1$
+			stylesPartWriter.openTag("w:rPrDefault"); //$NON-NLS-1$
+			stylesPartWriter.openTag("w:rPr"); //$NON-NLS-1$
+			stylesPartWriter.openTag("w:rFonts"); //$NON-NLS-1$
+			stylesPartWriter.attribute("w:ascii", "Times New Roman"); //$NON-NLS-1$ //$NON-NLS-2$
+			stylesPartWriter.attribute("w:eastAsia", "Times New Roman"); //$NON-NLS-1$ //$NON-NLS-2$
+			stylesPartWriter.attribute("w:hAnsi", "Times New Roman"); //$NON-NLS-1$//$NON-NLS-2$
+			stylesPartWriter.attribute("w:cs", "Times New Roman"); //$NON-NLS-1$ //$NON-NLS-2$
+			stylesPartWriter.closeTag("w:rFonts"); //$NON-NLS-1$
+			stylesPartWriter.openTag("w:lang"); //$NON-NLS-1$
+			stylesPartWriter.attribute("w:val", "en-US"); //$NON-NLS-1$ //$NON-NLS-2$
+			stylesPartWriter.attribute("w:eastAsia", "zh-CN"); //$NON-NLS-1$ //$NON-NLS-2$
+			stylesPartWriter.attribute("w:bidi", "ar-SA"); //$NON-NLS-1$//$NON-NLS-2$
+			stylesPartWriter.closeTag("w:lang"); //$NON-NLS-1$
+			stylesPartWriter.closeTag("w:rPr"); //$NON-NLS-1$
+			stylesPartWriter.closeTag("w:rPrDefault"); //$NON-NLS-1$
+			stylesPartWriter.openTag("w:pPrDefault"); //$NON-NLS-1$
+			stylesPartWriter.closeTag("w:pPrDefault"); //$NON-NLS-1$
+			stylesPartWriter.closeTag("w:docDefaults"); //$NON-NLS-1$
 //			stylesPartWriter.openTag( "w:style" );
 //			stylesPartWriter.attribute( "w:type", "paragraph" );
 //			stylesPartWriter.attribute( "w:default", "4" );
@@ -124,65 +124,65 @@ public class Document extends BasicComponent {
 //			stylesPartWriter.closeTag( "w:bidi" );
 //			stylesPartWriter.closeTag( "w:pPr" );
 //			stylesPartWriter.closeTag( "w:style" );
-			stylesPartWriter.openTag("w:style");
-			stylesPartWriter.attribute("w:type", "character");
-			stylesPartWriter.attribute("w:styleId", "Hyperlink");
-			stylesPartWriter.openTag("w:name");
-			stylesPartWriter.attribute("w:val", "Hyperlink");
-			stylesPartWriter.closeTag("w:name");
-			stylesPartWriter.openTag("w:rPr");
-			stylesPartWriter.openTag("w:u");
-			stylesPartWriter.attribute("w:val", "single");
-			stylesPartWriter.closeTag("w:u");
-			stylesPartWriter.openTag("w:color");
-			stylesPartWriter.attribute("w:val", "0000ff");
-			stylesPartWriter.closeTag("w:color");
-			stylesPartWriter.closeTag("w:rPr");
-			stylesPartWriter.closeTag("w:style");
+			stylesPartWriter.openTag("w:style"); //$NON-NLS-1$
+			stylesPartWriter.attribute("w:type", "character"); //$NON-NLS-1$ //$NON-NLS-2$
+			stylesPartWriter.attribute("w:styleId", "Hyperlink"); //$NON-NLS-1$ //$NON-NLS-2$
+			stylesPartWriter.openTag("w:name"); //$NON-NLS-1$
+			stylesPartWriter.attribute("w:val", "Hyperlink"); //$NON-NLS-1$ //$NON-NLS-2$
+			stylesPartWriter.closeTag("w:name"); //$NON-NLS-1$
+			stylesPartWriter.openTag("w:rPr"); //$NON-NLS-1$
+			stylesPartWriter.openTag("w:u"); //$NON-NLS-1$
+			stylesPartWriter.attribute("w:val", "single"); //$NON-NLS-1$ //$NON-NLS-2$
+			stylesPartWriter.closeTag("w:u"); //$NON-NLS-1$
+			stylesPartWriter.openTag("w:color"); //$NON-NLS-1$
+			stylesPartWriter.attribute("w:val", "0000ff"); //$NON-NLS-1$ //$NON-NLS-2$
+			stylesPartWriter.closeTag("w:color"); //$NON-NLS-1$
+			stylesPartWriter.closeTag("w:rPr"); //$NON-NLS-1$
+			stylesPartWriter.closeTag("w:style"); //$NON-NLS-1$
 
-			stylesPartWriter.openTag("w:style");
-			stylesPartWriter.attribute("w:type", "table");
-			stylesPartWriter.attribute("w:default", 1);
-			stylesPartWriter.attribute("w:styleId", "TableNormal");
-			stylesPartWriter.openTag("w:name");
-			stylesPartWriter.attribute("w:val", "Normal Table");
-			stylesPartWriter.closeTag("w:name");
-			stylesPartWriter.openTag("w:uiPriority");
-			stylesPartWriter.attribute("w:val", 99);
-			stylesPartWriter.closeTag("w:uiPriority");
-			stylesPartWriter.openTag("w:semiHidden");
-			stylesPartWriter.closeTag("w:semiHidden");
-			stylesPartWriter.openTag("w:unhidenWhenUsed");
-			stylesPartWriter.closeTag("w:unhidenWhenUsed");
-			stylesPartWriter.openTag("w:qFormat");
-			stylesPartWriter.closeTag("w:qFormat");
-			stylesPartWriter.openTag("w:tblPr");
-			stylesPartWriter.openTag("w:tblInd");
-			stylesPartWriter.attribute("w:w", 0);
-			stylesPartWriter.attribute("w:type", "dxa");
-			stylesPartWriter.closeTag("w:tblInd");
-			stylesPartWriter.openTag("w:tblCellMar");
-			stylesPartWriter.openTag("w:top");
-			stylesPartWriter.attribute("w:w", 0);
-			stylesPartWriter.attribute("w:type", "dxa");
-			stylesPartWriter.closeTag("w:top");
-			stylesPartWriter.openTag("w:left");
-			stylesPartWriter.attribute("w:w", 108);
-			stylesPartWriter.attribute("w:type", "dxa");
-			stylesPartWriter.closeTag("w:left");
-			stylesPartWriter.openTag("w:bottom");
-			stylesPartWriter.attribute("w:w", 0);
-			stylesPartWriter.attribute("w:type", "dxa");
-			stylesPartWriter.closeTag("w:bottom");
-			stylesPartWriter.openTag("w:right");
-			stylesPartWriter.attribute("w:w", 108);
-			stylesPartWriter.attribute("w:type", "dxa");
-			stylesPartWriter.closeTag("w:right");
-			stylesPartWriter.closeTag("w:tblCellMar");
-			stylesPartWriter.closeTag("w:tblPr");
-			stylesPartWriter.closeTag("w:style");
+			stylesPartWriter.openTag("w:style"); //$NON-NLS-1$
+			stylesPartWriter.attribute("w:type", "table"); //$NON-NLS-1$ //$NON-NLS-2$
+			stylesPartWriter.attribute("w:default", 1); //$NON-NLS-1$
+			stylesPartWriter.attribute("w:styleId", "TableNormal"); //$NON-NLS-1$ //$NON-NLS-2$
+			stylesPartWriter.openTag("w:name"); //$NON-NLS-1$
+			stylesPartWriter.attribute("w:val", "Normal Table"); //$NON-NLS-1$ //$NON-NLS-2$
+			stylesPartWriter.closeTag("w:name"); //$NON-NLS-1$
+			stylesPartWriter.openTag("w:uiPriority"); //$NON-NLS-1$
+			stylesPartWriter.attribute("w:val", 99); //$NON-NLS-1$
+			stylesPartWriter.closeTag("w:uiPriority"); //$NON-NLS-1$
+			stylesPartWriter.openTag("w:semiHidden"); //$NON-NLS-1$
+			stylesPartWriter.closeTag("w:semiHidden"); //$NON-NLS-1$
+			stylesPartWriter.openTag("w:unhidenWhenUsed"); //$NON-NLS-1$
+			stylesPartWriter.closeTag("w:unhidenWhenUsed"); //$NON-NLS-1$
+			stylesPartWriter.openTag("w:qFormat"); //$NON-NLS-1$
+			stylesPartWriter.closeTag("w:qFormat"); //$NON-NLS-1$
+			stylesPartWriter.openTag("w:tblPr"); //$NON-NLS-1$
+			stylesPartWriter.openTag("w:tblInd"); //$NON-NLS-1$
+			stylesPartWriter.attribute("w:w", 0); //$NON-NLS-1$
+			stylesPartWriter.attribute("w:type", "dxa"); //$NON-NLS-1$ //$NON-NLS-2$
+			stylesPartWriter.closeTag("w:tblInd"); //$NON-NLS-1$
+			stylesPartWriter.openTag("w:tblCellMar"); //$NON-NLS-1$
+			stylesPartWriter.openTag("w:top"); //$NON-NLS-1$
+			stylesPartWriter.attribute("w:w", 0); //$NON-NLS-1$
+			stylesPartWriter.attribute("w:type", "dxa"); //$NON-NLS-1$ //$NON-NLS-2$
+			stylesPartWriter.closeTag("w:top"); //$NON-NLS-1$
+			stylesPartWriter.openTag("w:left"); //$NON-NLS-1$
+			stylesPartWriter.attribute("w:w", 108); //$NON-NLS-1$
+			stylesPartWriter.attribute("w:type", "dxa"); //$NON-NLS-1$ //$NON-NLS-2$
+			stylesPartWriter.closeTag("w:left"); //$NON-NLS-1$
+			stylesPartWriter.openTag("w:bottom"); //$NON-NLS-1$
+			stylesPartWriter.attribute("w:w", 0); //$NON-NLS-1$
+			stylesPartWriter.attribute("w:type", "dxa"); //$NON-NLS-1$ //$NON-NLS-2$
+			stylesPartWriter.closeTag("w:bottom"); //$NON-NLS-1$
+			stylesPartWriter.openTag("w:right"); //$NON-NLS-1$
+			stylesPartWriter.attribute("w:w", 108); //$NON-NLS-1$
+			stylesPartWriter.attribute("w:type", "dxa"); //$NON-NLS-1$ //$NON-NLS-2$
+			stylesPartWriter.closeTag("w:right"); //$NON-NLS-1$
+			stylesPartWriter.closeTag("w:tblCellMar"); //$NON-NLS-1$
+			stylesPartWriter.closeTag("w:tblPr"); //$NON-NLS-1$
+			stylesPartWriter.closeTag("w:style"); //$NON-NLS-1$
 
-			stylesPartWriter.closeTag("w:styles");
+			stylesPartWriter.closeTag("w:styles"); //$NON-NLS-1$
 			stylesPartWriter.endWriter();
 		} finally {
 			if (stylesPartWriter != null) {
@@ -192,7 +192,7 @@ public class Document extends BasicComponent {
 	}
 
 	private void writeSettingsPart() throws IOException {
-		String uri = "settings.xml";
+		String uri = "settings.xml"; //$NON-NLS-1$
 		String type = ContentTypes.WORD_SETTINGS;
 		String relationshipType = RelationshipTypes.SETTINGS;
 		IPart settingsPart = part.getPart(uri, type, relationshipType);
@@ -202,68 +202,68 @@ public class Document extends BasicComponent {
 			settingsPartWriter.startWriter();
 			switch (wordVersion) {
 			case 2010:
-				settingsPartWriter.openTag("w:settings");
-				settingsPartWriter.nameSpace("w", NameSpaces.WORD_PROCESSINGML);
-				settingsPartWriter.nameSpace("o", NameSpaces.OFFICE);
-				settingsPartWriter.nameSpace("r", NameSpaces.RELATIONSHIPS);
-				settingsPartWriter.openTag("w:zoom");
-				settingsPartWriter.attribute("w:percent", "100");
-				settingsPartWriter.closeTag("w:zoom");
-				settingsPartWriter.openTag("w:displayBackgroundShape");
-				settingsPartWriter.closeTag("w:displayBackgroundShape");
+				settingsPartWriter.openTag("w:settings"); //$NON-NLS-1$
+				settingsPartWriter.nameSpace("w", NameSpaces.WORD_PROCESSINGML); //$NON-NLS-1$
+				settingsPartWriter.nameSpace("o", NameSpaces.OFFICE); //$NON-NLS-1$
+				settingsPartWriter.nameSpace("r", NameSpaces.RELATIONSHIPS); //$NON-NLS-1$
+				settingsPartWriter.openTag("w:zoom"); //$NON-NLS-1$
+				settingsPartWriter.attribute("w:percent", "100"); //$NON-NLS-1$ //$NON-NLS-2$
+				settingsPartWriter.closeTag("w:zoom"); //$NON-NLS-1$
+				settingsPartWriter.openTag("w:displayBackgroundShape"); //$NON-NLS-1$
+				settingsPartWriter.closeTag("w:displayBackgroundShape"); //$NON-NLS-1$
 				// settingsPartWriter.openTag( "w:proofState" );
 				// settingsPartWriter.attribute( "w:spelling", "clean" );
 				// settingsPartWriter.attribute( "w:grammar", "clean" );
 				// settingsPartWriter.closeTag( "w:proofState" );
-				settingsPartWriter.openTag("w:view");
-				settingsPartWriter.attribute("w:val", "print");
-				settingsPartWriter.closeTag("w:view");
-				settingsPartWriter.openTag("w:compat");
-				settingsPartWriter.openTag("w:compatSetting");
-				settingsPartWriter.attribute("w:name", "w:compatibilityMode");
-				settingsPartWriter.attribute("w:uri", "http://schemas.microsoft.com/office/word");
-				settingsPartWriter.attribute("w:val", "12");
-				settingsPartWriter.closeTag("w:compatSetting");
-				settingsPartWriter.closeTag("w:compat");
-				settingsPartWriter.closeTag("w:settings");
+				settingsPartWriter.openTag("w:view"); //$NON-NLS-1$
+				settingsPartWriter.attribute("w:val", "print"); //$NON-NLS-1$ //$NON-NLS-2$
+				settingsPartWriter.closeTag("w:view"); //$NON-NLS-1$
+				settingsPartWriter.openTag("w:compat"); //$NON-NLS-1$
+				settingsPartWriter.openTag("w:compatSetting"); //$NON-NLS-1$
+				settingsPartWriter.attribute("w:name", "w:compatibilityMode"); //$NON-NLS-1$ //$NON-NLS-2$
+				settingsPartWriter.attribute("w:uri", "http://schemas.microsoft.com/office/word"); //$NON-NLS-1$//$NON-NLS-2$
+				settingsPartWriter.attribute("w:val", "12"); //$NON-NLS-1$ //$NON-NLS-2$
+				settingsPartWriter.closeTag("w:compatSetting"); //$NON-NLS-1$
+				settingsPartWriter.closeTag("w:compat"); //$NON-NLS-1$
+				settingsPartWriter.closeTag("w:settings"); //$NON-NLS-1$
 				break;
 			default:
-				settingsPartWriter.openTag("w:settings");
-				settingsPartWriter.nameSpace("mc", NameSpaces.MARKUP_COMPATIBILITY);
-				settingsPartWriter.nameSpace("o", NameSpaces.OFFICE);
-				settingsPartWriter.nameSpace("r", NameSpaces.RELATIONSHIPS);
-				settingsPartWriter.nameSpace("m", NameSpaces.MATH);
-				settingsPartWriter.nameSpace("v", NameSpaces.VML);
-				settingsPartWriter.nameSpace("w10", NameSpaces.W10);
-				settingsPartWriter.nameSpace("w", NameSpaces.WORD_PROCESSINGML);
-				settingsPartWriter.nameSpace("w14", NameSpaces.W14);
-				settingsPartWriter.nameSpace("w15", NameSpaces.W15);
-				settingsPartWriter.nameSpace("w16cex", NameSpaces.W16CEX);
-				settingsPartWriter.nameSpace("w16cid", NameSpaces.W16CID);
-				settingsPartWriter.nameSpace("w16", NameSpaces.W16);
-				settingsPartWriter.nameSpace("w16se", NameSpaces.W16SE);
-				settingsPartWriter.nameSpace("sl", NameSpaces.SCHEMA_LIBRARY);
-				settingsPartWriter.attribute("mc:Ignorable", "w14 w15 w16se w16cid w16 w16cex");
-				settingsPartWriter.openTag("w:zoom");
-				settingsPartWriter.attribute("w:percent", "100");
-				settingsPartWriter.closeTag("w:zoom");
-				settingsPartWriter.openTag("w:displayBackgroundShape");
-				settingsPartWriter.closeTag("w:displayBackgroundShape");
+				settingsPartWriter.openTag("w:settings"); //$NON-NLS-1$
+				settingsPartWriter.nameSpace("mc", NameSpaces.MARKUP_COMPATIBILITY); //$NON-NLS-1$
+				settingsPartWriter.nameSpace("o", NameSpaces.OFFICE); //$NON-NLS-1$
+				settingsPartWriter.nameSpace("r", NameSpaces.RELATIONSHIPS); //$NON-NLS-1$
+				settingsPartWriter.nameSpace("m", NameSpaces.MATH); //$NON-NLS-1$
+				settingsPartWriter.nameSpace("v", NameSpaces.VML); //$NON-NLS-1$
+				settingsPartWriter.nameSpace("w10", NameSpaces.W10); //$NON-NLS-1$
+				settingsPartWriter.nameSpace("w", NameSpaces.WORD_PROCESSINGML); //$NON-NLS-1$
+				settingsPartWriter.nameSpace("w14", NameSpaces.W14); //$NON-NLS-1$
+				settingsPartWriter.nameSpace("w15", NameSpaces.W15); //$NON-NLS-1$
+				settingsPartWriter.nameSpace("w16cex", NameSpaces.W16CEX); //$NON-NLS-1$
+				settingsPartWriter.nameSpace("w16cid", NameSpaces.W16CID); //$NON-NLS-1$
+				settingsPartWriter.nameSpace("w16", NameSpaces.W16); //$NON-NLS-1$
+				settingsPartWriter.nameSpace("w16se", NameSpaces.W16SE); //$NON-NLS-1$
+				settingsPartWriter.nameSpace("sl", NameSpaces.SCHEMA_LIBRARY); //$NON-NLS-1$
+				settingsPartWriter.attribute("mc:Ignorable", "w14 w15 w16se w16cid w16 w16cex"); //$NON-NLS-1$ //$NON-NLS-2$
+				settingsPartWriter.openTag("w:zoom"); //$NON-NLS-1$
+				settingsPartWriter.attribute("w:percent", "100"); //$NON-NLS-1$ //$NON-NLS-2$
+				settingsPartWriter.closeTag("w:zoom"); //$NON-NLS-1$
+				settingsPartWriter.openTag("w:displayBackgroundShape"); //$NON-NLS-1$
+				settingsPartWriter.closeTag("w:displayBackgroundShape"); //$NON-NLS-1$
 				// settingsPartWriter.openTag( "w:proofState" );
 				// settingsPartWriter.attribute( "w:spelling", "clean" );
 				// settingsPartWriter.attribute( "w:grammar", "clean" );
 				// settingsPartWriter.closeTag( "w:proofState" );
-				settingsPartWriter.openTag("w:view");
-				settingsPartWriter.attribute("w:val", "print");
-				settingsPartWriter.closeTag("w:view");
-				settingsPartWriter.openTag("w:compat");
-				settingsPartWriter.openTag("w:compatSetting");
-				settingsPartWriter.attribute("w:name", "compatibilityMode");
-				settingsPartWriter.attribute("w:uri", "http://schemas.microsoft.com/office/word");
-				settingsPartWriter.attribute("w:val", "15");
-				settingsPartWriter.closeTag("w:compatSetting");
-				settingsPartWriter.closeTag("w:compat");
-				settingsPartWriter.closeTag("w:settings");
+				settingsPartWriter.openTag("w:view"); //$NON-NLS-1$
+				settingsPartWriter.attribute("w:val", "print"); //$NON-NLS-1$ //$NON-NLS-2$
+				settingsPartWriter.closeTag("w:view"); //$NON-NLS-1$
+				settingsPartWriter.openTag("w:compat"); //$NON-NLS-1$
+				settingsPartWriter.openTag("w:compatSetting"); //$NON-NLS-1$
+				settingsPartWriter.attribute("w:name", "compatibilityMode"); //$NON-NLS-1$ //$NON-NLS-2$
+				settingsPartWriter.attribute("w:uri", "http://schemas.microsoft.com/office/word"); //$NON-NLS-1$//$NON-NLS-2$
+				settingsPartWriter.attribute("w:val", "15"); //$NON-NLS-1$ //$NON-NLS-2$
+				settingsPartWriter.closeTag("w:compatSetting"); //$NON-NLS-1$
+				settingsPartWriter.closeTag("w:compat"); //$NON-NLS-1$
+				settingsPartWriter.closeTag("w:settings"); //$NON-NLS-1$
 			}
 			settingsPartWriter.endWriter();
 		} finally {
@@ -275,8 +275,8 @@ public class Document extends BasicComponent {
 
 	@Override
 	void end() {
-		writer.closeTag("w:body");
-		writer.closeTag("w:document");
+		writer.closeTag("w:body"); //$NON-NLS-1$
+		writer.closeTag("w:document"); //$NON-NLS-1$
 		writer.endWriter();
 		writer.close();
 	}
@@ -294,43 +294,55 @@ public class Document extends BasicComponent {
 		} else {
 			String color = WordUtil.parseColor(backgroundColor);
 			if (color != null) {
-				writer.openTag("w:background");
-				writer.attribute("w:color", color);
-				writer.closeTag("w:background");
+				writer.openTag("w:background"); //$NON-NLS-1$
+				writer.attribute("w:color", color); //$NON-NLS-1$
+				writer.closeTag("w:background"); //$NON-NLS-1$
 			}
 		}
 	}
 
 	private void drawDocumentBackgroundImage(IPart imagePart) {
-		writer.openTag("w:background");
-		writer.attribute("w:color", "FFFFFF");
-		writer.openTag("v:background");
-		writer.attribute("id", "");
-		writer.openTag("v:fill");
-		writer.attribute("r:id", imagePart.getRelationshipId());
-		writer.attribute("recolor", "t");
-		writer.attribute("type", "frame");
-		writer.closeTag("v:fill");
-		writer.closeTag("v:background");
-		writer.closeTag("w:background");
+		writer.openTag("w:background"); //$NON-NLS-1$
+		writer.attribute("w:color", "FFFFFF"); //$NON-NLS-1$ //$NON-NLS-2$
+		writer.openTag("v:background"); //$NON-NLS-1$
+		writer.attribute("id", ""); //$NON-NLS-1$//$NON-NLS-2$
+		writer.openTag("v:fill"); //$NON-NLS-1$
+		writer.attribute("r:id", imagePart.getRelationshipId()); //$NON-NLS-1$
+		writer.attribute("recolor", "t"); //$NON-NLS-1$ //$NON-NLS-2$
+		writer.attribute("type", "frame"); //$NON-NLS-1$ //$NON-NLS-2$
+		writer.closeTag("v:fill"); //$NON-NLS-1$
+		writer.closeTag("v:background"); //$NON-NLS-1$
+		writer.closeTag("w:background"); //$NON-NLS-1$
 	}
 
 	void writeHeaderReference(BasicComponent header, boolean showHeaderOnFirst) {
-		String type = showHeaderOnFirst ? "first" : "default";
-		writer.openTag("w:headerReference");
-		writer.attribute("w:type", type);
-		writer.attribute("r:id", header.getRelationshipId());
-		writer.closeTag("w:headerReference");
+		String type = showHeaderOnFirst ? "first" : "default"; //$NON-NLS-1$ //$NON-NLS-2$
+		writer.openTag("w:headerReference"); //$NON-NLS-1$
+		writer.attribute("w:type", type); //$NON-NLS-1$
+		writer.attribute("r:id", header.getRelationshipId()); //$NON-NLS-1$
+		writer.closeTag("w:headerReference"); //$NON-NLS-1$
 	}
 
-	void writeFooterReference(BasicComponent footer) {
-		writer.openTag("w:footerReference");
-		writer.attribute("r:id", footer.getRelationshipId());
-		writer.closeTag("w:footerReference");
+	void writeFooterReference(BasicComponent footer, boolean showHeaderOnFirst) {
+		String type = showHeaderOnFirst ? "first" : "default"; //$NON-NLS-1$ //$NON-NLS-2$
+		writer.openTag("w:footerReference"); //$NON-NLS-1$
+		writer.attribute("w:type", type); //$NON-NLS-1$
+		writer.attribute("r:id", footer.getRelationshipId()); //$NON-NLS-1$
+		writer.closeTag("w:footerReference"); //$NON-NLS-1$
 	}
 
-	Header createHeader(int headerHeight, int headerWidth) throws IOException {
-		String uri = "header" + getHeaderID() + ".xml";
+	Header createHeader(boolean showHeaderOnFirst, int headerHeight, int headerWidth) throws IOException {
+		if (showHeaderOnFirst) {
+			String uri = "header" + nextHeaderID() + ".xml"; //$NON-NLS-1$ //$NON-NLS-2$
+			String type = ContentTypes.WORD_HEADER;
+			String relationshipType = RelationshipTypes.HEADER;
+			IPart headerPart = part.getPart(uri, type, relationshipType);
+			Header firstPageHeader = new Header(headerPart, this, headerHeight, headerWidth);
+			firstPageHeader.start();
+			firstPageHeader.end();
+			writeHeaderReference(firstPageHeader, true);
+		}
+		String uri = "header" + nextHeaderID() + ".xml"; //$NON-NLS-1$//$NON-NLS-2$
 		String type = ContentTypes.WORD_HEADER;
 		String relationshipType = RelationshipTypes.HEADER;
 		IPart headerPart = part.getPart(uri, type, relationshipType);
@@ -338,35 +350,42 @@ public class Document extends BasicComponent {
 	}
 
 	Footer createFooter(int footerHeight, int footerWidth) throws IOException {
-		String uri = "footer" + getFooterID() + ".xml";
+		String uri = "footer" + nextFooterID() + ".xml"; //$NON-NLS-1$ //$NON-NLS-2$
 		String type = ContentTypes.WORD_FOOTER;
 		String relationshipType = RelationshipTypes.FOOTER;
 		IPart footerPart = part.getPart(uri, type, relationshipType);
 		return new Footer(footerPart, this, footerHeight, footerWidth);
 	}
 
-	private int getHeaderID() {
+	private int nextHeaderID() {
 		return headerId++;
 	}
 
-	private int getFooterID() {
+	private int nextFooterID() {
 		return footerId++;
 	}
 
 	@Override
-	protected int getImageID() {
+	protected int nextImageID() {
 		return imageId++;
 	}
 
 	@Override
-	protected int getMhtTextId() {
+	protected int nextMhtTextId() {
 		return mhtId++;
 	}
 
 	void writePageBorders(IStyle style, int topMargin, int bottomMargin, int leftMargin, int rightMargin) {
-		writer.openTag("w:pgBorders");
-		writer.attribute("w:offsetFrom", "page");
+		writer.openTag("w:pgBorders"); //$NON-NLS-1$
+		writer.attribute("w:offsetFrom", "page"); //$NON-NLS-1$ //$NON-NLS-2$
 		writeBorders(style, topMargin, bottomMargin, leftMargin, rightMargin);
-		writer.closeTag("w:pgBorders");
+		writer.closeTag("w:pgBorders"); //$NON-NLS-1$
+	}
+
+	@Override
+	public void writeEmptyElement( String tag )
+	{
+		writer.openTag( tag );
+		writer.closeTag( tag );
 	}
 }

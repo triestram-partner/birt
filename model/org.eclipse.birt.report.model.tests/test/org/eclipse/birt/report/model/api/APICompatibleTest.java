@@ -37,7 +37,7 @@ import org.eclipse.birt.report.model.util.BaseTestCase;
 /**
  * Tests api compatibility.
  */
-
+@SuppressWarnings("nls")
 public class APICompatibleTest extends BaseTestCase {
 
 	/**

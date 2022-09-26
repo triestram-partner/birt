@@ -22,6 +22,7 @@ import org.eclipse.birt.report.model.api.oda.interfaces.IAggregationDefn;
 import org.eclipse.birt.report.model.api.oda.interfaces.IBirtAggregationConstants;
 import org.eclipse.birt.report.model.metadata.MetaDataDictionary;
 
+@SuppressWarnings("nls")
 public class AggregationDefn implements IAggregationDefn {
 
 	/**

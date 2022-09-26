@@ -30,6 +30,7 @@ import org.apache.poi.ss.usermodel.Font;
  * @author jtalbut
  *
  */
+@SuppressWarnings("nls")
 public class RichTextRun {
 	/**
 	 * The index of the first character to be formatted using this font.

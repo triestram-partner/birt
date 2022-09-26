@@ -259,6 +259,7 @@ public abstract class AbstractArea implements IArea {
 		this.ignoreReordering = ignoreReordering;
 	}
 
+	@SuppressWarnings("nls")
 	public static void debugPrint(IArea area) {
 		if (area instanceof IContainerArea) {
 			System.out.print(area.getClass() + "||");
@@ -273,6 +274,7 @@ public abstract class AbstractArea implements IArea {
 		}
 	}
 
+	@SuppressWarnings("nls")
 	public static void debugPrintVisual(IArea area) {
 		if (area instanceof ITextArea) {
 			System.out.println(((ITextArea) area).getText());
@@ -287,6 +289,7 @@ public abstract class AbstractArea implements IArea {
 		debugPrint(area, 0, 0);
 	}
 
+	@SuppressWarnings("nls")
 	private static void debugPrint(IArea area, int x, int y) {
 		if (area instanceof IContainerArea) {
 			System.out.print(area.getClass() + "||");

@@ -259,8 +259,10 @@ public class WordUtil {
 		return value;
 	}
 
-	public static boolean isField(int autoTextType) {
-		return autoTextType == IAutoTextContent.PAGE_NUMBER || autoTextType == IAutoTextContent.TOTAL_PAGE;
+	public static boolean isField( int autoTextType ) {
+		return autoTextType == IAutoTextContent.PAGE_NUMBER
+				|| autoTextType == IAutoTextContent.TOTAL_PAGE 
+				|| autoTextType == AbstractEmitterImpl.CUSTOM_FIELD;
 	}
 
 	public static boolean isField(IContent content) {

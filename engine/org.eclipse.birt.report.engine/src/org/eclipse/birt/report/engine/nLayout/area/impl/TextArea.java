@@ -131,9 +131,6 @@ public class TextArea extends AbstractArea implements ITextArea {
 		}
 		String shyText = text.substring(offset, offset + textLength);
 		if (removeShy) {
-			if (shyText.indexOf("Flammen") >= 0) {
-				System.out.println(shyText);
-			}
 			// Remove all SHY characters except a trailing one.
 			// FIXME: This is possibly worth performance tuning!
 			int indxShy = shyText.indexOf(SHY_CHAR);

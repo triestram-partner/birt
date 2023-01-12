@@ -15,6 +15,7 @@
     <setAttribute key="deselected_workspace_bundles"/>
     <booleanAttribute key="includeOptional" value="false"/>
     <stringAttribute key="location" value="${workspace_loc}/../runtime-birt-all-in-one"/>
+    <booleanAttribute key="org.eclipse.debug.core.ATTR_FORCE_SYSTEM_CONSOLE_ENCODING" value="false"/>
     <mapAttribute key="org.eclipse.debug.core.environmentVariables">
         <mapEntry key="lisa.lims.dbUrl" value="jdbc:oracle:thin:@//verleihnix:1521/LXXL"/>
         <mapEntry key="lisa.lims.password" value="pluto"/>
@@ -46,7 +47,6 @@
         <setEntry value="javax.annotation@default:default"/>
         <setEntry value="javax.inject@default:default"/>
         <setEntry value="javax.servlet-api@default:default"/>
-        <setEntry value="javax.servlet.jsp@default:default"/>
         <setEntry value="javax.transaction@default:false"/>
         <setEntry value="javax.wsdl@default:default"/>
         <setEntry value="javax.xml.bind@default:default"/>
@@ -303,7 +303,6 @@
         <setEntry value="org.eclipse.osgi*3.17.200.v20220215-2237@-1:true"/>
         <setEntry value="org.eclipse.osgi.compatibility.state@default:false"/>
         <setEntry value="org.eclipse.osgi.services*3.10.200.v20210723-0643@2:true"/>
-        <setEntry value="org.eclipse.osgi.services*3.9.0.v20200511-1725@2:true"/>
         <setEntry value="org.eclipse.osgi.util@default:default"/>
         <setEntry value="org.eclipse.pde.build@default:default"/>
         <setEntry value="org.eclipse.pde.core@default:default"/>
@@ -370,13 +369,11 @@
         <setEntry value="org.mortbay.jasper.apache-el@default:default"/>
         <setEntry value="org.mortbay.jasper.apache-jsp@default:default"/>
         <setEntry value="org.mozilla.javascript@default:default"/>
-        <setEntry value="org.objectweb.asm*9.2.0.v20210813-1119@default:default"/>
-        <setEntry value="org.objectweb.asm.commons*9.1.0@default:default"/>
-        <setEntry value="org.objectweb.asm.commons*9.2.0@default:default"/>
-        <setEntry value="org.objectweb.asm.tree*9.2.0@default:default"/>
-        <setEntry value="org.objectweb.asm.tree.analysis*9.1.0@default:default"/>
-        <setEntry value="org.objectweb.asm.tree.analysis*9.2.0@default:default"/>
+        <setEntry value="org.objectweb.asm.commons@default:default"/>
+        <setEntry value="org.objectweb.asm.tree.analysis@default:default"/>
+        <setEntry value="org.objectweb.asm.tree@default:default"/>
         <setEntry value="org.objectweb.asm.util@default:default"/>
+        <setEntry value="org.objectweb.asm@default:default"/>
         <setEntry value="org.sat4j.core@default:default"/>
         <setEntry value="org.sat4j.pb@default:default"/>
         <setEntry value="org.slf4j.osgi-over-slf4j@default:default"/>

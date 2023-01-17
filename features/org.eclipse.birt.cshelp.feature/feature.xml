@@ -16,7 +16,7 @@
 <feature
       id="org.eclipse.birt.cshelp"
       label="%featureName"
-      version="4.12.0.qualifier"
+      version="4.13.0.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.birt.cshelp"
       image="eclipse_update_120.jpg">
@@ -34,8 +34,8 @@
    </license>
 
    <url>
-      <update label="Business Intelligence and Reporting Tools (BIRT) Updates" url="http://download.eclipse.org/birt/update-site/4.9"/>
-      <discovery label="%updateSiteName" url="http://download.eclipse.org/birt/update-site/4.9"/>
+      <update label="Business Intelligence and Reporting Tools (BIRT) Updates" url="http://download.eclipse.org/birt/update-site/latest"/>
+      <discovery label="%updateSiteName" url="http://download.eclipse.org/birt/update-site/latest"/>
    </url>
 
    <requires>

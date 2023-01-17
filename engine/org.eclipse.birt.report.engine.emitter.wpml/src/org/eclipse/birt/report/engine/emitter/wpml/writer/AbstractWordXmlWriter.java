@@ -33,25 +33,51 @@ import org.eclipse.birt.report.engine.emitter.wpml.WordUtil;
 import org.eclipse.birt.report.engine.layout.pdf.util.PropertyUtil;
 import org.w3c.dom.css.CSSValue;
 
+/**
+ * This is used for writing WordML by the DocxEmitter and by the old Word 2003
+ * emitter.
+ */
 public abstract class AbstractWordXmlWriter {
 
 	protected XMLWriter writer;
 
-	protected final String RIGHT = "right"; //$NON-NLS-1$
+	protected final String RIGHT = "right";
 
-	protected final String LEFT = "left"; //$NON-NLS-1$
+	protected final String LEFT = "left";
 
-	protected final String TOP = "top"; //$NON-NLS-1$
+	protected final String TOP = "top";
 
-	protected final String BOTTOM = "bottom"; //$NON-NLS-1$
+	protected final String BOTTOM = "bottom";
 
 	public static final char SPACE = ' ';
 
-	public static final String EMPTY_STRING = ""; //$NON-NLS-1$
+	public static final String EMPTY_STRING = "";
 
 	public static final int INDEX_NOTFOUND = -1;
 
-	protected final char SHY_CHAR = (char) 173;
+	/**
+	 * <p>
+	 * The soft hyphen Unicode symbol is intended to be visible only when a line
+	 * break occurs there.
+	 * </p>
+	 * <p>
+	 * This hiding logic of the SHY symbol needs special attention in many emitters.
+	 * </p>
+	 * <p>
+	 * SOFT HYPHEN is often abbreviated as SHY, which also is very descriptive,
+	 * because this symbol is hiding inside the surrounding words most of the time.
+	 * </p>
+	 * <p>
+	 * In most fonts, its width is defined as zero, which of cause is correct only
+	 * if it is hidden. If it is rendered, it looks similar to the minus sign.
+	 * </p>
+	 * <p>
+	 * The Unicode standard also defines a HYPHEN symbol, which should look the same
+	 * as the SHY symbol, but doesn't have the hiding logic. However, the HYPHEN
+	 * symbol is rarely defined in TTF fonts.
+	 * </p>
+	 */
+	public static final char SOFT_HYPHEN = '\u00ad';
 
 	protected int imageId = 75;
 
@@ -83,86 +109,86 @@ public abstract class AbstractWordXmlWriter {
 	protected abstract void writeIndent(int leftMargin, int rightMargin, int textIndent);
 
 	public void startSectionInParagraph() {
-		writer.openTag("w:p"); //$NON-NLS-1$
-		writer.openTag("w:pPr"); //$NON-NLS-1$
+		writer.openTag("w:p");
+		writer.openTag("w:pPr");
 		startSection();
 	}
 
 	public void endSectionInParagraph() {
 		endSection();
-		writer.closeTag("w:pPr"); //$NON-NLS-1$
-		writer.closeTag("w:p"); //$NON-NLS-1$
+		writer.closeTag("w:pPr");
+		writer.closeTag("w:p");
 	}
 
 	public void startSection() {
-		writer.openTag("w:sectPr"); //$NON-NLS-1$
+		writer.openTag("w:sectPr");
 	}
 
 	public void endSection() {
-		writer.closeTag("w:sectPr"); //$NON-NLS-1$
+		writer.closeTag("w:sectPr");
 	}
 
 	protected void drawImageShapeType(int imageId) {
-		writer.openTag("v:shapetype"); //$NON-NLS-1$
-		writer.attribute("id", "_x0000_t" + imageId); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.attribute("coordsize", "21600,21600"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.attribute("o:spt", "75"); //$NON-NLS-1$//$NON-NLS-2$
-		writer.attribute("o:preferrelative", "t"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.attribute("path", "m@4@5l@4@11@9@11@9@5xe"); //$NON-NLS-1$//$NON-NLS-2$
-		writer.attribute("filled", "f"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.attribute("stroked", "f"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.openTag("v:stroke"); //$NON-NLS-1$
-		writer.attribute("imagealignshape", "false"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.attribute("joinstyle", "miter"); //$NON-NLS-1$//$NON-NLS-2$
-		writer.closeTag("v:stroke"); //$NON-NLS-1$
-		writer.openTag("v:formulas"); //$NON-NLS-1$
-		writer.openTag("v:f"); //$NON-NLS-1$
-		writer.attribute("eqn", "if lineDrawn pixelLineWidth 0"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.closeTag("v:f"); //$NON-NLS-1$
-		writer.openTag("v:f"); //$NON-NLS-1$
-		writer.attribute("eqn", "sum @0 1 0"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.closeTag("v:f"); //$NON-NLS-1$
-		writer.openTag("v:f"); //$NON-NLS-1$
-		writer.attribute("eqn", "sum 0 0 @1"); //$NON-NLS-1$//$NON-NLS-2$
-		writer.closeTag("v:f"); //$NON-NLS-1$
-		writer.openTag("v:f"); //$NON-NLS-1$
-		writer.attribute("eqn", "prod @2 1 2"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.closeTag("v:f"); //$NON-NLS-1$
-		writer.openTag("v:f"); //$NON-NLS-1$
-		writer.attribute("eqn", "prod @3 21600 pixelWidth"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.closeTag("v:f"); //$NON-NLS-1$
-		writer.openTag("v:f"); //$NON-NLS-1$
-		writer.attribute("eqn", "prod @3 21600 pixelHeight"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.closeTag("v:f"); //$NON-NLS-1$
-		writer.openTag("v:f"); //$NON-NLS-1$
-		writer.attribute("eqn", "sum @0 0 1"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.closeTag("v:f"); //$NON-NLS-1$
-		writer.openTag("v:f"); //$NON-NLS-1$
-		writer.attribute("eqn", "prod @6 1 2"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.closeTag("v:f"); //$NON-NLS-1$
-		writer.openTag("v:f"); //$NON-NLS-1$
-		writer.attribute("eqn", "prod @7 21600 pixelWidth"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.closeTag("v:f"); //$NON-NLS-1$
-		writer.openTag("v:f"); //$NON-NLS-1$
-		writer.attribute("eqn", "sum @8 21600 0 "); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.closeTag("v:f"); //$NON-NLS-1$
-		writer.openTag("v:f"); //$NON-NLS-1$
-		writer.attribute("eqn", "prod @7 21600 pixelHeight"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.closeTag("v:f"); //$NON-NLS-1$
-		writer.openTag("v:f"); //$NON-NLS-1$
-		writer.attribute("eqn", "sum @10 21600 0"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.closeTag("v:f"); //$NON-NLS-1$
-		writer.closeTag("v:formulas"); //$NON-NLS-1$
-		writer.openTag("v:path"); //$NON-NLS-1$
-		writer.attribute("o:extrusionok", "f"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.attribute("gradientshapeok", "t"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.attribute("o:connecttype", "rect"); //$NON-NLS-1$//$NON-NLS-2$
-		writer.closeTag("v:path"); //$NON-NLS-1$
-		writer.openTag("o:lock"); //$NON-NLS-1$
-		writer.attribute("v:ext", "edit"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.attribute("aspectratio", "t"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.closeTag("o:lock"); //$NON-NLS-1$
-		writer.closeTag("v:shapetype"); //$NON-NLS-1$
+		writer.openTag("v:shapetype");
+		writer.attribute("id", "_x0000_t" + imageId);
+		writer.attribute("coordsize", "21600,21600");
+		writer.attribute("o:spt", "75");
+		writer.attribute("o:preferrelative", "t");
+		writer.attribute("path", "m@4@5l@4@11@9@11@9@5xe");
+		writer.attribute("filled", "f");
+		writer.attribute("stroked", "f");
+		writer.openTag("v:stroke");
+		writer.attribute("imagealignshape", "false");
+		writer.attribute("joinstyle", "miter");
+		writer.closeTag("v:stroke");
+		writer.openTag("v:formulas");
+		writer.openTag("v:f");
+		writer.attribute("eqn", "if lineDrawn pixelLineWidth 0");
+		writer.closeTag("v:f");
+		writer.openTag("v:f");
+		writer.attribute("eqn", "sum @0 1 0");
+		writer.closeTag("v:f");
+		writer.openTag("v:f");
+		writer.attribute("eqn", "sum 0 0 @1");
+		writer.closeTag("v:f");
+		writer.openTag("v:f");
+		writer.attribute("eqn", "prod @2 1 2");
+		writer.closeTag("v:f");
+		writer.openTag("v:f");
+		writer.attribute("eqn", "prod @3 21600 pixelWidth");
+		writer.closeTag("v:f");
+		writer.openTag("v:f");
+		writer.attribute("eqn", "prod @3 21600 pixelHeight");
+		writer.closeTag("v:f");
+		writer.openTag("v:f");
+		writer.attribute("eqn", "sum @0 0 1");
+		writer.closeTag("v:f");
+		writer.openTag("v:f");
+		writer.attribute("eqn", "prod @6 1 2");
+		writer.closeTag("v:f");
+		writer.openTag("v:f");
+		writer.attribute("eqn", "prod @7 21600 pixelWidth");
+		writer.closeTag("v:f");
+		writer.openTag("v:f");
+		writer.attribute("eqn", "sum @8 21600 0 ");
+		writer.closeTag("v:f");
+		writer.openTag("v:f");
+		writer.attribute("eqn", "prod @7 21600 pixelHeight");
+		writer.closeTag("v:f");
+		writer.openTag("v:f");
+		writer.attribute("eqn", "sum @10 21600 0");
+		writer.closeTag("v:f");
+		writer.closeTag("v:formulas");
+		writer.openTag("v:path");
+		writer.attribute("o:extrusionok", "f");
+		writer.attribute("gradientshapeok", "t");
+		writer.attribute("o:connecttype", "rect");
+		writer.closeTag("v:path");
+		writer.openTag("o:lock");
+		writer.attribute("v:ext", "edit");
+		writer.attribute("aspectratio", "t");
+		writer.closeTag("o:lock");
+		writer.closeTag("v:shapetype");
 	}
 
 	protected void drawImageBordersStyle(IStyle style) {
@@ -177,10 +203,10 @@ public abstract class AbstractWordXmlWriter {
 
 	private void drawImageBorderStyle(String pos, String style, CSSValue width) {
 		if (PropertyUtil.getDimensionValue(width) != 0) {
-			String direct = "w10:border" + pos; //$NON-NLS-1$
+			String direct = "w10:border" + pos;
 			writer.openTag(direct);
-			writer.attribute("type", WordUtil.parseImageBorderStyle(style)); //$NON-NLS-1$
-			writer.attribute("width", WordUtil.parseBorderSize(PropertyUtil.getDimensionValue(width))); //$NON-NLS-1$
+			writer.attribute("type", WordUtil.parseImageBorderStyle(style));
+			writer.attribute("width", WordUtil.parseBorderSize(PropertyUtil.getDimensionValue(width)));
 			writer.closeTag(direct);
 		}
 	}
@@ -193,27 +219,27 @@ public abstract class AbstractWordXmlWriter {
 	}
 
 	private void drawImageBorderColor(String pos, String color) {
-		String borderColor = "#" + WordUtil.parseColor(color); //$NON-NLS-1$
-		String direct = "o:border" + pos + "color"; //$NON-NLS-1$ //$NON-NLS-2$
+		String borderColor = "#" + WordUtil.parseColor(color);
+		String direct = "o:border" + pos + "color";
 		writer.attribute(direct, borderColor);
 	}
 
 	public void writePageProperties(int pageHeight, int pageWidth, int headerHeight, int footerHeight, int topMargin,
 			int bottomMargin, int leftMargin, int rightMargin, String orient) {
-		writer.openTag("w:pgSz"); //$NON-NLS-1$
-		writer.attribute("w:w", pageWidth); //$NON-NLS-1$
-		writer.attribute("w:h", pageHeight); //$NON-NLS-1$
-		writer.attribute("w:orient", orient); //$NON-NLS-1$
-		writer.closeTag("w:pgSz"); //$NON-NLS-1$
+		writer.openTag("w:pgSz");
+		writer.attribute("w:w", pageWidth);
+		writer.attribute("w:h", pageHeight);
+		writer.attribute("w:orient", orient);
+		writer.closeTag("w:pgSz");
 
-		writer.openTag("w:pgMar"); //$NON-NLS-1$
-		writer.attribute("w:top", topMargin); //$NON-NLS-1$
-		writer.attribute("w:bottom", bottomMargin); //$NON-NLS-1$
-		writer.attribute("w:left", leftMargin); //$NON-NLS-1$
-		writer.attribute("w:right", rightMargin); //$NON-NLS-1$
-		writer.attribute("w:header", topMargin); //$NON-NLS-1$
-		writer.attribute("w:footer", bottomMargin); //$NON-NLS-1$
-		writer.closeTag("w:pgMar"); //$NON-NLS-1$
+		writer.openTag("w:pgMar");
+		writer.attribute("w:top", topMargin);
+		writer.attribute("w:bottom", bottomMargin);
+		writer.attribute("w:left", leftMargin);
+		writer.attribute("w:right", rightMargin);
+		writer.attribute("w:header", topMargin);
+		writer.attribute("w:footer", bottomMargin);
+		writer.closeTag("w:pgMar");
 	}
 
 	// write the table properties to the output stream
@@ -223,70 +249,70 @@ public abstract class AbstractWordXmlWriter {
 
 	// write the table properties to the output stream
 	public void startTable(IStyle style, int tablewidth, boolean inForeign) {
-		writer.openTag("w:tbl"); //$NON-NLS-1$
-		writer.openTag("w:tblPr"); //$NON-NLS-1$
+		writer.openTag("w:tbl");
+		writer.openTag("w:tblPr");
 		writeTableIndent(style);
-		writeAttrTag("w:tblStyle", "TableGrid"); //$NON-NLS-1$ //$NON-NLS-2$
-		writeAttrTag("w:tblOverlap", "Never"); //$NON-NLS-1$ //$NON-NLS-2$
+		writeAttrTag("w:tblStyle", "TableGrid");
+		writeAttrTag("w:tblOverlap", "Never");
 		writeBidiTable();
 		writeTableWidth(style, tablewidth);
-		writeAttrTag("w:tblLook", "01E0"); //$NON-NLS-1$ //$NON-NLS-2$
+		writeAttrTag("w:tblLook", "01E0");
 		writeTableLayout();
 		writeTableBorders(style);
 		writeBackgroundColor(style.getBackgroundColor());
 
 		// "justify" is not an option for table alignment in word
-		if ("justify".equalsIgnoreCase(style.getTextAlign())) { //$NON-NLS-1$
-			writeAlign("left", style.getDirection()); //$NON-NLS-1$
+		if ("justify".equalsIgnoreCase(style.getTextAlign())) {
+			writeAlign("left", style.getDirection());
 		} else {
 			writeAlign(style.getTextAlign(), style.getDirection());
 		}
 		if (inForeign) {
-			writer.openTag("w:tblCellMar"); //$NON-NLS-1$
-			writer.openTag("w:top"); //$NON-NLS-1$
-			writer.attribute("w:w", 0); //$NON-NLS-1$
-			writer.attribute("w:type", "dxa"); //$NON-NLS-1$ //$NON-NLS-2$
-			writer.closeTag("w:top"); //$NON-NLS-1$
-			writer.openTag("w:left"); //$NON-NLS-1$
-			writer.attribute("w:w", 0); //$NON-NLS-1$
-			writer.attribute("w:type", "dxa"); //$NON-NLS-1$ //$NON-NLS-2$
-			writer.closeTag("w:left"); //$NON-NLS-1$
-			writer.openTag("w:bottom"); //$NON-NLS-1$
-			writer.attribute("w:w", 0); //$NON-NLS-1$
-			writer.attribute("w:type", "dxa"); //$NON-NLS-1$ //$NON-NLS-2$
-			writer.closeTag("w:bottom"); //$NON-NLS-1$
-			writer.openTag("w:right"); //$NON-NLS-1$
-			writer.attribute("w:w", 0); //$NON-NLS-1$
-			writer.attribute("w:type", "dxa"); //$NON-NLS-1$ //$NON-NLS-2$
-			writer.closeTag("w:right"); //$NON-NLS-1$
-			writer.closeTag("w:tblCellMar"); //$NON-NLS-1$
+			writer.openTag("w:tblCellMar");
+			writer.openTag("w:top");
+			writer.attribute("w:w", 0);
+			writer.attribute("w:type", "dxa");
+			writer.closeTag("w:top");
+			writer.openTag("w:left");
+			writer.attribute("w:w", 0);
+			writer.attribute("w:type", "dxa");
+			writer.closeTag("w:left");
+			writer.openTag("w:bottom");
+			writer.attribute("w:w", 0);
+			writer.attribute("w:type", "dxa");
+			writer.closeTag("w:bottom");
+			writer.openTag("w:right");
+			writer.attribute("w:w", 0);
+			writer.attribute("w:type", "dxa");
+			writer.closeTag("w:right");
+			writer.closeTag("w:tblCellMar");
 		}
-		writer.closeTag("w:tblPr"); //$NON-NLS-1$
+		writer.closeTag("w:tblPr");
 	}
 
 	private void writeTableBorders(IStyle style) {
-		writer.openTag("w:tblBorders"); //$NON-NLS-1$
+		writer.openTag("w:tblBorders");
 		writeBorders(style, 0, 0, 0, 0);
-		writer.closeTag("w:tblBorders"); //$NON-NLS-1$
+		writer.closeTag("w:tblBorders");
 	}
 
 	public void endTable() {
-		writer.closeTag("w:tbl"); //$NON-NLS-1$
+		writer.closeTag("w:tbl");
 	}
 
 	private void writeTableWidth(int tablewidth) {
-		writer.openTag("w:tblW"); //$NON-NLS-1$
-		writer.attribute("w:w", tablewidth); //$NON-NLS-1$
-		writer.attribute("w:type", "dxa"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.closeTag("w:tblW"); //$NON-NLS-1$
+		writer.openTag("w:tblW");
+		writer.attribute("w:w", tablewidth);
+		writer.attribute("w:type", "dxa");
+		writer.closeTag("w:tblW");
 	}
 
 	private void writeTableIndent(IStyle style) {
-		writer.openTag("w:tblInd"); //$NON-NLS-1$
-		writer.attribute("w:w", WordUtil //$NON-NLS-1$
+		writer.openTag("w:tblInd");
+		writer.attribute("w:w", WordUtil
 				.milliPt2Twips(PropertyUtil.getDimensionValue(style.getProperty(StyleConstants.STYLE_MARGIN_LEFT))));
-		writer.attribute("w:type", "dxa"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.closeTag("w:tblInd"); //$NON-NLS-1$
+		writer.attribute("w:type", "dxa");
+		writer.closeTag("w:tblInd");
 	}
 
 	private void writeTableWidth(IStyle style, int tablewidth) {
@@ -324,17 +350,17 @@ public abstract class AbstractWordXmlWriter {
 	}
 
 	private void writeSingleBorder(String type, String borderStyle, String color, CSSValue width, int margin) {
-		writer.openTag("w:" + type); //$NON-NLS-1$
+		writer.openTag("w:" + type);
 		writeBorderProperty(borderStyle, color, width, margin);
-		writer.closeTag("w:" + type); //$NON-NLS-1$
+		writer.closeTag("w:" + type);
 	}
 
 	private void writeBorderProperty(String style, String color, CSSValue width, int margin) {
-		writer.attribute("w:val", WordUtil.parseBorderStyle(style)); //$NON-NLS-1$
+		writer.attribute("w:val", WordUtil.parseBorderStyle(style));
 		int borderSize = WordUtil.parseBorderSize(PropertyUtil.getDimensionValue(width));
-		writer.attribute("w:sz", "double".equals(style) ? borderSize / 3 : borderSize); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.attribute("w:space", validateBorderSpace(margin)); //$NON-NLS-1$
-		writer.attribute("w:color", WordUtil.parseColor(color)); //$NON-NLS-1$
+		writer.attribute("w:sz", "double".equals(style) ? borderSize / 3 : borderSize);
+		writer.attribute("w:space", validateBorderSpace(margin));
+		writer.attribute("w:color", WordUtil.parseColor(color));
 	}
 
 	private int validateBorderSpace(int margin) {
@@ -351,21 +377,21 @@ public abstract class AbstractWordXmlWriter {
 			return;
 		}
 		String textAlign = align;
-		if ("justify".equalsIgnoreCase(align)) { //$NON-NLS-1$
-			textAlign = "both"; //$NON-NLS-1$
+		if ("justify".equalsIgnoreCase(align)) {
+			textAlign = "both";
 		}
 
 		// Need to swap 'left' and 'right' when orientation is RTL.
 		if (CSSConstants.CSS_RTL_VALUE.equalsIgnoreCase(direction)) {
 			if (IStyle.CSS_RIGHT_VALUE.equals(textAlign)) {
-				writeAttrTag("w:jc", IStyle.CSS_LEFT_VALUE); //$NON-NLS-1$
+				writeAttrTag("w:jc", IStyle.CSS_LEFT_VALUE);
 			} else if (IStyle.CSS_LEFT_VALUE.equals(textAlign)) {
-				writeAttrTag("w:jc", IStyle.CSS_RIGHT_VALUE); //$NON-NLS-1$
+				writeAttrTag("w:jc", IStyle.CSS_RIGHT_VALUE);
 			} else {
-				writeAttrTag("w:jc", textAlign); //$NON-NLS-1$
+				writeAttrTag("w:jc", textAlign);
 			}
 		} else {
-			writeAttrTag("w:jc", textAlign); //$NON-NLS-1$
+			writeAttrTag("w:jc", textAlign);
 		}
 	}
 
@@ -374,11 +400,11 @@ public abstract class AbstractWordXmlWriter {
 		if (cssColor == null) {
 			return;
 		}
-		writer.openTag("w:shd"); //$NON-NLS-1$
-		writer.attribute("w:val", "clear"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.attribute("w:color", "auto"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.attribute("w:fill", cssColor); //$NON-NLS-1$
-		writer.closeTag("w:shd"); //$NON-NLS-1$
+		writer.openTag("w:shd");
+		writer.attribute("w:val", "clear");
+		writer.attribute("w:color", "auto");
+		writer.attribute("w:fill", cssColor);
+		writer.closeTag("w:shd");
 	}
 
 	/**
@@ -388,8 +414,8 @@ public abstract class AbstractWordXmlWriter {
 	 */
 	private void writeBidiTable() {
 		if (this.rtl) {
-			writer.openTag("w:bidiVisual"); //$NON-NLS-1$
-			writer.closeTag("w:bidiVisual"); //$NON-NLS-1$
+			writer.openTag("w:bidiVisual");
+			writer.closeTag("w:bidiVisual");
 		}
 	}
 
@@ -423,22 +449,22 @@ public abstract class AbstractWordXmlWriter {
 	}
 
 	private boolean hasBorder(String borderStyle) {
-		return !(borderStyle == null || "none".equalsIgnoreCase(borderStyle)); //$NON-NLS-1$
+		return !(borderStyle == null || "none".equalsIgnoreCase(borderStyle));
 	}
 
 	private void writeRunBorder(String borderStyle, String color, CSSValue borderWidth) {
-		writer.openTag("w:bdr"); //$NON-NLS-1$
+		writer.openTag("w:bdr");
 		writeBorderProperty(borderStyle, color, borderWidth, 0);
-		writer.closeTag("w:bdr"); //$NON-NLS-1$
+		writer.closeTag("w:bdr");
 	}
 
 	private boolean needNewParagraph(String txt) {
-		return ("\n".equals(txt) || "\r".equalsIgnoreCase(txt) || "\r\n".equals(txt)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return ("\n".equals(txt) || "\r".equalsIgnoreCase(txt) || "\r\n".equals(txt));
 	}
 
 	public void startParagraph(IStyle style, boolean isInline, int paragraphWidth) {
-		writer.openTag("w:p"); //$NON-NLS-1$
-		writer.openTag("w:pPr"); //$NON-NLS-1$
+		writer.openTag("w:p");
+		writer.openTag("w:pPr");
 		writeSpacing((style.getProperty(StyleConstants.STYLE_MARGIN_TOP)),
 				(style.getProperty(StyleConstants.STYLE_MARGIN_BOTTOM)));
 		writeAlign(style.getTextAlign(), style.getDirection());
@@ -457,7 +483,7 @@ public abstract class AbstractWordXmlWriter {
 			writeParagraphBorders(style);
 		}
 		writeBidi(CSSConstants.CSS_RTL_VALUE.equals(style.getDirection()));
-		writer.closeTag("w:pPr"); //$NON-NLS-1$
+		writer.closeTag("w:pPr");
 	}
 
 	/**
@@ -470,8 +496,8 @@ public abstract class AbstractWordXmlWriter {
 	 * @param textAlign      parent text align of inline text
 	 */
 	public void startParagraph(IStyle style, boolean isInline, int paragraphWidth, String textAlign) {
-		writer.openTag("w:p"); //$NON-NLS-1$
-		writer.openTag("w:pPr"); //$NON-NLS-1$
+		writer.openTag("w:p");
+		writer.openTag("w:pPr");
 		writeSpacing((style.getProperty(StyleConstants.STYLE_MARGIN_TOP)),
 				(style.getProperty(StyleConstants.STYLE_MARGIN_BOTTOM)));
 		writeAlign(textAlign, style.getDirection());
@@ -490,17 +516,17 @@ public abstract class AbstractWordXmlWriter {
 			writeParagraphBorders(style);
 		}
 		writeBidi(CSSConstants.CSS_RTL_VALUE.equals(style.getDirection()));
-		writer.closeTag("w:pPr"); //$NON-NLS-1$
+		writer.closeTag("w:pPr");
 	}
 
 	private void writeSpacing(CSSValue height) {
 		// unit: twentieths of a point(twips)
 		float spacingValue = PropertyUtil.getDimensionValue(height);
 		int spacing = WordUtil.milliPt2Twips(spacingValue);
-		writer.openTag("w:spacing"); //$NON-NLS-1$
-		writer.attribute("w:lineRule", "exact"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.attribute("w:line", spacing); //$NON-NLS-1$
-		writer.closeTag("w:spacing"); //$NON-NLS-1$
+		writer.openTag("w:spacing");
+		writer.attribute("w:lineRule", "exact");
+		writer.attribute("w:line", spacing);
+		writer.closeTag("w:spacing");
 	}
 
 	private void writeSpacing(CSSValue top, CSSValue bottom) {
@@ -510,20 +536,20 @@ public abstract class AbstractWordXmlWriter {
 	}
 
 	private void writeSpacing(int beforeValue, int afterValue) {
-		writer.openTag("w:spacing"); //$NON-NLS-1$
-		writer.attribute("w:before", beforeValue); //$NON-NLS-1$
-		writer.attribute("w:after", afterValue); //$NON-NLS-1$
-		writer.closeTag("w:spacing"); //$NON-NLS-1$
+		writer.openTag("w:spacing");
+		writer.attribute("w:before", beforeValue);
+		writer.attribute("w:after", afterValue);
+		writer.closeTag("w:spacing");
 	}
 
 	protected void writeAutoText(int type) {
-		writer.openTag("w:instrText"); //$NON-NLS-1$
+		writer.openTag("w:instrText");
 		if (type == IAutoTextContent.PAGE_NUMBER) {
-			writer.text("PAGE"); //$NON-NLS-1$
+			writer.text("PAGE");
 		} else if (type == IAutoTextContent.TOTAL_PAGE) {
-			writer.text("NUMPAGES"); //$NON-NLS-1$
+			writer.text("NUMPAGES");
 		}
-		writer.closeTag("w:instrText"); //$NON-NLS-1$
+		writer.closeTag("w:instrText");
 	}
 
 	protected void writeSimpleField( String fieldFunction) {
@@ -549,8 +575,8 @@ public abstract class AbstractWordXmlWriter {
 			}
 		}
 
-		writer.openTag("w:t"); //$NON-NLS-1$
-		writer.attribute("xml:space", "preserve"); //$NON-NLS-1$ //$NON-NLS-2$
+		writer.openTag("w:t");
+		writer.attribute("xml:space", "preserve");
 		int length = txt.length();
 		int start = 0;
 		int end = 0;
@@ -559,18 +585,18 @@ public abstract class AbstractWordXmlWriter {
 			if (ch == '\r' || ch == '\n') {
 				// output previous text
 				writeText(txt.substring(start, end));
-				writer.cdata("<w:br/>"); //$NON-NLS-1$ ;
+				writer.cdata("<w:br/>");
 				start = end + 1;
 				if (ch == '\r' && start < length && txt.charAt(start) == '\n') {
 					start++;
 				}
 				end = start + 1;
-			} else if (ch == SHY_CHAR) {
-				// output previous text
+			} else if (ch == SOFT_HYPHEN) {
+				// Output a special WordML tag for the SHY symbol.
 				writeText(txt.substring(start, end));
-				writer.closeTag("w:t"); //$NON-NLS-1$
-				writer.cdata("<w:softHyphen/>"); // $NON-LS-1$
-				writer.openTag("w:t"); //$NON-NLS-1$
+				writer.closeTag("w:t");
+				writer.cdata("<w:softHyphen/>");
+				writer.openTag("w:t");
 				start = end + 1;
 				end++;
 			} else {
@@ -579,7 +605,7 @@ public abstract class AbstractWordXmlWriter {
 		}
 		writeText(txt.substring(start));
 
-		writer.closeTag("w:t"); //$NON-NLS-1$
+		writer.closeTag("w:t");
 	}
 
 	/**
@@ -595,13 +621,13 @@ public abstract class AbstractWordXmlWriter {
 			char ch = text.charAt(i);
 			switch (ch) {
 			case '&':
-				sb.append("&amp;"); //$NON-NLS-1$
+				sb.append("&amp;");
 				break;
 			case '>':
-				sb.append("&gt;"); //$NON-NLS-1$
+				sb.append("&gt;");
 				break;
 			case '<':
-				sb.append("&lt;"); //$NON-NLS-1$
+				sb.append("&lt;");
 				break;
 			default:
 				sb.append(ch);
@@ -612,7 +638,7 @@ public abstract class AbstractWordXmlWriter {
 
 	private void writeLetterSpacing(IStyle style) {
 		int letterSpacing = PropertyUtil.getDimensionValue(style.getProperty(StyleConstants.STYLE_LETTER_SPACING));
-		writeAttrTag("w:spacing", WordUtil.milliPt2Twips(letterSpacing)); //$NON-NLS-1$
+		writeAttrTag("w:spacing", WordUtil.milliPt2Twips(letterSpacing));
 	}
 
 	private void writeHyperlinkStyle(HyperlinkInfo info, IStyle style) {
@@ -620,9 +646,9 @@ public abstract class AbstractWordXmlWriter {
 		if (info != null) {
 			String color = info.getColor();
 			if (color != null) {
-				writeAttrTag("w:color", color); //$NON-NLS-1$
+				writeAttrTag("w:color", color);
 			}
-			writeAttrTag("w:rStyle", "Hyperlink"); //$NON-NLS-1$ //$NON-NLS-2$
+			writeAttrTag("w:rStyle", "Hyperlink");
 		} else {
 			writeTextUnderline(style);
 			writeTextColor(style);
@@ -630,11 +656,11 @@ public abstract class AbstractWordXmlWriter {
 	}
 
 	protected void writeTocText(String tocText, int level) {
-		writer.openTag("w:r"); //$NON-NLS-1$
-		writer.openTag("w:instrText"); //$NON-NLS-1$
-		writer.text(" TC \"" + tocText + "\"" + " \\f C \\l \"" + String.valueOf(level) + "\""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		writer.closeTag("w:instrText"); //$NON-NLS-1$
-		writer.closeTag("w:r"); //$NON-NLS-1$
+		writer.openTag("w:r");
+		writer.openTag("w:instrText");
+		writer.text(" TC \"" + tocText + "\"" + " \\f C \\l \"" + String.valueOf(level) + "\"");
+		writer.closeTag("w:instrText");
+		writer.closeTag("w:r");
 	}
 
 	/**
@@ -643,45 +669,45 @@ public abstract class AbstractWordXmlWriter {
 	 * @author bidi_hcg
 	 */
 	protected void writeBidi(boolean rtl) {
-		writeAttrTag("w:bidi", rtl ? "" : "off"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		writeAttrTag("w:bidi", rtl ? "" : "off");
 	}
 
 	protected void writeField(boolean isStart) {
-		String fldCharType = isStart ? "begin" : "end"; //$NON-NLS-1$ //$NON-NLS-2$
-		writer.openTag("w:r"); //$NON-NLS-1$
-		writer.openTag("w:fldChar"); //$NON-NLS-1$
-		writer.attribute("w:fldCharType", fldCharType); //$NON-NLS-1$
-		writer.closeTag("w:fldChar"); //$NON-NLS-1$
-		writer.closeTag("w:r"); //$NON-NLS-1$
+		String fldCharType = isStart ? "begin" : "end";
+		writer.openTag("w:r");
+		writer.openTag("w:fldChar");
+		writer.attribute("w:fldCharType", fldCharType);
+		writer.closeTag("w:fldChar");
+		writer.closeTag("w:r");
 	}
 
 	protected void writeField(boolean isStart, IStyle style, String fontName) {
-		String fldCharType = isStart ? "begin" : "end"; //$NON-NLS-1$ //$NON-NLS-2$
-		writer.openTag("w:r"); //$NON-NLS-1$
+		String fldCharType = isStart ? "begin" : "end";
+		writer.openTag("w:r");
 		writeFieldRunProperties(style, fontName);
-		writer.openTag("w:fldChar"); //$NON-NLS-1$
-		writer.attribute("w:fldCharType", fldCharType); //$NON-NLS-1$
-		writer.closeTag("w:fldChar"); //$NON-NLS-1$
-		writer.closeTag("w:r"); //$NON-NLS-1$
+		writer.openTag("w:fldChar");
+		writer.attribute("w:fldCharType", fldCharType);
+		writer.closeTag("w:fldChar");
+		writer.closeTag("w:r");
 	}
 
 	protected void writeFieldSeparator( IStyle style, String fontName) {
-		writer.openTag("w:r"); //$NON-NLS-1$
+		writer.openTag("w:r");
 		writeFieldRunProperties( style, fontName);
-		writer.openTag("w:fldChar"); //$NON-NLS-1$
-		writer.attribute("w:fldCharType", "separate"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.closeTag("w:fldChar"); //$NON-NLS-1$
-		writer.closeTag("w:r"); //$NON-NLS-1$
+		writer.openTag("w:fldChar");
+		writer.attribute("w:fldCharType", "separate");
+		writer.closeTag("w:fldChar");
+		writer.closeTag("w:r");
 	}
 
 	public void writeColumn(int[] cols) {
 		// unit: twips
-		writer.openTag("w:tblGrid"); //$NON-NLS-1$
+		writer.openTag("w:tblGrid");
 
 		for (int i = 0; i < cols.length; i++) {
-			writeAttrTag("w:gridCol", cols[i]); //$NON-NLS-1$
+			writeAttrTag("w:gridCol", cols[i]);
 		}
-		writer.closeTag("w:tblGrid"); //$NON-NLS-1$
+		writer.closeTag("w:tblGrid");
 	}
 
 	/**
@@ -693,47 +719,47 @@ public abstract class AbstractWordXmlWriter {
 
 	public void startTableRow(double height, boolean isHeader, boolean repeatHeader, boolean fixedLayout,
 			boolean cantSplit) {
-		writer.openTag("w:tr"); //$NON-NLS-1$
+		writer.openTag("w:tr");
 
 		// write the row height, unit: twips
-		writer.openTag("w:trPr"); //$NON-NLS-1$
+		writer.openTag("w:trPr");
 
 		if (height != -1) {
-			writer.openTag("w:trHeight"); //$NON-NLS-1$
+			writer.openTag("w:trHeight");
 			if (fixedLayout) {
-				writer.attribute("w:h-rule", "exact"); //$NON-NLS-1$ //$NON-NLS-2$
+				writer.attribute("w:h-rule", "exact");
 			}
-			writer.attribute("w:val", height); //$NON-NLS-1$
-			writer.closeTag("w:trHeight"); //$NON-NLS-1$
+			writer.attribute("w:val", height);
+			writer.closeTag("w:trHeight");
 		}
 
 		// if value is "off",the header will be not repeated
 		if (isHeader) {
-			String headerOnOff = repeatHeader ? "on" : "off"; //$NON-NLS-1$ //$NON-NLS-2$
-			writeAttrTag("w:tblHeader", headerOnOff); //$NON-NLS-1$
+			String headerOnOff = repeatHeader ? "on" : "off";
+			writeAttrTag("w:tblHeader", headerOnOff);
 		}
 
 		if (cantSplit) {
-			writer.openTag("w:cantSplit"); //$NON-NLS-1$
-			writer.closeTag("w:cantSplit"); //$NON-NLS-1$
+			writer.openTag("w:cantSplit");
+			writer.closeTag("w:cantSplit");
 		}
-		writer.closeTag("w:trPr"); //$NON-NLS-1$
+		writer.closeTag("w:trPr");
 	}
 
 	public void endTableRow() {
-		writer.closeTag("w:tr"); //$NON-NLS-1$
+		writer.closeTag("w:tr");
 	}
 
 	public void startTableCell(int width, IStyle style, SpanInfo spanInfo) {
-		writer.openTag("w:tc"); //$NON-NLS-1$
-		writer.openTag("w:tcPr"); //$NON-NLS-1$
+		writer.openTag("w:tc");
+		writer.openTag("w:tcPr");
 		writeCellWidth(width);
 		if (spanInfo != null) {
 			writeGridSpan(spanInfo);
 			writeVmerge(spanInfo);
 		}
 		writeCellProperties(style);
-		writer.closeTag("w:tcPr"); //$NON-NLS-1$
+		writer.closeTag("w:tcPr");
 
 		String align = style.getTextAlign();
 		if (align == null) {
@@ -745,35 +771,35 @@ public abstract class AbstractWordXmlWriter {
 				return;
 			}
 		}
-		writer.openTag("w:pPr"); //$NON-NLS-1$
+		writer.openTag("w:pPr");
 		writeAlign(align, direction);
-		writer.closeTag("w:pPr"); //$NON-NLS-1$
+		writer.closeTag("w:pPr");
 	}
 
 	private void writeCellWidth(int width) {
-		writer.openTag("w:tcW"); //$NON-NLS-1$
-		writer.attribute("w:w", width); //$NON-NLS-1$
-		writer.attribute("w:type", "dxa"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.closeTag("w:tcW"); //$NON-NLS-1$
+		writer.openTag("w:tcW");
+		writer.attribute("w:w", width);
+		writer.attribute("w:type", "dxa");
+		writer.closeTag("w:tcW");
 	}
 
 	private void writeGridSpan(SpanInfo spanInfo) {
 		int columnSpan = spanInfo.getColumnSpan();
 		if (columnSpan > 1) {
-			writeAttrTag("w:gridSpan", columnSpan); //$NON-NLS-1$
+			writeAttrTag("w:gridSpan", columnSpan);
 		}
 	}
 
 	public void writeSpanCell(SpanInfo info) {
-		writer.openTag("w:tc"); //$NON-NLS-1$
-		writer.openTag("w:tcPr"); //$NON-NLS-1$
+		writer.openTag("w:tc");
+		writer.openTag("w:tcPr");
 		writeCellWidth(info.getCellWidth());
 		writeGridSpan(info);
 		writeVmerge(info);
 		writeCellProperties(info.getStyle());
-		writer.closeTag("w:tcPr"); //$NON-NLS-1$
+		writer.closeTag("w:tcPr");
 		insertEmptyParagraph();
-		writer.closeTag("w:tc"); //$NON-NLS-1$
+		writer.closeTag("w:tc");
 	}
 
 	public void endTableCell(boolean empty)	{
@@ -795,64 +821,64 @@ public abstract class AbstractWordXmlWriter {
 				insertEmptyParagraph();
 			}
 		}
-		writer.closeTag("w:tc"); //$NON-NLS-1$
+		writer.closeTag("w:tc");
 	}
 
 	public void writeEmptyCell() {
-		writer.openTag("w:tc"); //$NON-NLS-1$
-		writer.openTag("w:tcPr"); //$NON-NLS-1$
-		writer.openTag("w:tcW"); //$NON-NLS-1$
-		writer.attribute("w:w", 0); //$NON-NLS-1$
-		writer.attribute("w:type", "dxa"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.closeTag("w:tcW"); //$NON-NLS-1$
-		writer.closeTag("w:tcPr"); //$NON-NLS-1$
+		writer.openTag("w:tc");
+		writer.openTag("w:tcPr");
+		writer.openTag("w:tcW");
+		writer.attribute("w:w", 0);
+		writer.attribute("w:type", "dxa");
+		writer.closeTag("w:tcW");
+		writer.closeTag("w:tcPr");
 		insertEmptyParagraph();
-		writer.closeTag("w:tc"); //$NON-NLS-1$
+		writer.closeTag("w:tc");
 	}
 
 	public void insertEmptyParagraph() {
-		writer.openTag("w:p"); //$NON-NLS-1$
-		writer.openTag("w:pPr"); //$NON-NLS-1$
-		writer.openTag("w:spacing"); //$NON-NLS-1$
-		writer.attribute("w:line", "1"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.attribute("w:lineRule", "auto"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.closeTag("w:spacing"); //$NON-NLS-1$
-		writer.closeTag("w:pPr"); //$NON-NLS-1$
-		writer.closeTag("w:p"); //$NON-NLS-1$
+		writer.openTag("w:p");
+		writer.openTag("w:pPr");
+		writer.openTag("w:spacing");
+		writer.attribute("w:line", "1");
+		writer.attribute("w:lineRule", "auto");
+		writer.closeTag("w:spacing");
+		writer.closeTag("w:pPr");
+		writer.closeTag("w:p");
 	}
 
 	public void insertEmptyParagraphInForeign() {
-		writer.openTag("w:p"); //$NON-NLS-1$
-		writer.closeTag("w:p"); //$NON-NLS-1$
+		writer.openTag("w:p");
+		writer.closeTag("w:p");
 	}
 
 	public void insertHiddenParagraph() {
-		writer.openTag("w:p"); //$NON-NLS-1$
+		writer.openTag("w:p");
 		writeHiddenProperty();
-		writer.closeTag("w:p"); //$NON-NLS-1$
+		writer.closeTag("w:p");
 	}
 
 	public void writeHiddenProperty() {
-		writer.openTag("w:rPr"); //$NON-NLS-1$
-		writeAttrTag("w:vanish", "on"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.closeTag("w:rPr"); //$NON-NLS-1$
+		writer.openTag("w:rPr");
+		writeAttrTag("w:vanish", "on");
+		writer.closeTag("w:rPr");
 	}
 
 	public void endParagraph() {
-		writer.closeTag("w:p"); //$NON-NLS-1$
+		writer.closeTag("w:p");
 	}
 
 	public void writeCaption(String txt) {
-		writer.openTag("w:p"); //$NON-NLS-1$
-		writer.openTag("w:pPr"); //$NON-NLS-1$
-		writeAlign("center", null); //$NON-NLS-1$
-		writer.closeTag("w:pPr"); //$NON-NLS-1$
-		writer.openTag("w:r"); //$NON-NLS-1$
-		writer.openTag("w:rPr"); //$NON-NLS-1$
+		writer.openTag("w:p");
+		writer.openTag("w:pPr");
+		writeAlign("center", null);
+		writer.closeTag("w:pPr");
+		writer.openTag("w:r");
+		writer.openTag("w:rPr");
 		writeString(txt, null);
-		writer.closeTag("w:rPr"); //$NON-NLS-1$
-		writer.closeTag("w:r"); //$NON-NLS-1$
-		writer.closeTag("w:p"); //$NON-NLS-1$
+		writer.closeTag("w:rPr");
+		writer.closeTag("w:r");
+		writer.closeTag("w:p");
 	}
 
 	/**
@@ -861,7 +887,6 @@ public abstract class AbstractWordXmlWriter {
 	 *
 	 * @param style this cell style
 	 */
-	@SuppressWarnings("nls")
 	private void writeCellProperties(IStyle style) {
 		// A cell background color may inherit from row background,
 		// so we should get the row background color here,
@@ -880,7 +905,6 @@ public abstract class AbstractWordXmlWriter {
 		writeAttrTag("w:noWrap", noWrap);
 	}
 
-	@SuppressWarnings("nls")
 	private void writeCellBorders(IStyle style) {
 		writer.openTag("w:tcBorders");
 		writeBorders(style, 0, 0, 0, 0);
@@ -894,12 +918,12 @@ public abstract class AbstractWordXmlWriter {
 		int rightPadding = PropertyUtil.getDimensionValue(style.getProperty(StyleConstants.STYLE_PADDING_RIGHT));
 
 		// the cell padding in DOC is tcMar
-		writer.openTag("w:tcMar"); //$NON-NLS-1$
+		writer.openTag("w:tcMar");
 		writeCellPadding(bottomPadding, BOTTOM);
 		writeCellPadding(leftPadding, LEFT);
 		writeCellPadding(topPadding, TOP);
 		writeCellPadding(rightPadding, RIGHT);
-		writer.closeTag("w:tcMar"); //$NON-NLS-1$
+		writer.closeTag("w:tcMar");
 	}
 
 	/**
@@ -908,27 +932,27 @@ public abstract class AbstractWordXmlWriter {
 	 * @param position top/right/bottom/left
 	 */
 	private void writeCellPadding(int padding, String position) {
-		writer.openTag("w:" + position); //$NON-NLS-1$
-		writer.attribute("w:w", WordUtil.milliPt2Twips(padding)); //$NON-NLS-1$
-		writer.attribute("w:type", "dxa"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.closeTag("w:" + position); //$NON-NLS-1$
+		writer.openTag("w:" + position);
+		writer.attribute("w:w", WordUtil.milliPt2Twips(padding));
+		writer.attribute("w:type", "dxa");
+		writer.closeTag("w:" + position);
 	}
 
 	protected void writeAttrTag(String name, String val) {
 		writer.openTag(name);
-		writer.attribute("w:val", val); //$NON-NLS-1$
+		writer.attribute("w:val", val);
 		writer.closeTag(name);
 	}
 
 	protected void writeAttrTag(String name, int val) {
 		writer.openTag(name);
-		writer.attribute("w:val", val); //$NON-NLS-1$
+		writer.attribute("w:val", val);
 		writer.closeTag(name);
 	}
 
 	protected void writeAttrTag(String name, double val) {
 		writer.openTag(name);
-		writer.attribute("w:val", val); //$NON-NLS-1$
+		writer.attribute("w:val", val);
 		writer.closeTag(name);
 	}
 
@@ -938,11 +962,11 @@ public abstract class AbstractWordXmlWriter {
 
 	private void writeTextInParagraph(int type, String txt, IStyle style, String fontFamily, HyperlinkInfo info,
 			int paragraphWidth, boolean runIsRtl) {
-		writer.openTag("w:p"); //$NON-NLS-1$
-		writer.openTag("w:pPr"); //$NON-NLS-1$
+		writer.openTag("w:p");
+		writer.openTag("w:pPr");
 
 		CSSValue lineHeight = style.getProperty(StyleConstants.STYLE_LINE_HEIGHT);
-		if (!"normal".equalsIgnoreCase(lineHeight.getCssText())) { //$NON-NLS-1$
+		if (!"normal".equalsIgnoreCase(lineHeight.getCssText())) {
 			writeSpacing(lineHeight);
 		}
 
@@ -958,17 +982,17 @@ public abstract class AbstractWordXmlWriter {
 		// We need to apply the text font style to the paragraph. It is useful
 		// if the end user want to paste some text into this paragraph and
 		// changes the text to the paragraph's font style.
-		writer.openTag("w:rPr"); //$NON-NLS-1$
+		writer.openTag("w:rPr");
 		writeRunProperties(style, fontFamily, info);
-		writer.closeTag("w:rPr"); //$NON-NLS-1$
-		writer.closeTag("w:pPr"); //$NON-NLS-1$
+		writer.closeTag("w:rPr");
+		writer.closeTag("w:pPr");
 		writeTextInRun(type, txt, style, fontFamily, info, false, paragraphWidth, runIsRtl);
 	}
 
 	private void writeParagraphBorders(IStyle style) {
-		writer.openTag("w:pBdr"); //$NON-NLS-1$
+		writer.openTag("w:pBdr");
 		writeBorders(style, 0, 0, 0, 0);
-		writer.closeTag("w:pBdr"); //$NON-NLS-1$
+		writer.closeTag("w:pBdr");
 	}
 
 	public void writeText(int type, String txt, IStyle style, String fontFamily, HyperlinkInfo info, TextFlag flag,
@@ -976,22 +1000,22 @@ public abstract class AbstractWordXmlWriter {
 		if (flag == TextFlag.START) {
 			writeTextInParagraph(type, txt, style, fontFamily, info, paragraphWidth, runIsRtl);
 		} else if (flag == TextFlag.END) {
-			writer.closeTag("w:p"); //$NON-NLS-1$
+			writer.closeTag("w:p");
 		} else if (flag == TextFlag.MIDDLE) {
 			writeTextInRun(type, txt, style, fontFamily, info, false, paragraphWidth, runIsRtl);
 		} else {
 			writeTextInParagraph(type, txt, style, fontFamily, info, paragraphWidth, runIsRtl);
-			writer.closeTag("w:p"); //$NON-NLS-1$
+			writer.closeTag("w:p");
 		}
 	}
 
 	public void writeTextInRun(int type, String txt, IStyle style, String fontFamily, HyperlinkInfo info,
 			boolean isInline, int paragraphWidth, boolean runIsRtl) {
-		if ("".equals(txt)) { //$NON-NLS-1$
+		if ("".equals(txt)) {
 			return;
 		}
 		if (needNewParagraph(txt)) {
-			writer.closeTag("w:p"); //$NON-NLS-1$
+			writer.closeTag("w:p");
 			startParagraph(style, isInline, paragraphWidth);
 			return;
 		}
@@ -1003,8 +1027,8 @@ public abstract class AbstractWordXmlWriter {
 		if (isField) {
 			writeField(true, style, fontFamily);
 		}
-		writer.openTag("w:r"); //$NON-NLS-1$
-		writer.openTag("w:rPr"); //$NON-NLS-1$
+		writer.openTag("w:r");
+		writer.openTag("w:rPr");
 		writeRunProperties(style, fontFamily, info);
 		if (isInline) {
 			writeAlign(style.getTextAlign(), direction);
@@ -1013,10 +1037,10 @@ public abstract class AbstractWordXmlWriter {
 			writeRunBorders(style);
 		}
 		if (!isField && runIsRtl) {
-			writer.openTag("w:rtl"); //$NON-NLS-1$
-			writer.closeTag("w:rtl"); //$NON-NLS-1$
+			writer.openTag("w:rtl");
+			writer.closeTag("w:rtl");
 		}
-		writer.closeTag("w:rPr"); //$NON-NLS-1$
+		writer.closeTag("w:rPr");
 
 		if (isField) {
 			if (!(type == AbstractEmitterImpl.CUSTOM_FIELD)) {
@@ -1049,7 +1073,7 @@ public abstract class AbstractWordXmlWriter {
 			}
 			writeString(txt, style);
 		}
-		writer.closeTag("w:r"); //$NON-NLS-1$
+		writer.closeTag("w:r");
 		if (isField) {
 			writeField(false, style, fontFamily);
 		}
@@ -1065,11 +1089,8 @@ public abstract class AbstractWordXmlWriter {
 	 * @param cellWidth  the width of the container in points
 	 * @return String with truncated words that surpasses the cell width
 	 */
-	public String cropOverflowString(String text, IStyle style, String fontFamily, int cellWidth) {// TODO: retrieve
-																									// font type and
-																									// replace plain
-																									// with
-																									// corresponding
+	public String cropOverflowString(String text, IStyle style, String fontFamily, int cellWidth) {
+		// TODO: retrieve font type and replace plain with corresponding
 		Font font = new Font(fontFamily, Font.PLAIN, WordUtil
 				.parseFontSize(PropertyUtil.getDimensionValue(style.getProperty(StyleConstants.STYLE_FONT_SIZE))));
 		Canvas c = new Canvas();
@@ -1107,7 +1128,7 @@ public abstract class AbstractWordXmlWriter {
 		if (wordlength > containerPointAdvWidth) {
 			int cropEnd = (containerPointAdvWidth * word.length()) / wordlength;
 			if (cropEnd == 0) {
-				return ""; //$NON-NLS-1$
+				return "";
 			}
 			return word.substring(0, cropEnd);
 		}
@@ -1116,11 +1137,11 @@ public abstract class AbstractWordXmlWriter {
 
 	public void writeTextInRun(int type, String txt, IStyle style, String fontFamily, HyperlinkInfo info,
 			boolean isInline, int paragraphWidth, boolean runIsRtl, String textAlign) {
-		if ("".equals(txt)) { //$NON-NLS-1$
+		if ("".equals(txt)) {
 			return;
 		}
 		if (needNewParagraph(txt)) {
-			writer.closeTag("w:p"); //$NON-NLS-1$
+			writer.closeTag("w:p");
 			startParagraph(style, isInline, paragraphWidth, textAlign);
 			return;
 		}
@@ -1132,8 +1153,8 @@ public abstract class AbstractWordXmlWriter {
 		if (isField) {
 			writeField(true, style, fontFamily);
 		}
-		writer.openTag("w:r"); //$NON-NLS-1$
-		writer.openTag("w:rPr"); //$NON-NLS-1$
+		writer.openTag("w:r");
+		writer.openTag("w:rPr");
 		writeRunProperties(style, fontFamily, info);
 		if (isInline) {
 			writeAlign(textAlign, direction);
@@ -1142,10 +1163,10 @@ public abstract class AbstractWordXmlWriter {
 			writeRunBorders(style);
 		}
 		if (!isField && runIsRtl) {
-			writer.openTag("w:rtl"); //$NON-NLS-1$
-			writer.closeTag("w:rtl"); //$NON-NLS-1$
+			writer.openTag("w:rtl");
+			writer.closeTag("w:rtl");
 		}
-		writer.closeTag("w:rPr"); //$NON-NLS-1$
+		writer.closeTag("w:rPr");
 
 		if (isField) {
 			if (!(type == AbstractEmitterImpl.CUSTOM_FIELD)) {
@@ -1173,7 +1194,7 @@ public abstract class AbstractWordXmlWriter {
 		} else {
 			writeString(txt, style);
 		}
-		writer.closeTag("w:r"); //$NON-NLS-1$
+		writer.closeTag("w:r");
 		if (isField) {
 			writeField(false, style, fontFamily);
 		}
@@ -1182,10 +1203,10 @@ public abstract class AbstractWordXmlWriter {
 
 	private void writePosition(String verticalAlign, CSSValue fontSize) {
 		int size = WordUtil.parseFontSize(PropertyUtil.getDimensionValue(fontSize));
-		if ("top".equalsIgnoreCase(verticalAlign)) { //$NON-NLS-1$
-			writeAttrTag("w:position", (int) (size * 1 / 3)); //$NON-NLS-1$
-		} else if ("bottom".equalsIgnoreCase(verticalAlign)) { //$NON-NLS-1$
-			writeAttrTag("w:position", (int) (-size * 1 / 3)); //$NON-NLS-1$
+		if ("top".equalsIgnoreCase(verticalAlign)) {
+			writeAttrTag("w:position", (int) (size * 1 / 3));
+		} else if ("bottom".equalsIgnoreCase(verticalAlign)) {
+			writeAttrTag("w:position", (int) (-size * 1 / 3));
 		}
 	}
 
@@ -1211,21 +1232,21 @@ public abstract class AbstractWordXmlWriter {
 	private void writeTextColor(IStyle style) {
 		String val = WordUtil.parseColor(style.getColor());
 		if (val != null) {
-			writeAttrTag("w:color", val); //$NON-NLS-1$
+			writeAttrTag("w:color", val);
 		}
 	}
 
 	private void writeTextUnderline(IStyle style) {
 		String val = WordUtil.removeQuote(style.getTextUnderline());
-		if (!"none".equalsIgnoreCase(val)) { //$NON-NLS-1$
-			writeAttrTag("w:u", "single"); //$NON-NLS-1$ //$NON-NLS-2$
+		if (!"none".equalsIgnoreCase(val)) {
+			writeAttrTag("w:u", "single");
 		}
 	}
 
 	private void writeTextLineThrough(IStyle style) {
 		String val = WordUtil.removeQuote(style.getTextLineThrough());
-		if (!"none".equalsIgnoreCase(val)) { //$NON-NLS-1$
-			writeAttrTag("w:strike", "on"); //$NON-NLS-1$ //$NON-NLS-2$
+		if (!"none".equalsIgnoreCase(val)) {
+			writeAttrTag("w:strike", "on");
 		}
 	}
 
@@ -1238,40 +1259,40 @@ public abstract class AbstractWordXmlWriter {
 		// so the header or footer width should be 2*0.19cm larger. that is 215.433
 		// twips.
 		headerWidth += 215;
-		writer.openTag("w:tbl"); //$NON-NLS-1$
-		writer.openTag("w:tblPr"); //$NON-NLS-1$
+		writer.openTag("w:tbl");
+		writer.openTag("w:tblPr");
 		writeTableWidth(headerWidth);
-		writeAttrTag("w:tblLook", "01E0"); //$NON-NLS-1$ //$NON-NLS-2$
+		writeAttrTag("w:tblLook", "01E0");
 		writeTableLayout();
-		writer.closeTag("w:tblPr"); //$NON-NLS-1$
+		writer.closeTag("w:tblPr");
 		if (writeColumns) {
 			writeColumn(new int[] { headerWidth });
 		}
-		writer.openTag("w:tr"); //$NON-NLS-1$
+		writer.openTag("w:tr");
 		// write the row height, unit: twips
-		writer.openTag("w:trPr"); //$NON-NLS-1$
-		writeAttrTag("w:trHeight", headerHeight); //$NON-NLS-1$
-		writer.closeTag("w:trPr"); //$NON-NLS-1$
-		writer.openTag("w:tc"); //$NON-NLS-1$
-		writer.openTag("w:tcPr"); //$NON-NLS-1$
+		writer.openTag("w:trPr");
+		writeAttrTag("w:trHeight", headerHeight);
+		writer.closeTag("w:trPr");
+		writer.openTag("w:tc");
+		writer.openTag("w:tcPr");
 		writeCellWidth(headerWidth);
-		writer.closeTag("w:tcPr"); //$NON-NLS-1$
+		writer.closeTag("w:tcPr");
 	}
 
 	protected void endHeaderFooterContainer() {
 		insertEmptyParagraph();
-		writer.closeTag("w:tc"); //$NON-NLS-1$
-		writer.closeTag("w:tr"); //$NON-NLS-1$
-		writer.closeTag("w:tbl"); //$NON-NLS-1$
+		writer.closeTag("w:tc");
+		writer.closeTag("w:tr");
+		writer.closeTag("w:tbl");
 	}
 
 	public void drawDiagonalLine(DiagonalLineInfo diagonalLineInfo) {
 		if (diagonalLineInfo.getDiagonalNumber() <= 0 && diagonalLineInfo.getAntiDiagonalNumber() <= 0) {
 			return;
 		}
-		writer.openTag("w:p"); //$NON-NLS-1$
-		writer.openTag("w:r"); //$NON-NLS-1$
-		writer.openTag("w:pict"); //$NON-NLS-1$
+		writer.openTag("w:p");
+		writer.openTag("w:r");
+		writer.openTag("w:pict");
 		double diagonalLineWidth = diagonalLineInfo.getDiagonalLineWidth();
 		String diagonalLineStyle = diagonalLineInfo.getDiagonalStyle();
 		double antidiagonalLineWidth = diagonalLineInfo.getAntiDiagonalLineWidth();
@@ -1283,23 +1304,23 @@ public abstract class AbstractWordXmlWriter {
 		for (Line antiLine : diagonalLineInfo.getAntidiagonalLine()) {
 			drawLine(antidiagonalLineWidth, antidiagonalLineStyle, lineColor, antiLine);
 		}
-		writer.closeTag("w:pict"); //$NON-NLS-1$
-		writer.closeTag("w:r"); //$NON-NLS-1$
-		writer.closeTag("w:p"); //$NON-NLS-1$
+		writer.closeTag("w:pict");
+		writer.closeTag("w:r");
+		writer.closeTag("w:p");
 	}
 
 	private void drawLine(double width, String style, String color, Line line) {
-		writer.openTag("v:line"); //$NON-NLS-1$
-		writer.attribute("id", "Line" + getLineId()); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.attribute("style", "position:absolute;left:0;text-align:left;z-index:1"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.attribute("from", line.getXCoordinateFrom() + "pt," + line.getYCoordinateFrom() + "pt"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		writer.attribute("to", line.getXCoordinateTo() + "pt," + line.getYCoordinateTo() + "pt"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		writer.attribute("strokeweight", width + "pt"); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.attribute("strokecolor", "#" + color); //$NON-NLS-1$ //$NON-NLS-2$
-		writer.openTag("v:stroke"); //$NON-NLS-1$
-		writer.attribute("dashstyle", WordUtil.parseLineStyle(style)); //$NON-NLS-1$
-		writer.closeTag("v:stroke"); //$NON-NLS-1$
-		writer.closeTag("v:line"); //$NON-NLS-1$
+		writer.openTag("v:line");
+		writer.attribute("id", "Line" + getLineId());
+		writer.attribute("style", "position:absolute;left:0;text-align:left;z-index:1");
+		writer.attribute("from", line.getXCoordinateFrom() + "pt," + line.getYCoordinateFrom() + "pt");
+		writer.attribute("to", line.getXCoordinateTo() + "pt," + line.getYCoordinateTo() + "pt");
+		writer.attribute("strokeweight", width + "pt");
+		writer.attribute("strokecolor", "#" + color);
+		writer.openTag("v:stroke");
+		writer.attribute("dashstyle", WordUtil.parseLineStyle(style));
+		writer.closeTag("v:stroke");
+		writer.closeTag("v:line");
 	}
 
 	private int getLineId() {

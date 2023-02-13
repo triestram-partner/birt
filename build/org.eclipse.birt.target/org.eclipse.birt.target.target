@@ -20,20 +20,11 @@
 			<unit id="org.eclipse.datatools.connectivity.oda.feature.feature.group" version="0.0.0"/>
 			<unit id="org.eclipse.datatools.enablement.apache.derby.feature.feature.group" version="0.0.0"/>
 			<unit id="org.eclipse.datatools.enablement.feature.feature.group" version="0.0.0"/>
-			<unit id="org.eclipse.datatools.enablement.hsqldb.feature.feature.group" version="0.0.0"/>
-			<unit id="org.eclipse.datatools.enablement.ibm.feature.feature.group" version="0.0.0"/>
-			<unit id="org.eclipse.datatools.enablement.ingres.feature.feature.group" version="0.0.0"/>
 			<unit id="org.eclipse.datatools.enablement.jdbc.feature.feature.group" version="0.0.0"/>
 			<unit id="org.eclipse.datatools.enablement.jdt.feature.feature.group" version="0.0.0"/>
-			<unit id="org.eclipse.datatools.enablement.msft.feature.feature.group" version="0.0.0"/>
-			<unit id="org.eclipse.datatools.enablement.mysql.feature.feature.group" version="0.0.0"/>
 			<unit id="org.eclipse.datatools.enablement.oda.designer.feature.feature.group" version="0.0.0"/>
 			<unit id="org.eclipse.datatools.enablement.oda.feature.feature.group" version="0.0.0"/>
 			<unit id="org.eclipse.datatools.enablement.oracle.feature.feature.group" version="0.0.0"/>
-			<unit id="org.eclipse.datatools.enablement.postgresql.feature.feature.group" version="0.0.0"/>
-			<unit id="org.eclipse.datatools.enablement.sap.feature.feature.group" version="0.0.0"/>
-			<unit id="org.eclipse.datatools.enablement.sqlite.feature.feature.group" version="0.0.0"/>
-			<unit id="org.eclipse.datatools.enablement.sybase.feature.feature.group" version="0.0.0"/>
 			<unit id="org.eclipse.datatools.intro.feature.group" version="0.0.0"/>
 			<unit id="org.eclipse.datatools.sqldevtools.data.feature.feature.group" version="0.0.0"/>
 			<unit id="org.eclipse.datatools.sqldevtools.ddl.feature.feature.group" version="0.0.0"/>

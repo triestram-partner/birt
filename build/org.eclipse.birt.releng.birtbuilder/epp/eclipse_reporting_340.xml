@@ -262,22 +262,6 @@
       version="latest">
     </feature>
     <feature
-      id="org.eclipse.datatools.enablement.hsqldb.feature"
-      version="latest">
-    </feature>
-    <feature
-      id="org.eclipse.datatools.enablement.ibm.feature"
-      version="latest">
-    </feature>
-    <feature
-      id="org.eclipse.datatools.enablement.msft.feature"
-      version="latest">
-    </feature>
-    <feature
-      id="org.eclipse.datatools.enablement.mysql.feature"
-      version="latest">
-    </feature>
-    <feature
       id="org.eclipse.datatools.enablement.oda.feature"
       version="latest">
     </feature>
@@ -289,17 +273,6 @@
       id="org.eclipse.datatools.enablement.oracle.feature"
       version="latest">
     </feature>
-    <feature
-      id="org.eclipse.datatools.enablement.postgresql.feature"
-      version="latest">
-    </feature>
-    <feature
-      id="org.eclipse.datatools.enablement.sap.feature"
-      version="latest">
-    </feature>
-    <feature
-      id="org.eclipse.datatools.enablement.sybase.feature"
-      version="latest">
     </feature>
     <!-- optional DB/SQL features / END -->
 

@@ -652,33 +652,6 @@
 			<include name="org.eclipse.datatools.connectivity.ui.dse_*.jar" />
 			<include name="org.eclipse.datatools.doc.user_*.jar" />
 			<include name="org.eclipse.datatools.enablement.finfo_*.jar" />
-			<include name="org.eclipse.datatools.enablement.hsqldb_*.jar" />
-			<include name="org.eclipse.datatools.enablement.hsqldb.dbdefinition_*.jar" />
-			<include name="org.eclipse.datatools.enablement.hsqldb.ui_*.jar" />
-			<include name="org.eclipse.datatools.enablement.ibm.db2.iseries_*.jar" />
-			<include
-				name="org.eclipse.datatools.enablement.ibm.db2.iseries.dbdefinition_*.jar" />
-			<include name="org.eclipse.datatools.enablement.ibm.db2.iseries.ui_*.jar" />
-			<include name="org.eclipse.datatools.enablement.ibm.db2.luw_*.jar" />
-			<include
-				name="org.eclipse.datatools.enablement.ibm.db2.luw.dbdefinition_*.jar" />
-			<include name="org.eclipse.datatools.enablement.ibm.db2.luw.ui_*.jar" />
-			<include name="org.eclipse.datatools.enablement.ibm.db2.zseries_*.jar" />
-			<include
-				name="org.eclipse.datatools.enablement.ibm.db2.zseries.dbdefinition_*.jar" />
-			<include name="org.eclipse.datatools.enablement.ibm.db2.zseries.ui_*.jar" />
-			<include name="org.eclipse.datatools.enablement.ibm.informix_*.jar" />
-			<include
-				name="org.eclipse.datatools.enablement.ibm.informix.dbdefinition_*.jar" />
-			<include name="org.eclipse.datatools.enablement.ibm.informix.ui_*.jar" />
-			<include name="org.eclipse.datatools.enablement.ibm.ui_*.jar" />
-			<include name="org.eclipse.datatools.enablement.msft.sqlserver_*.jar" />
-			<include
-				name="org.eclipse.datatools.enablement.msft.sqlserver.dbdefinition_*.jar" />
-			<include name="org.eclipse.datatools.enablement.msft.sqlserver.ui_*.jar" />
-			<include name="org.eclipse.datatools.enablement.mysql_*.jar" />
-			<include name="org.eclipse.datatools.enablement.mysql.dbdefinition_*.jar" />
-			<include name="org.eclipse.datatools.enablement.mysql.ui_*.jar" />
 			<include name="org.eclipse.datatools.enablement.oda.ws_*.jar" />
 			<include name="org.eclipse.datatools.enablement.oda.ws.ui_*.jar" />
 			<include name="org.eclipse.datatools.enablement.oda.xml_*.jar" />
@@ -686,27 +659,6 @@
 			<include name="org.eclipse.datatools.enablement.oracle_*.jar" />
 			<include name="org.eclipse.datatools.enablement.oracle.dbdefinition_*.jar" />
 			<include name="org.eclipse.datatools.enablement.oracle.ui_*.jar" />
-			<include name="org.eclipse.datatools.enablement.postgresql_*.jar" />
-			<include
-				name="org.eclipse.datatools.enablement.postgresql.dbdefinition_*.jar" />
-			<include name="org.eclipse.datatools.enablement.postgresql.ui_*.jar" />
-			<include name="org.eclipse.datatools.enablement.sap.maxdb_*.jar" />
-			<include
-				name="org.eclipse.datatools.enablement.sap.maxdb.dbdefinition_*.jar" />
-			<include name="org.eclipse.datatools.enablement.sap.maxdb.ui_*.jar" />
-			<include name="org.eclipse.datatools.enablement.sybase_*.jar" />
-			<include name="org.eclipse.datatools.enablement.sybase.asa_*.jar" />
-			<include name="org.eclipse.datatools.enablement.sybase.ase_*.jar" />
-			<include name="org.eclipse.datatools.enablement.sybase.asa.models_*.jar" />
-			<include name="org.eclipse.datatools.enablement.sybase.ase.models_*.jar" />
-			<include
-				name="org.eclipse.datatools.enablement.sybase.asa.dbdefinition_*.jar" />
-			<include
-				name="org.eclipse.datatools.enablement.sybase.ase.dbdefinition_*.jar" />
-			<include name="org.eclipse.datatools.enablement.sybase.ase.profile_*.jar" />
-			<include name="org.eclipse.datatools.enablement.sybase.asa.profile_*.jar" />
-			<include name="org.eclipse.datatools.enablement.sybase.asa.ui_*.jar" />
-			<include name="org.eclipse.datatools.enablement.sybase.ase.ui_*.jar" />
 			<include name="org.eclipse.datatools.help_*.jar" />
 			<include name="org.eclipse.datatools.modelbase.dbdefinition_*.jar" />
 			<include name="org.eclipse.datatools.modelbase.derby_*.jar" />
@@ -746,17 +698,10 @@
 			<include name="org.eclipse.datatools.doc.user_*/**" />
 			<include name="org.eclipse.datatools.enablement.apache.derby.feature_*/**" />
 			<include name="org.eclipse.datatools.enablement.feature_*/**" />
-			<include name="org.eclipse.datatools.enablement.hsqldb.feature_*/**" />
-			<include name="org.eclipse.datatools.enablement.ibm.feature_*/**" />
 			<include name="org.eclipse.datatools.enablement.jdbc.feature_*/**" />
-			<include name="org.eclipse.datatools.enablement.msft.feature_*/**" />
-			<include name="org.eclipse.datatools.enablement.mysql.feature_*/**" />
 			<include name="org.eclipse.datatools.enablement.oda.designer.feature_*/**" />
 			<include name="org.eclipse.datatools.enablement.oda.feature_*/**" />
 			<include name="org.eclipse.datatools.enablement.oracle.feature_*/**" />
-			<include name="org.eclipse.datatools.enablement.postgresql.feature_*/**" />
-			<include name="org.eclipse.datatools.enablement.sap.feature_*/**" />
-			<include name="org.eclipse.datatools.enablement.sybase.feature_*/**" />
 			<include name="org.eclipse.datatools.modelbase.feature_*/**" />
 			<include name="org.eclipse.datatools.sqldevtools.data.feature_*/**" />
 			<include name="org.eclipse.datatools.sqldevtools.ddl.feature_*/**" />
@@ -1019,33 +964,6 @@
 			<include name="org.eclipse.datatools.connectivity.ui.dse_*.jar" />
 			<include name="org.eclipse.datatools.doc.user_*.jar" />
 			<include name="org.eclipse.datatools.enablement.finfo_*.jar" />
-			<include name="org.eclipse.datatools.enablement.hsqldb_*.jar" />
-			<include name="org.eclipse.datatools.enablement.hsqldb.dbdefinition_*.jar" />
-			<include name="org.eclipse.datatools.enablement.hsqldb.ui_*.jar" />
-			<include name="org.eclipse.datatools.enablement.ibm.db2.iseries_*.jar" />
-			<include
-				name="org.eclipse.datatools.enablement.ibm.db2.iseries.dbdefinition_*.jar" />
-			<include name="org.eclipse.datatools.enablement.ibm.db2.iseries.ui_*.jar" />
-			<include name="org.eclipse.datatools.enablement.ibm.db2.luw_*.jar" />
-			<include
-				name="org.eclipse.datatools.enablement.ibm.db2.luw.dbdefinition_*.jar" />
-			<include name="org.eclipse.datatools.enablement.ibm.db2.luw.ui_*.jar" />
-			<include name="org.eclipse.datatools.enablement.ibm.db2.zseries_*.jar" />
-			<include
-				name="org.eclipse.datatools.enablement.ibm.db2.zseries.dbdefinition_*.jar" />
-			<include name="org.eclipse.datatools.enablement.ibm.db2.zseries.ui_*.jar" />
-			<include name="org.eclipse.datatools.enablement.ibm.informix_*.jar" />
-			<include
-				name="org.eclipse.datatools.enablement.ibm.informix.dbdefinition_*.jar" />
-			<include name="org.eclipse.datatools.enablement.ibm.informix.ui_*.jar" />
-			<include name="org.eclipse.datatools.enablement.ibm.ui_*.jar" />
-			<include name="org.eclipse.datatools.enablement.msft.sqlserver_*.jar" />
-			<include
-				name="org.eclipse.datatools.enablement.msft.sqlserver.dbdefinition_*.jar" />
-			<include name="org.eclipse.datatools.enablement.msft.sqlserver.ui_*.jar" />
-			<include name="org.eclipse.datatools.enablement.mysql_*.jar" />
-			<include name="org.eclipse.datatools.enablement.mysql.dbdefinition_*.jar" />
-			<include name="org.eclipse.datatools.enablement.mysql.ui_*.jar" />
 			<include name="org.eclipse.datatools.enablement.oda.ws_*.jar" />
 			<include name="org.eclipse.datatools.enablement.oda.ws.ui_*.jar" />
 			<include name="org.eclipse.datatools.enablement.oda.xml_*.jar" />
@@ -1053,27 +971,6 @@
 			<include name="org.eclipse.datatools.enablement.oracle_*.jar" />
 			<include name="org.eclipse.datatools.enablement.oracle.dbdefinition_*.jar" />
 			<include name="org.eclipse.datatools.enablement.oracle.ui_*.jar" />
-			<include name="org.eclipse.datatools.enablement.postgresql_*.jar" />
-			<include
-				name="org.eclipse.datatools.enablement.postgresql.dbdefinition_*.jar" />
-			<include name="org.eclipse.datatools.enablement.postgresql.ui_*.jar" />
-			<include name="org.eclipse.datatools.enablement.sap.maxdb_*.jar" />
-			<include
-				name="org.eclipse.datatools.enablement.sap.maxdb.dbdefinition_*.jar" />
-			<include name="org.eclipse.datatools.enablement.sap.maxdb.ui_*.jar" />
-			<include name="org.eclipse.datatools.enablement.sybase_*.jar" />
-			<include name="org.eclipse.datatools.enablement.sybase.asa_*.jar" />
-			<include name="org.eclipse.datatools.enablement.sybase.ase_*.jar" />
-			<include name="org.eclipse.datatools.enablement.sybase.asa.models_*.jar" />
-			<include name="org.eclipse.datatools.enablement.sybase.ase.models_*.jar" />
-			<include
-				name="org.eclipse.datatools.enablement.sybase.asa.dbdefinition_*.jar" />
-			<include
-				name="org.eclipse.datatools.enablement.sybase.ase.dbdefinition_*.jar" />
-			<include name="org.eclipse.datatools.enablement.sybase.ase.profile_*.jar" />
-			<include name="org.eclipse.datatools.enablement.sybase.asa.profile_*.jar" />
-			<include name="org.eclipse.datatools.enablement.sybase.asa.ui_*.jar" />
-			<include name="org.eclipse.datatools.enablement.sybase.ase.ui_*.jar" />
 			<include name="org.eclipse.datatools.help_*.jar" />
 			<include name="org.eclipse.datatools.modelbase.dbdefinition_*.jar" />
 			<include name="org.eclipse.datatools.modelbase.derby_*.jar" />
@@ -1113,17 +1010,9 @@
 			<include name="org.eclipse.datatools.doc.user_*/**" />
 			<include name="org.eclipse.datatools.enablement.apache.derby.feature_*/**" />
 			<include name="org.eclipse.datatools.enablement.feature_*/**" />
-			<include name="org.eclipse.datatools.enablement.hsqldb.feature_*/**" />
-			<include name="org.eclipse.datatools.enablement.ibm.feature_*/**" />
 			<include name="org.eclipse.datatools.enablement.jdbc.feature_*/**" />
-			<include name="org.eclipse.datatools.enablement.msft.feature_*/**" />
-			<include name="org.eclipse.datatools.enablement.mysql.feature_*/**" />
 			<include name="org.eclipse.datatools.enablement.oda.designer.feature_*/**" />
 			<include name="org.eclipse.datatools.enablement.oda.feature_*/**" />
-			<include name="org.eclipse.datatools.enablement.oracle.feature_*/**" />
-			<include name="org.eclipse.datatools.enablement.postgresql.feature_*/**" />
-			<include name="org.eclipse.datatools.enablement.sap.feature_*/**" />
-			<include name="org.eclipse.datatools.enablement.sybase.feature_*/**" />
 			<include name="org.eclipse.datatools.modelbase.feature_*/**" />
 			<include name="org.eclipse.datatools.sqldevtools.data.feature_*/**" />
 			<include name="org.eclipse.datatools.sqldevtools.ddl.feature_*/**" />

@@ -60,27 +60,9 @@
       <import plugin="org.eclipse.datatools.connectivity.db.generic"/>
       <import plugin="org.eclipse.datatools.connectivity.dbdefinition.genericJDBC"/>
       <import plugin="org.eclipse.datatools.connectivity.oda.flatfile"/>
-      <import plugin="org.eclipse.datatools.enablement.hsqldb.dbdefinition"/>
-      <import plugin="org.eclipse.datatools.enablement.hsqldb"/>
-      <import plugin="org.eclipse.datatools.enablement.ibm.db2.iseries.dbdefinition"/>
-      <import plugin="org.eclipse.datatools.enablement.ibm.db2.iseries"/>
-      <import plugin="org.eclipse.datatools.enablement.ibm.db2.luw.dbdefinition"/>
-      <import plugin="org.eclipse.datatools.enablement.ibm.db2.luw"/>
-      <import plugin="org.eclipse.datatools.enablement.ibm.db2.zseries.dbdefinition"/>
-      <import plugin="org.eclipse.datatools.enablement.ibm.db2.zseries"/>
-      <import plugin="org.eclipse.datatools.enablement.ibm.informix.dbdefinition"/>
-      <import plugin="org.eclipse.datatools.enablement.ibm.informix"/>
-      <import plugin="org.eclipse.datatools.enablement.msft.sqlserver.dbdefinition"/>
-      <import plugin="org.eclipse.datatools.enablement.msft.sqlserver"/>
-      <import plugin="org.eclipse.datatools.enablement.mysql.dbdefinition"/>
-      <import plugin="org.eclipse.datatools.enablement.mysql"/>
       <import plugin="org.eclipse.datatools.enablement.oda.ws"/>
       <import plugin="org.eclipse.datatools.enablement.oracle.dbdefinition"/>
       <import plugin="org.eclipse.datatools.enablement.oracle"/>
-      <import plugin="org.eclipse.datatools.enablement.postgresql.dbdefinition"/>
-      <import plugin="org.eclipse.datatools.enablement.postgresql"/>
-      <import plugin="org.eclipse.datatools.enablement.sap.maxdb.dbdefinition"/>
-      <import plugin="org.eclipse.datatools.enablement.sap.maxdb"/>
    </requires>
 
    <plugin
@@ -109,13 +91,6 @@
          download-size="0"
          install-size="0"
          version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.birt.report.data.oda.hive"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
    <plugin
          id="org.eclipse.birt.report.data.oda.xml"
@@ -209,20 +184,6 @@
 
    <plugin
          id="org.eclipse.birt.data.aggregation"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.birt.data.oda.mongodb"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.orbit.mongodb"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -623,12 +584,6 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-
-   <plugin
-         id="org.eclipse.birt.me.prettyprint.hector"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
 
    <plugin
          id="uk.co.spudsoft.birt.emitters.excel"

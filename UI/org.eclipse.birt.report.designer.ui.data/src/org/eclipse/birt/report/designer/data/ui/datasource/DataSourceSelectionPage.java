@@ -128,8 +128,6 @@ public class DataSourceSelectionPage extends WizardPage {
 
 	private boolean validated = false;
 	private String errorMessage = null;
-	private static final String CASSANDRA_DATA_SOURCE_DISPLAY_NAME = Messages
-			.getString("CassandraScriptedDataSource.display.name");
 
 	private static Logger logger = Logger.getLogger(DataSourceSelectionPage.class.getName());
 
@@ -685,9 +683,6 @@ public class DataSourceSelectionPage extends WizardPage {
 			Class classType = ScriptDataSourceHandle.class;
 
 			dsHandle = helper.createDataSource(classType, dsName, driverName);
-		} else if (CASSANDRA_DATA_SOURCE_DISPLAY_NAME.equals(prevSelectedDataSourceType.toString())) {
-			Class classType = ScriptDataSourceHandle.class;
-			dsHandle = helper.createDataSource(classType, dsName, DataUIConstants.CASSANDRA_DATA_SOURCE_SCRIPT);
 		} else {
 			dsHandle = helper.createNoneOdaDataSourceHandle(dsName, prevSelectedDataSourceType);
 		}
@@ -813,8 +808,7 @@ public class DataSourceSelectionPage extends WizardPage {
 	}
 
 	public void validateDataSourceHandle(Object prevSelectedDataSourceType) {
-		if (!(prevSelectedDataSourceType instanceof String)
-				|| !CASSANDRA_DATA_SOURCE_DISPLAY_NAME.equals(prevSelectedDataSourceType.toString())) {
+		if (!(prevSelectedDataSourceType instanceof String)) {
 			return;
 		}
 		if (validated) {

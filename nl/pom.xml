@@ -45,8 +45,6 @@
 		<module>org.eclipse.birt.core.ui.nl</module>
 		<module>org.eclipse.birt.data.aggregation.nl</module>
 		<module>org.eclipse.birt.data.nl</module>
-		<module>org.eclipse.birt.data.oda.mongodb.nl</module>
-		<module>org.eclipse.birt.data.oda.mongodb.ui.nl</module>
 		<module>org.eclipse.birt.data.oda.pojo.nl</module>
 		<module>org.eclipse.birt.data.oda.pojo.ui.nl</module>
 		<module>org.eclipse.birt.integration.wtp.ui.nl</module>
@@ -54,8 +52,6 @@
 		<module>org.eclipse.birt.report.data.bidi.utils.nl</module>
 		<module>org.eclipse.birt.report.data.oda.excel.nl</module>
 		<module>org.eclipse.birt.report.data.oda.excel.ui.nl</module>
-		<module>org.eclipse.birt.report.data.oda.hive.nl</module>
-		<module>org.eclipse.birt.report.data.oda.hive.ui.nl</module>
 		<module>org.eclipse.birt.report.data.oda.jdbc.dbprofile.nl</module>
 		<module>org.eclipse.birt.report.data.oda.jdbc.dbprofile.sampledb.nl</module>
 		<module>org.eclipse.birt.report.data.oda.jdbc.dbprofile.ui.nl</module>

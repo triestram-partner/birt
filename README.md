@@ -12,7 +12,7 @@ this repo's `tup_main` branch with the official `master` branch.
 
 For more information about this repository see our [wiki pages](https://github.com/triestram-partner/birt/wiki)
 
-If you are just looking for the official BIRT, don't use this - instead use the [official repo](https://github.com/eclipse/birt/)
+**If you are just looking for the official BIRT, don't use this - instead use the [official repo](https://github.com/eclipse/birt/)**
 
 ## Important branches
 

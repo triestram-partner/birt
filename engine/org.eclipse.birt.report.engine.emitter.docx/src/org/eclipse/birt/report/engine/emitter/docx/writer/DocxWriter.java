@@ -43,8 +43,6 @@ public class DocxWriter implements IWordWriter {
 
 	private boolean rtl = false;
 
-	private boolean showHeaderOnFirst;
-
 	private int wordVersion;
 
 	public DocxWriter(OutputStream out, String tempFileDir, int compressionMode, int wordVersion) {
@@ -142,13 +140,12 @@ public class DocxWriter implements IWordWriter {
 	public void startHeader(boolean showHeaderOnFirst, int headerHeight, int headerWidth) throws IOException {
 		currentComponent = document.createHeader(showHeaderOnFirst, headerHeight, headerWidth);
 		currentComponent.start();
-		this.showHeaderOnFirst = showHeaderOnFirst;
 	}
 
 	@Override
 	public void endHeader() {
 		currentComponent.end();
-		document.writeHeaderReference(currentComponent, showHeaderOnFirst);
+		document.writeHeaderReference(currentComponent, "default");
 		currentComponent = document;
 	}
 
@@ -168,14 +165,9 @@ public class DocxWriter implements IWordWriter {
 
 	@Override
 	public void endFooter() {
-		if ( currentComponent == null ) {
-			; // nothing to do.
-		} else {
+		if (currentComponent != null) {
 			currentComponent.end();
-			if (!this.showHeaderOnFirst) {
-				document.writeFooterReference(currentComponent, true);
-			}
-			document.writeFooterReference(currentComponent, false);
+			document.writeFooterReference(currentComponent, "default");
 		}
 		currentComponent = document;
 	}

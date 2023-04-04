@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2013 Actuate Corporation.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * https://www.eclipse.org/legal/epl-2.0/.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  *
  * Contributors:
  *  Actuate Corporation  - initial API and implementation
@@ -315,16 +315,14 @@ public class Document extends BasicComponent {
 		writer.closeTag("w:background"); //$NON-NLS-1$
 	}
 
-	void writeHeaderReference(BasicComponent header, boolean showHeaderOnFirst) {
-		String type = showHeaderOnFirst ? "first" : "default"; //$NON-NLS-1$ //$NON-NLS-2$
+	void writeHeaderReference(BasicComponent header, String type) {
 		writer.openTag("w:headerReference"); //$NON-NLS-1$
 		writer.attribute("w:type", type); //$NON-NLS-1$
 		writer.attribute("r:id", header.getRelationshipId()); //$NON-NLS-1$
 		writer.closeTag("w:headerReference"); //$NON-NLS-1$
 	}
 
-	void writeFooterReference(BasicComponent footer, boolean showHeaderOnFirst) {
-		String type = showHeaderOnFirst ? "first" : "default"; //$NON-NLS-1$ //$NON-NLS-2$
+	void writeFooterReference(BasicComponent footer, String type) {
 		writer.openTag("w:footerReference"); //$NON-NLS-1$
 		writer.attribute("w:type", type); //$NON-NLS-1$
 		writer.attribute("r:id", footer.getRelationshipId()); //$NON-NLS-1$
@@ -332,7 +330,8 @@ public class Document extends BasicComponent {
 	}
 
 	Header createHeader(boolean showHeaderOnFirst, int headerHeight, int headerWidth) throws IOException {
-		if (showHeaderOnFirst) {
+		if (!showHeaderOnFirst) {
+			// Add an empty header for the first page, which overrides the default header.
 			String uri = "header" + nextHeaderID() + ".xml"; //$NON-NLS-1$ //$NON-NLS-2$
 			String type = ContentTypes.WORD_HEADER;
 			String relationshipType = RelationshipTypes.HEADER;
@@ -340,8 +339,9 @@ public class Document extends BasicComponent {
 			Header firstPageHeader = new Header(headerPart, this, headerHeight, headerWidth);
 			firstPageHeader.start();
 			firstPageHeader.end();
-			writeHeaderReference(firstPageHeader, true);
+			writeHeaderReference(firstPageHeader, "first");
 		}
+		// Start a default header. It will be closed by DocxWriter::endHeader.
 		String uri = "header" + nextHeaderID() + ".xml"; //$NON-NLS-1$//$NON-NLS-2$
 		String type = ContentTypes.WORD_HEADER;
 		String relationshipType = RelationshipTypes.HEADER;

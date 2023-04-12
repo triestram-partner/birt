@@ -3382,10 +3382,10 @@
     <Property displayNameID="Element.ReportItem.altTextID" name="altTextID" since="4.3" type="resourceKey"/>
     <PropertyGroup displayNameID="Element.Cell.diagonal">
     	<Property displayNameID="Element.Cell.diagonalNumber" name="diagonalNumber" runtimeSettable="false" since="2.3" type="integer" validator="NonNegativeValueValidator">
-    		<Default>0</Default>
+    		<Default>1</Default>
     	</Property>
     	<Property displayNameID="Element.Cell.antidiagonalNumber" name="antidiagonalNumber" runtimeSettable="false" since="2.3" type="integer" validator="NonNegativeValueValidator">
-    		<Default>0</Default>
+    		<Default>1</Default>
     	</Property>   
     	<Property detailType="lineWidth"  displayNameID="Element.Cell.diagonalThickness" name="diagonalThickness" runtimeSettable="false" since="3.2" type="dimension" validator="NonNegativeValueValidator">
     		<DefaultUnit>pt</DefaultUnit>
@@ -3424,10 +3424,6 @@
     <PropertyVisibility name="colSpan" visibility="readonly"/>        
     <PropertyVisibility name="rowSpan" visibility="readonly"/>
     <PropertyVisibility name="viewAction" visibility="hide"/>
-    <PropertyVisibility name="antidiagonalNumber" visibility="hide"/> 
-    <PropertyVisibility name="antidiagonalThickness" visibility="hide"/> 
-    <PropertyVisibility name="antidiagonalStyle" visibility="hide"/> 
-    <PropertyVisibility name="antidiagonalColor" visibility="hide"/>                    
     <Slot displayNameID="Element.Cell.slot.content" multipleCardinality="true" name="content" since="1.0">
       <Type name="Label"/>
       <Type name="Data"/>

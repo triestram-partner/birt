@@ -221,8 +221,8 @@ public class DocxWriter implements IWordWriter {
 	}
 
 	@Override
-	public void startTableCell(int width, IStyle style, SpanInfo info) {
-		currentComponent.startTableCell(width, style, info);
+	public void startTableCell(int width, IStyle style, SpanInfo info, DiagonalLineInfo diagonalLineInfo) {
+		currentComponent.startTableCell(width, style, info, diagonalLineInfo);
 	}
 
 	@Override

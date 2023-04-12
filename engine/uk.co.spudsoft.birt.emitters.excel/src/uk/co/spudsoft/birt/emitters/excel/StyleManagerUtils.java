@@ -1,14 +1,14 @@
 /*************************************************************************************
  * Copyright (c) 2011, 2012, 2013 James Talbut.
  *  jim-emitters@spudsoft.co.uk
- *  
- * 
+ *
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * https://www.eclipse.org/legal/epl-2.0/.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     James Talbut - Initial implementation.
  ************************************************************************************/
@@ -23,7 +23,6 @@ import java.awt.font.TextMeasurer;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URLConnection;
 import java.text.AttributedString;
 import java.text.DateFormat;
@@ -328,7 +327,8 @@ public abstract class StyleManagerUtils {
 	}
 
 	/**
-	 * Apply a BIRT border style to one side of a POI CellStyle.
+	 * Apply a BIRT border style to one side of a POI CellStyle usage: xls-format /
+	 * StyleManagerHUtils
 	 *
 	 * @param workbook    The workbook that contains the cell being styled.
 	 * @param style       The POI CellStyle that is to have the border applied to
@@ -342,6 +342,17 @@ public abstract class StyleManagerUtils {
 	 */
 	public abstract void applyBorderStyle(Workbook workbook, CellStyle style, BorderSide side, CSSValue colour,
 			CSSValue borderStyle, CSSValue width);
+
+	/**
+	 * Apply a BIRT border style to one side of a POI CellStyle. usage: xlsx-format
+	 * / StyleManagerXUtils
+	 *
+	 * @param workbook  The workbook that contains the cell being styled.
+	 * @param style     The POI CellStyle that is to have the border applied to it.
+	 * @param birtStyle birt cell style with all border information
+	 * @since 4.13
+	 */
+	public abstract void applyBorderStyle(Workbook workbook, CellStyle style, BirtStyle birtStyle);
 
 	/**
 	 * <p>
@@ -424,9 +435,6 @@ public abstract class StyleManagerUtils {
 			} finally {
 				imageStream.close();
 			}
-		} catch (MalformedURLException ex) {
-			log.debug(ex.getClass(), ": ", ex.getMessage());
-			return null;
 		} catch (IOException ex) {
 			log.debug(ex.getClass(), ": ", ex.getMessage());
 			return null;
@@ -968,6 +976,9 @@ public abstract class StyleManagerUtils {
 	 * Place a border around a region on the current sheet. This is used to apply
 	 * borders to entire rows or entire tables.
 	 *
+	 * @param sm
+	 * @param sheet
+	 *
 	 * @param colStart    The column marking the left-side boundary of the region.
 	 * @param colEnd      The column marking the right-side boundary of the region.
 	 * @param rowStart    The row marking the top boundary of the region.
@@ -992,6 +1003,16 @@ public abstract class StyleManagerUtils {
 		CSSValue borderStyleTop = borderStyle.getProperty(StylePropertyIndexes.STYLE_BORDER_TOP_STYLE);
 		CSSValue borderWidthTop = borderStyle.getProperty(StylePropertyIndexes.STYLE_BORDER_TOP_WIDTH);
 		CSSValue borderColourTop = borderStyle.getProperty(StylePropertyIndexes.STYLE_BORDER_TOP_COLOR);
+
+		CSSValue borderStyleDiagonal = borderStyle.getProperty(StylePropertyIndexes.STYLE_BORDER_DIAGONAL_STYLE);
+		CSSValue borderWidthDiagonal = borderStyle.getProperty(StylePropertyIndexes.STYLE_BORDER_DIAGONAL_WIDTH);
+		CSSValue borderColourDiagonal = borderStyle.getProperty(StylePropertyIndexes.STYLE_BORDER_DIAGONAL_COLOR);
+		CSSValue borderStyleAntidiagonal = borderStyle
+				.getProperty(StylePropertyIndexes.STYLE_BORDER_ANTIDIAGONAL_STYLE);
+		CSSValue borderWidthAntidiagonal = borderStyle
+				.getProperty(StylePropertyIndexes.STYLE_BORDER_ANTIDIAGONAL_WIDTH);
+		CSSValue borderColourAntidiagonal = borderStyle
+				.getProperty(StylePropertyIndexes.STYLE_BORDER_ANTIDIAGONAL_COLOR);
 
 		/*
 		 * borderMsg.append( ", Bottom:" ).append( borderStyleBottom ).append( "/"
@@ -1036,10 +1057,31 @@ public abstract class StyleManagerUtils {
 			borderColourTop = null;
 		}
 
+		if ((borderStyleDiagonal == null) || (CSSConstants.CSS_NONE_VALUE.equals(borderStyleDiagonal))
+				|| (borderWidthDiagonal == null) || ("0".equals(borderWidthDiagonal)) || (borderColourDiagonal == null)
+				|| (CSSConstants.CSS_TRANSPARENT_VALUE.equals(borderColourDiagonal.getCssText()))) {
+			borderStyleDiagonal = null;
+			borderWidthDiagonal = null;
+			borderColourDiagonal = null;
+		}
+
+		if ((borderStyleAntidiagonal == null) || (CSSConstants.CSS_NONE_VALUE.equals(borderStyleAntidiagonal))
+				|| (borderWidthAntidiagonal == null) || ("0".equals(borderWidthDiagonal))
+				|| (borderColourDiagonal == null)
+				|| (CSSConstants.CSS_TRANSPARENT_VALUE.equals(borderColourAntidiagonal.getCssText()))) {
+			borderStyleAntidiagonal = null;
+			borderWidthAntidiagonal = null;
+			borderColourAntidiagonal = null;
+		}
+
 		if ((borderStyleBottom != null) || (borderWidthBottom != null) || (borderColourBottom != null)
 				|| (borderStyleLeft != null) || (borderWidthLeft != null) || (borderColourLeft != null)
 				|| (borderStyleRight != null) || (borderWidthRight != null) || (borderColourRight != null)
-				|| (borderStyleTop != null) || (borderWidthTop != null) || (borderColourTop != null)) {
+				|| (borderStyleTop != null) || (borderWidthTop != null) || (borderColourTop != null)
+				|| (borderStyleDiagonal != null) || (borderWidthDiagonal != null) || (borderColourDiagonal != null)
+				|| (borderStyleAntidiagonal != null) || (borderWidthAntidiagonal != null)
+				|| (borderColourAntidiagonal != null)
+		) {
 			for (int row = rowStart; row <= rowEnd; ++row) {
 				Row styleRow = sheet.getRow(row);
 				if (styleRow != null) {
@@ -1065,7 +1107,15 @@ public abstract class StyleManagerUtils {
 										((col == colEnd) ? borderColourRight : null),
 										((row == rowStart) ? borderStyleTop : null),
 										((row == rowStart) ? borderWidthTop : null),
-										((row == rowStart) ? borderColourTop : null));
+										((row == rowStart) ? borderColourTop : null),
+										((row == rowStart) ? borderStyleDiagonal : null),
+										((row == rowStart) ? borderWidthDiagonal : null),
+										((row == rowStart) ? borderColourDiagonal : null),
+										((row == rowStart) ? borderStyleAntidiagonal : null),
+										((row == rowStart) ? borderWidthAntidiagonal : null),
+										((row == rowStart) ? borderColourAntidiagonal : null)
+
+								);
 								styleCell.setCellStyle(newStyle);
 							}
 						}
@@ -1111,6 +1161,7 @@ public abstract class StyleManagerUtils {
 						// styleCell.getColumnIndex() + "]");
 						CellStyle newStyle = sm.getStyleWithBorders(styleCell.getCellStyle(), borderStyleBottom,
 								borderWidthBottom, borderColourBottom, null, null, null, null, null, null, null, null,
+								null, null, null, null, null, null,
 								null);
 						styleCell.setCellStyle(newStyle);
 					}
@@ -1157,6 +1208,30 @@ public abstract class StyleManagerUtils {
 					birtCellStyle.setProperty(StylePropertyIndexes.STYLE_BORDER_TOP_COLOR, areaBorders.cssColour[3]);
 				}
 			}
+			if ((areaBorders.left == colIndex) && ((areaBorders.top <= rowIndex)
+					&& ((areaBorders.bottom < 0) || (areaBorders.bottom >= rowIndex)))) {
+				if ((areaBorders.cssStyle[4] != null) && (areaBorders.cssWidth[4] != null)
+						&& (areaBorders.cssColour[4] != null)) {
+					birtCellStyle.setProperty(StylePropertyIndexes.STYLE_BORDER_DIAGONAL_STYLE,
+							areaBorders.cssStyle[4]);
+					birtCellStyle.setProperty(StylePropertyIndexes.STYLE_BORDER_DIAGONAL_WIDTH,
+							areaBorders.cssWidth[4]);
+					birtCellStyle.setProperty(StylePropertyIndexes.STYLE_BORDER_DIAGONAL_COLOR,
+							areaBorders.cssColour[4]);
+				}
+			}
+			if ((areaBorders.left == colIndex) && ((areaBorders.top <= rowIndex)
+					&& ((areaBorders.bottom < 0) || (areaBorders.bottom >= rowIndex)))) {
+				if ((areaBorders.cssStyle[5] != null) && (areaBorders.cssWidth[5] != null)
+						&& (areaBorders.cssColour[5] != null)) {
+					birtCellStyle.setProperty(StylePropertyIndexes.STYLE_BORDER_ANTIDIAGONAL_STYLE,
+							areaBorders.cssStyle[5]);
+					birtCellStyle.setProperty(StylePropertyIndexes.STYLE_BORDER_ANTIDIAGONAL_WIDTH,
+							areaBorders.cssWidth[5]);
+					birtCellStyle.setProperty(StylePropertyIndexes.STYLE_BORDER_ANTIDIAGONAL_COLOR,
+							areaBorders.cssColour[5]);
+				}
+			}
 		}
 		return colIndex;
 	}
@@ -1192,4 +1267,5 @@ public abstract class StyleManagerUtils {
 			}
 		}
 	}
+
 }

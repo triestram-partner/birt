@@ -1,14 +1,14 @@
 /*************************************************************************************
  * Copyright (c) 2011, 2012, 2013 James Talbut.
  *  jim-emitters@spudsoft.co.uk
- *  
- * 
+ *
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * https://www.eclipse.org/legal/epl-2.0/.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     James Talbut - Initial implementation.
  ************************************************************************************/
@@ -17,7 +17,6 @@ package uk.co.spudsoft.birt.emitters.excel.handlers;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -25,6 +24,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -121,6 +121,10 @@ public class CellContentHandler extends AbstractHandler {
 	 * Bookmark that this cell should hyperlink to
 	 */
 	protected String hyperlinkBookmark;
+
+	private static String DATA_PROTOCOL = "data:";
+
+	private static String DATA_PROTOCOL_BASE = ";base64,";
 
 	public CellContentHandler(IContentEmitter emitter, Logger log, IHandler parent, ICellContent cell) {
 		super(log, parent, cell);
@@ -247,6 +251,35 @@ public class CellContentHandler extends AbstractHandler {
 			}
 		}
 
+		if (birtCell != null && birtCell.getDiagonalNumber() >= 1
+				&& !"none".equalsIgnoreCase(birtCell.getDiagonalStyle())) {
+			String diagonalWidth = null;
+			if (birtCell.getDiagonalWidth() != null) {
+				diagonalWidth = birtCell.getDiagonalWidth().toString();
+			}
+			birtCellStyle.setProperty(StylePropertyIndexes.STYLE_BORDER_DIAGONAL_WIDTH,
+					new StringValue(CSSPrimitiveValue.CSS_STRING, diagonalWidth));
+			birtCellStyle.setProperty(StylePropertyIndexes.STYLE_BORDER_DIAGONAL_COLOR,
+					new StringValue(CSSPrimitiveValue.CSS_STRING, birtCell.getDiagonalColor()));
+			birtCellStyle.setProperty(StylePropertyIndexes.STYLE_BORDER_DIAGONAL_STYLE,
+					new StringValue(CSSPrimitiveValue.CSS_STRING, birtCell.getDiagonalStyle()));
+		}
+
+		if (birtCell != null && birtCell.getAntidiagonalNumber() >= 1
+				&& !"none".equalsIgnoreCase(birtCell.getAntidiagonalStyle())) {
+			String antidiagonalWidth = null;
+			if (birtCell.getAntidiagonalWidth() != null) {
+				antidiagonalWidth = birtCell.getAntidiagonalWidth().toString();
+			}
+			birtCellStyle.setProperty(StylePropertyIndexes.STYLE_BORDER_ANTIDIAGONAL_WIDTH,
+					new StringValue(CSSPrimitiveValue.CSS_STRING, antidiagonalWidth));
+			birtCellStyle.setProperty(StylePropertyIndexes.STYLE_BORDER_ANTIDIAGONAL_COLOR,
+					new StringValue(CSSPrimitiveValue.CSS_STRING, birtCell.getAntidiagonalColor()));
+			birtCellStyle.setProperty(StylePropertyIndexes.STYLE_BORDER_ANTIDIAGONAL_STYLE,
+					new StringValue(CSSPrimitiveValue.CSS_STRING, birtCell.getAntidiagonalStyle()));
+
+		}
+
 		int colIndex = cell.getColumnIndex();
 		if (birtCellStyle != null) {
 			state.getSmu().applyAreaBordersToCell(state.areaBorders, cell, birtCellStyle, state.rowNum, colIndex);
@@ -254,7 +287,7 @@ public class CellContentHandler extends AbstractHandler {
 
 		if ((birtCell != null) && ((birtCell.getColSpan() > 1) || (birtCell.getRowSpan() > 1))) {
 			AreaBorders mergedRegionBorders = AreaBorders.createForMergedCells(state.rowNum + birtCell.getRowSpan() - 1,
-					colIndex, colIndex + birtCell.getColSpan() - 1, state.rowNum, birtCellStyle);
+					colIndex, colIndex + birtCell.getColSpan() - 1, state.rowNum, 1, 1, birtCellStyle);
 			if (mergedRegionBorders != null) {
 				state.insertBorderOverload(mergedRegionBorders);
 			}
@@ -543,23 +576,29 @@ public class CellContentHandler extends AbstractHandler {
 		Workbook wb = state.getWb();
 		String mimeType = image.getMIMEType();
 		if ((data == null) && (image.getURI() != null)) {
-			try {
-				URL imageUrl = new URL(image.getURI());
-				URLConnection conn = imageUrl.openConnection();
-				conn.connect();
-				mimeType = conn.getContentType();
-				int imageType = smu.poiImageTypeFromMimeType(mimeType, null);
-				if (imageType == 0) {
-					log.debug("Unrecognised/unhandled image MIME type: " + mimeType);
-				} else {
-					data = smu.downloadImage(conn);
+			String stringURI = image.getURI().toString().toLowerCase();
+			if (stringURI.startsWith(DATA_PROTOCOL) && stringURI.contains(DATA_PROTOCOL_BASE)) {
+				String base64[] = image.getURI().toString().split(DATA_PROTOCOL_BASE);
+				if (base64.length >= 2) {
+					data = Base64.decodeBase64(base64[1]);
 				}
-			} catch (MalformedURLException ex) {
-				log.debug(ex.getClass(), ": ", ex.getMessage());
-				ex.printStackTrace();
-			} catch (IOException ex) {
-				log.debug(ex.getClass(), ": ", ex.getMessage());
-				ex.printStackTrace();
+			} else {
+				try {
+					URL imageUrl = new URL(image.getURI());
+					URLConnection conn = imageUrl.openConnection();
+					conn.connect();
+					mimeType = conn.getContentType();
+					int imageType = smu.poiImageTypeFromMimeType(mimeType, null);
+					if (imageType == 0) {
+						log.debug("Unrecognised/unhandled image MIME type: " + mimeType);
+					} else {
+						data = smu.downloadImage(conn);
+						image.setData(data);
+					}
+				} catch (IOException ex) {
+					log.debug(ex.getClass(), ": ", ex.getMessage());
+					ex.printStackTrace();
+				}
 			}
 		}
 		if (data != null) {

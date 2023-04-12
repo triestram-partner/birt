@@ -5,15 +5,15 @@ import org.eclipse.birt.report.engine.css.engine.value.birt.BIRTConstants;
 import org.eclipse.birt.report.engine.css.engine.value.css.CSSConstants;
 
 public class StylePropertyIndexes {
-	
+
 	private static final BIRTPropertyManagerFactory propMgr = new BIRTPropertyManagerFactory();
 
 	public static final int NUMBER_OF_BIRT_PROPERTIES = propMgr.getNumberOfProperties();
-	
+
 	public static String getPropertyName(int index) {
 		return propMgr.getPropertyName(index);
 	}
-	
+
 	public static final int STYLE_COLOR = propMgr.getPropertyIndex(CSSConstants.CSS_COLOR_PROPERTY);
 	public static final int STYLE_DATA_FORMAT = propMgr.getPropertyIndex(BIRTConstants.BIRT_STYLE_DATA_FORMAT);
 	public static final int STYLE_LINE_HEIGHT = propMgr.getPropertyIndex(CSSConstants.CSS_LINE_HEIGHT_PROPERTY);
@@ -75,5 +75,21 @@ public class StylePropertyIndexes {
 	public static final int STYLE_TEXT_UNDERLINE = propMgr.getPropertyIndex(BIRTConstants.BIRT_TEXT_UNDERLINE_PROPERTY);
 	public static final int STYLE_WORD_SPACING = propMgr.getPropertyIndex(CSSConstants.CSS_WORD_SPACING_PROPERTY);
 	public static final int STYLE_WHITE_SPACE = propMgr.getPropertyIndex(CSSConstants.CSS_WHITE_SPACE_PROPERTY);
+	public static final int STYLE_BORDER_DIAGONAL_COLOR = propMgr
+			.getPropertyIndex(CSSConstants.CSS_BORDER_DIAGONAL_COLOR_PROPERTY);
+	public static final int STYLE_BORDER_DIAGONAL_STYLE = propMgr
+			.getPropertyIndex(CSSConstants.CSS_BORDER_DIAGONAL_STYLE_PROPERTY);
+	public static final int STYLE_BORDER_DIAGONAL_WIDTH = propMgr
+			.getPropertyIndex(CSSConstants.CSS_BORDER_DIAGONAL_WIDTH_PROPERTY);
+	public static final int STYLE_BORDER_DIAGONAL_NUMBER = propMgr
+			.getPropertyIndex(CSSConstants.CSS_BORDER_DIAGONAL_NUMBER_PROPERTY);
+	public static final int STYLE_BORDER_ANTIDIAGONAL_COLOR = propMgr
+			.getPropertyIndex(CSSConstants.CSS_BORDER_ANTIDIAGONAL_COLOR_PROPERTY);
+	public static final int STYLE_BORDER_ANTIDIAGONAL_STYLE = propMgr
+			.getPropertyIndex(CSSConstants.CSS_BORDER_ANTIDIAGONAL_STYLE_PROPERTY);
+	public static final int STYLE_BORDER_ANTIDIAGONAL_WIDTH = propMgr
+			.getPropertyIndex(CSSConstants.CSS_BORDER_ANTIDIAGONAL_WIDTH_PROPERTY);
+	public static final int STYLE_BORDER_ANTIDIAGONAL_NUMBER = propMgr
+			.getPropertyIndex(CSSConstants.CSS_BORDER_ANTIDIAGONAL_NUMBER_PROPERTY);
 
 }

@@ -21,9 +21,17 @@ import java.util.logging.Logger;
 import org.eclipse.birt.core.exception.BirtException;
 import org.eclipse.birt.report.engine.content.IContent;
 import org.eclipse.birt.report.engine.content.IStyle;
+import org.eclipse.birt.report.engine.css.engine.value.css.CSSConstants;
+import org.eclipse.birt.report.engine.css.engine.value.css.CSSValueConstants;
 import org.eclipse.birt.report.engine.nLayout.LayoutContext;
 import org.eclipse.birt.report.engine.nLayout.area.IArea;
 
+/**
+ * Definition of the table row area
+ *
+ * @since 3.3
+ *
+ */
 public class RowArea extends ContainerArea {
 
 	protected transient CellArea[] cells;
@@ -34,6 +42,13 @@ public class RowArea extends ContainerArea {
 
 	protected boolean needResolveBorder = false;
 
+	/**
+	 * Constructor
+	 *
+	 * @param parent
+	 * @param context
+	 * @param content
+	 */
 	public RowArea(ContainerArea parent, LayoutContext context, IContent content) {
 		super(parent, context, content);
 		cells = new CellArea[getTable().getColumnCount()];
@@ -51,6 +66,11 @@ public class RowArea extends ContainerArea {
 		this.cells = new CellArea[row.getColumnCount()];
 	}
 
+	/**
+	 * Get the column count
+	 *
+	 * @return Return the column count
+	 */
 	public int getColumnCount() {
 		TableArea table = getTableArea();
 		if (table != null) {
@@ -62,6 +82,11 @@ public class RowArea extends ContainerArea {
 		return 0;
 	}
 
+	/**
+	 * Set the cell object based on cell column id
+	 *
+	 * @param cell
+	 */
 	public void setCell(CellArea cell) {
 		int col = cell.getColumnID();
 		int colSpan = cell.getColSpan();
@@ -70,6 +95,12 @@ public class RowArea extends ContainerArea {
 		}
 	}
 
+	/**
+	 * Get the row cell based on the column id
+	 *
+	 * @param columnID
+	 * @return Return the cell
+	 */
 	public CellArea getCell(int columnID) {
 		if (columnID >= 0 && columnID < cells.length) {
 			return cells[columnID];
@@ -77,6 +108,12 @@ public class RowArea extends ContainerArea {
 		return null;
 	}
 
+	/**
+	 * Replace an cell through new cell
+	 *
+	 * @param origin original cell (to be replaced)
+	 * @param dest   new cell (to placed)
+	 */
 	public void replace(CellArea origin, CellArea dest) {
 		int index = children.indexOf(origin);
 		if (index >= 0) {
@@ -86,10 +123,20 @@ public class RowArea extends ContainerArea {
 		}
 	}
 
+	/**
+	 * Set the row id
+	 *
+	 * @param rowID
+	 */
 	public void setRowID(int rowID) {
 		this.rowID = rowID;
 	}
 
+	/**
+	 * Get the row id
+	 *
+	 * @return Return row id
+	 */
 	public int getRowID() {
 		return rowID;
 	}
@@ -101,11 +148,11 @@ public class RowArea extends ContainerArea {
 
 	@Override
 	public RowArea deepClone() {
-		RowArea result = (RowArea) cloneArea();
-		Iterator iter = children.iterator();
+		RowArea result = cloneArea();
+		Iterator<IArea> iter = children.iterator();
 		while (iter.hasNext()) {
 			CellArea child = (CellArea) iter.next();
-			CellArea cloneChild = (CellArea) child.deepClone();
+			CellArea cloneChild = child.deepClone();
 			result.children.add(cloneChild);
 			cloneChild.setParent(result);
 			result.setCell(cloneChild);
@@ -136,16 +183,16 @@ public class RowArea extends ContainerArea {
 	}
 
 	@Override
-	public void initialize() throws BirtException {
+	public void initialize() {
 		calculateSpecifiedHeight(content);
 		width = parent.getMaxAvaWidth();
 
-		buildLogicContainerProperties(content, context);
+		buildLogicContainerProperties(content);
 		parent.add(this);
 	}
 
 	protected boolean isRowEmpty() {
-		Iterator iter = getChildren();
+		Iterator<IArea> iter = getChildren();
 		while (iter.hasNext()) {
 			ContainerArea area = (ContainerArea) iter.next();
 			if (area.getChildrenCount() > 0) {
@@ -156,7 +203,7 @@ public class RowArea extends ContainerArea {
 	}
 
 	@Override
-	public void update(AbstractArea area) throws BirtException {
+	public void update(AbstractArea area) {
 		CellArea cArea = (CellArea) area;
 		int columnID = cArea.getColumnID();
 		// Retrieve direction from the top-level content.
@@ -218,6 +265,11 @@ public class RowArea extends ContainerArea {
 		this.setCell((CellArea) area);
 	}
 
+	/**
+	 * Add cell area to row based on column id
+	 *
+	 * @param cell
+	 */
 	public void addChildByColumnId(CellArea cell) {
 		int columnId = cell.getColumnID();
 		int index = 0;
@@ -241,14 +293,12 @@ public class RowArea extends ContainerArea {
 		} else if (isPageBreakInsideAvoid()) {
 			if (isPageBreakBeforeAvoid()) {
 				return SplitResult.BEFORE_AVOID_WITH_NULL;
-			} else {
-				_splitSpanCell(height, force);
-				needResolveBorder = true;
-				return SplitResult.SUCCEED_WITH_NULL;
 			}
-		} else {
-			return _split(height, force);
+			_splitSpanCell(height, force);
+			needResolveBorder = true;
+			return SplitResult.SUCCEED_WITH_NULL;
 		}
+		return _split(height, force);
 	}
 
 	protected void _splitSpanCell(int height, boolean force) throws BirtException {
@@ -272,7 +322,7 @@ public class RowArea extends ContainerArea {
 						CellArea cell = (CellArea) splitCell.getResult();
 						if (cell != null) {
 							CellArea oc = ((DummyCell) cells[i]).getCell();
-							ArrayList temp = cell.children;
+							ArrayList<IArea> temp = cell.children;
 							cell.children = oc.children;
 							oc.children = temp;
 							oc.updateChildrenPosition();
@@ -317,7 +367,7 @@ public class RowArea extends ContainerArea {
 						CellArea cell = (CellArea) splitCell.getResult();
 						if (cell != null) {
 							CellArea oc = ((DummyCell) cells[i]).getCell();
-							ArrayList temp = cell.children;
+							ArrayList<IArea> temp = cell.children;
 							cell.children = oc.children;
 							oc.children = temp;
 							oc.updateChildrenPosition();
@@ -357,11 +407,10 @@ public class RowArea extends ContainerArea {
 			updateRow();
 			needResolveBorder = true;
 			return new SplitResult(result, SplitResult.SPLIT_SUCCEED_WITH_PART);
-		} else {
-			updateRow();
-			needResolveBorder = true;
-			return SplitResult.SUCCEED_WITH_NULL;
 		}
+		updateRow();
+		needResolveBorder = true;
+		return SplitResult.SUCCEED_WITH_NULL;
 	}
 
 	protected void updateRow() {
@@ -378,9 +427,14 @@ public class RowArea extends ContainerArea {
 		}
 	}
 
+	/**
+	 * Update the row
+	 *
+	 * @param original row to be updated
+	 */
 	public void updateRow(RowArea original) {
 		int height = 0;
-		Iterator iter = children.iterator();
+		Iterator<IArea> iter = children.iterator();
 		while (iter.hasNext()) {
 			CellArea cell = (CellArea) iter.next();
 			height = Math.max(height, cell.getHeight());
@@ -406,25 +460,24 @@ public class RowArea extends ContainerArea {
 	public boolean isPageBreakInsideAvoid() {
 		if (getTableArea().isGridDesign()) {
 			return super.isPageBreakInsideAvoid();
-		} else {
-			// resolve 289645. Repeated row area may be set as page-break-inside: avoid.
-			if (IStyle.AVOID_VALUE == pageBreakInside) {
-				return true;
-			}
-			if (content != null) {
-				IStyle style = content.getStyle();
-				String pb = style.getPageBreakInside();
-				// auto value is set
-				if (IStyle.CSS_AUTO_VALUE.equals(pb)) {
-					return false;
-				}
-			}
+		}
+		// resolve 289645. Repeated row area may be set as page-break-inside: avoid.
+		if (CSSValueConstants.AVOID_VALUE == pageBreakInside) {
 			return true;
 		}
+		if (content != null) {
+			IStyle style = content.getStyle();
+			String pb = style.getPageBreakInside();
+			// auto value is set
+			if (CSSConstants.CSS_AUTO_VALUE.equals(pb)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
-	public SplitResult splitLines(int lineCount) throws BirtException {
+	public SplitResult splitLines(int lineCount) {
 		if (isPageBreakBeforeAvoid()) {
 			return SplitResult.BEFORE_AVOID_WITH_NULL;
 		}
@@ -432,7 +485,7 @@ public class RowArea extends ContainerArea {
 	}
 
 	@Override
-	public void updateChildrenPosition() throws BirtException {
+	public void updateChildrenPosition() {
 
 	}
 

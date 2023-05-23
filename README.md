@@ -12,7 +12,7 @@ this repo's `tup_main` branch with the official `master` branch.
 
 For more information about this repository see our [wiki pages](https://github.com/triestram-partner/birt/wiki)
 
-**If you are just looking for the official BIRT, don't use this - instead use the [official repo](https://github.com/eclipse/birt/)**
+**If you are just looking for the official BIRT, don't use this - instead use the [official repo](https://github.com/eclipse-birt/birt/)**
 
 ## Important branches
 
@@ -33,11 +33,11 @@ See the releases page for the all-in-one designer and the POJO runtime.
 
 Binary releases of the official BIRT are available on the Eclipse web site.
 An official 4.9.0 release is available since 2022-03-16.
-You can find binary artifacts for each PR on https://github.com/eclipse/birt/actions
+You can find binary artifacts for each PR on https://github.com/eclipse-birt/birt/actions
 
 ## Building BIRT
 
-Building BIRT has become relatively easy since 2021/2022. Just [see eclipse/birt](https://github.com/eclipse/birt/).
+Building BIRT has become relatively easy since 2021/2022. Just [see eclipse-birt/birt](https://github.com/eclipse-birt/birt/).
 Wim Jongman also created an excellent video tutorial.
 
-Just remember to replace `eclipse/birt` with `triestram-partner/birt` and the `master` branch with `tup_main` when configuring GIT.
+Just remember to replace `eclipse-birt/birt` with `triestram-partner/birt` and the `master` branch with `tup_main` when configuring GIT.

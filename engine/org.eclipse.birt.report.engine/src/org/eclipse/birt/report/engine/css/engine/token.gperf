@@ -3,6 +3,7 @@
 # gperf -d -7 -l -D -L C++ token.gperf > token.java
 #     -d debug
 #     -7 handle 7bit ascii
+#     -l compare lengths before trying a string comparison
 #     -D handle duplicate keyword
 #     -L Java generate in Java
 #

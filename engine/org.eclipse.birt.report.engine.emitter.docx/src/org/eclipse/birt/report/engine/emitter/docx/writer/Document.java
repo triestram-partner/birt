@@ -28,6 +28,12 @@ import org.eclipse.birt.report.engine.ooxml.constants.NameSpaces;
 import org.eclipse.birt.report.engine.ooxml.constants.RelationshipTypes;
 import org.eclipse.birt.report.engine.ooxml.writer.OOXmlWriter;
 
+/**
+ * Representation of document
+ *
+ * @since 3.3
+ *
+ */
 public class Document extends BasicComponent {
 
 	private static Logger logger = Logger.getLogger(Document.class.getName());

@@ -300,14 +300,14 @@ public abstract class PageDeviceRender implements IAreaVisitor {
 						getScaledValue(dw), diagonalInfo.getDiagonalColor(), ds);
 				break;
 			}
-			
+
 			// support diagonal line and antidiagonal line
 			int adw = diagonalInfo.getAntidiagonalWidth();
 			int ads = diagonalInfo.getAntidiagonalStyle();
 			Color adc = diagonalInfo.getAntidiagonalColor();
 			// unsupport double style, use solid style instead
-			if (ads == DiagonalInfo.BORDER_STYLE_DOUBLE) {
-				ads = DiagonalInfo.BORDER_STYLE_SOLID;
+			if (ads == AreaConstants.BORDER_STYLE_DOUBLE) {
+				ads = AreaConstants.BORDER_STYLE_SOLID;
 			}
 			switch (diagonalInfo.getAntidiagonalNumber()) {
 			case 2:
@@ -595,7 +595,7 @@ public abstract class PageDeviceRender implements IAreaVisitor {
 	 */
 	public void drawBackgroundImage(BackgroundImageInfo bi, int startX, int startY, int width, int height) {
 		try {
-			pageGraphic.drawBackgroundImage(startX, startY, width, height, bi.getWidth(), bi.getHeight(),
+			pageGraphic.drawBackgroundImage(startX, startY, width, height, bi.getWidthMetricPt(), bi.getHeightMetricPt(),
 					bi.getRepeatedMode(), bi.getUrl(), bi.getImageData(), getScaledValue(bi.getXOffset()),
 					getScaledValue(bi.getYOffset()));
 		} catch (Exception e) {

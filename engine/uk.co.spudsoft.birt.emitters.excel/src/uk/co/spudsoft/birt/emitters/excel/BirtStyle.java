@@ -22,6 +22,7 @@ import org.eclipse.birt.report.engine.content.IContent;
 import org.eclipse.birt.report.engine.content.IStyle;
 import org.eclipse.birt.report.engine.css.dom.AbstractStyle;
 import org.eclipse.birt.report.engine.css.engine.CSSEngine;
+import org.eclipse.birt.report.engine.css.engine.StyleConstants;
 import org.eclipse.birt.report.engine.css.engine.value.DataFormatValue;
 import org.eclipse.birt.report.engine.css.engine.value.FloatValue;
 import org.eclipse.birt.report.engine.css.engine.value.StringValue;
@@ -31,25 +32,48 @@ import org.eclipse.birt.report.engine.ir.ReportElementDesign;
 import org.w3c.dom.css.CSSPrimitiveValue;
 import org.w3c.dom.css.CSSValue;
 
+/**
+ * Birt style is a class to represents the style elements
+ *
+ * @since 3.3
+ *
+ */
 public class BirtStyle {
 
-	public static final int NUMBER_OF_STYLES = StylePropertyIndexes.NUMBER_OF_BIRT_PROPERTIES + 1;
-	public static final int TEXT_ROTATION = StylePropertyIndexes.NUMBER_OF_BIRT_PROPERTIES;
+	/**
+	 * constant: number of styles
+	 */
+	public static final int NUMBER_OF_STYLES = StyleConstants.NUMBER_OF_STYLE + 1;
+	/**
+	 * constant: text rotation
+	 */
+	public static final int TEXT_ROTATION = StyleConstants.NUMBER_OF_STYLE;
 
 	private CSSValue[] propertyOverride = new CSSValue[BirtStyle.NUMBER_OF_STYLES];
 	private CSSEngine cssEngine;
+	private IStyle elemStyle;
 
+	/**
+	 * Constructor 01
+	 *
+	 * @param cssEngine css engine
+	 */
 	public BirtStyle(CSSEngine cssEngine) {
 		this.cssEngine = cssEngine;
 	}
 
+	/**
+	 * Constructor 02
+	 *
+	 * @param element
+	 */
 	public BirtStyle(IContent element) {
-		IStyle elemStyle = element.getComputedStyle();
+		elemStyle = element.getComputedStyle();
 
 		if (elemStyle instanceof AbstractStyle) {
 			cssEngine = ((AbstractStyle) elemStyle).getCSSEngine();
 		} else {
-			throw new IllegalStateException("Unable to obtain CSSEngine from elemStyle: " + elemStyle); //$NON-NLS-1$
+			throw new IllegalStateException("Unable to obtain CSSEngine from elemStyle: " + elemStyle);
 		}
 
 		Float rotation = extractRotation(element);
@@ -149,10 +173,22 @@ public class BirtStyle {
 		return null;
 	}
 
+	/**
+	 * Set CSS property value
+	 *
+	 * @param propIndex property index
+	 * @param newValue  new css value
+	 */
 	public void setProperty(int propIndex, CSSValue newValue) {
 		propertyOverride[propIndex] = newValue;
 	}
 
+	/**
+	 * Get property value
+	 *
+	 * @param propIndex property index
+	 * @return Return the property value
+	 */
 	public CSSValue getProperty(int propIndex) {
 		return propertyOverride[propIndex];
 		/*
@@ -168,10 +204,23 @@ public class BirtStyle {
 		*/
 	}
 
+	/**
+	 * Set a float value of a property
+	 *
+	 * @param propIndex property index
+	 * @param units     property unit
+	 * @param newValue  new value
+	 */
 	public void setFloat(int propIndex, short units, float newValue) {
 		propertyOverride[propIndex] = new FloatValue(units, newValue);
 	}
 
+	/**
+	 * Set a string value of a property
+	 *
+	 * @param propIndex property index
+	 * @param newValue  new value
+	 */
 	public void parseString(int propIndex, String newValue) {
 		if (propIndex < StylePropertyIndexes.NUMBER_OF_BIRT_PROPERTIES) {
 			propertyOverride[propIndex] = cssEngine.parsePropertyValue(propIndex , newValue);
@@ -180,13 +229,18 @@ public class BirtStyle {
 		}
 	}
 
+	/**
+	 * Get the property value like a string
+	 *
+	 * @param propIndex property index
+	 * @return Return the property value like a string
+	 */
 	public String getString(int propIndex) {
 		CSSValue value = getProperty(propIndex);
 		if (value != null) {
 			return value.getCssText();
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	@Override
@@ -249,6 +303,11 @@ public class BirtStyle {
 		}
 	}
 
+	/**
+	 * Set the overlay of the element
+	 *
+	 * @param element The element for overlay setting
+	 */
 	public void overlay(IContent element) {
 
 		// System.out.println( "overlay: Before - " + this.toString() );

@@ -51,6 +51,7 @@ import org.eclipse.birt.report.engine.css.engine.value.css.CSSConstants;
 import org.eclipse.birt.report.engine.ir.DimensionType;
 import org.eclipse.birt.report.model.api.elements.DesignChoiceConstants;
 import org.eclipse.birt.report.model.api.util.ColorUtil;
+import org.w3c.dom.css.CSSPrimitiveValue;
 import org.w3c.dom.css.CSSValue;
 
 import uk.co.spudsoft.birt.emitters.excel.framework.Logger;
@@ -74,7 +75,17 @@ public abstract class StyleManagerUtils {
 
 	protected static final FontRenderContext frc = new FontRenderContext(null, true, true);
 
+	/**
+	 * Constructor of factory interface
+	 *
+	 * @since 3.3
+	 *
+	 */
 	public interface Factory {
+		/**
+		 * @param log
+		 * @return Return a style manager util object
+		 */
 		StyleManagerUtils create(Logger log);
 	}
 
@@ -131,6 +142,14 @@ public abstract class StyleManagerUtils {
 		return result;
 	}
 
+
+	/**
+	 * Compare date formats
+	 *
+	 * @param dataFormat1 date format 1
+	 * @param dataFormat2 date format 2
+	 * @return Retun the result of the date format compare
+	 */
 	public static boolean dataFormatsEquivalent(DataFormatValue dataFormat1, DataFormatValue dataFormat2) {
 		if (dataFormat1 == null) {
 			return (dataFormat2 == null);
@@ -233,9 +252,8 @@ public abstract class StyleManagerUtils {
 			int result = ClientAnchorConversions.millimetres2WidthUnits(mmWidth);
 			// log.debug( "Column width in mm: ", mmWidth, "; converted result: ", result );
 			return result;
-		} else {
-			return 0;
 		}
+		return 0;
 	}
 
 	/**
@@ -571,6 +589,12 @@ public abstract class StyleManagerUtils {
 		return DateFormatConverter.convert(locale, birtFormat);
 	}
 
+	/**
+	 * Get number format
+	 *
+	 * @param style birt style
+	 * @return Return the number format
+	 */
 	public static String getNumberFormat(BirtStyle style) {
 		CSSValue dataFormat = style.getProperty(StylePropertyIndexes.STYLE_DATA_FORMAT);
 		if (dataFormat instanceof DataFormatValue) {
@@ -580,6 +604,12 @@ public abstract class StyleManagerUtils {
 		return null;
 	}
 
+	/**
+	 * Get date format
+	 *
+	 * @param style birt style
+	 * @return Return the date format
+	 */
 	public static String getDateFormat(BirtStyle style) {
 		CSSValue dataFormat = style.getProperty(StylePropertyIndexes.STYLE_DATA_FORMAT);
 		if (dataFormat instanceof DataFormatValue) {
@@ -589,6 +619,12 @@ public abstract class StyleManagerUtils {
 		return null;
 	}
 
+	/**
+	 * Get date time format
+	 *
+	 * @param style birt style
+	 * @return Return the date time format
+	 */
 	public static String getDateTimeFormat(BirtStyle style) {
 		CSSValue dataFormat = style.getProperty(StylePropertyIndexes.STYLE_DATA_FORMAT);
 		if (dataFormat instanceof DataFormatValue) {
@@ -598,6 +634,12 @@ public abstract class StyleManagerUtils {
 		return null;
 	}
 
+	/**
+	 * Get time format
+	 *
+	 * @param style birt style
+	 * @return Return the time format
+	 */
 	public static String getTimeFormat(BirtStyle style) {
 		CSSValue dataFormat = style.getProperty(StylePropertyIndexes.STYLE_DATA_FORMAT);
 		if (dataFormat instanceof DataFormatValue) {
@@ -607,6 +649,12 @@ public abstract class StyleManagerUtils {
 		return null;
 	}
 
+	/**
+	 * Clone the date format
+	 *
+	 * @param dataValue date format value
+	 * @return Return the cloned date format value
+	 */
 	public static DataFormatValue cloneDataFormatValue(DataFormatValue dataValue) {
 		DataFormatValue newValue = new DataFormatValue();
 		newValue.setDateFormat(dataValue.getDatePattern(), dataValue.getDateLocale());
@@ -617,6 +665,13 @@ public abstract class StyleManagerUtils {
 		return newValue;
 	}
 
+	/**
+	 * Set the number format
+	 *
+	 * @param style   birt style
+	 * @param pattern pattern of format
+	 * @param locale  locale
+	 */
 	public static void setNumberFormat(BirtStyle style, String pattern, String locale) {
 		DataFormatValue dfv = (DataFormatValue) style.getProperty(StylePropertyIndexes.STYLE_DATA_FORMAT);
 		if (dfv == null) {
@@ -628,6 +683,13 @@ public abstract class StyleManagerUtils {
 		style.setProperty(StylePropertyIndexes.STYLE_DATA_FORMAT, dfv);
 	}
 
+	/**
+	 * Set the date format
+	 *
+	 * @param style   birt style
+	 * @param pattern pattern of format
+	 * @param locale  locale
+	 */
 	public static void setDateFormat(BirtStyle style, String pattern, String locale) {
 		DataFormatValue dfv = (DataFormatValue) style.getProperty(StylePropertyIndexes.STYLE_DATA_FORMAT);
 		if (dfv == null) {
@@ -639,6 +701,13 @@ public abstract class StyleManagerUtils {
 		style.setProperty(StylePropertyIndexes.STYLE_DATA_FORMAT, dfv);
 	}
 
+	/**
+	 * Set the date time format
+	 *
+	 * @param style   birt style
+	 * @param pattern pattern of format
+	 * @param locale  locale
+	 */
 	public static void setDateTimeFormat(BirtStyle style, String pattern, String locale) {
 		DataFormatValue dfv = (DataFormatValue) style.getProperty(StylePropertyIndexes.STYLE_DATA_FORMAT);
 		if (dfv == null) {
@@ -650,6 +719,13 @@ public abstract class StyleManagerUtils {
 		style.setProperty(StylePropertyIndexes.STYLE_DATA_FORMAT, dfv);
 	}
 
+	/**
+	 * Set the time format
+	 *
+	 * @param style   birt style
+	 * @param pattern pattern of format
+	 * @param locale  locale
+	 */
 	public static void setTimeFormat(BirtStyle style, String pattern, String locale) {
 		DataFormatValue dfv = (DataFormatValue) style.getProperty(StylePropertyIndexes.STYLE_DATA_FORMAT);
 		if (dfv == null) {
@@ -668,6 +744,7 @@ public abstract class StyleManagerUtils {
 	 *                  new DataFormat).
 	 * @param birtStyle The BIRT style which may contain a number format.
 	 * @param poiStyle  The CellStyle that is to receive the number format.
+	 * @param locale    Locale
 	 */
 	public void applyNumberFormat(Workbook workbook, BirtStyle birtStyle, CellStyle poiStyle, Locale locale) {
 		String dataFormat = null;
@@ -847,9 +924,8 @@ public abstract class StyleManagerUtils {
 	protected String contrastColour(int colour[]) {
 		if ((colour[0] == 0) && (colour[1] == 0) && (colour[2] == 0)) {
 			return "white";
-		} else {
-			return "black";
 		}
+		return "black";
 	}
 
 	protected int[] rgbOnly(int rgb[]) {
@@ -872,12 +948,11 @@ public abstract class StyleManagerUtils {
 		if (rgb == null) {
 			return new int[] { 0, 0, 0 };
 		} else if (rgb.length >= 3) {
-			return new int[] { (int) rgb[rgb.length - 3] & 0xFF, (int) rgb[rgb.length - 2] & 0xFF,
-					(int) rgb[rgb.length - 1] & 0xFF };
+			return new int[] { rgb[rgb.length - 3] & 0xFF, rgb[rgb.length - 2] & 0xFF, rgb[rgb.length - 1] & 0xFF };
 		} else if (rgb.length == 2) {
-			return new int[] { (int) rgb[0] & 0xFF, (int) rgb[1] & 0xFF, 0 };
+			return new int[] { rgb[0] & 0xFF, rgb[1] & 0xFF, 0 };
 		} else if (rgb.length == 2) {
-			return new int[] { (int) rgb[0] & 0xFF, 0, 0 };
+			return new int[] { rgb[0] & 0xFF, 0, 0 };
 		} else {
 			return new int[] { 0, 0, 0 };
 		}
@@ -887,13 +962,26 @@ public abstract class StyleManagerUtils {
 		if ((colour == null) || (CSSConstants.CSS_TRANSPARENT_VALUE.equals(colour))
 				|| (CSSConstants.CSS_AUTO_VALUE.equals(colour))) {
 			return rgbOnly(ColorUtil.getRGBs(defaultColour));
-		} else {
-			return rgbOnly(ColorUtil.getRGBs(colour));
 		}
+		return rgbOnly(ColorUtil.getRGBs(colour));
 	}
 
+	/**
+	 * Correction of font color if background
+	 *
+	 * @param fm        font manager
+	 * @param wb        workbook
+	 * @param birtStyle birt style
+	 * @param font      font
+	 * @return Return the corrected font color
+	 */
 	public abstract Font correctFontColorIfBackground(FontManager fm, Workbook wb, BirtStyle birtStyle, Font font);
 
+	/**
+	 * Correction of font color if background
+	 *
+	 * @param birtStyle birt style
+	 */
 	public void correctFontColorIfBackground(BirtStyle birtStyle) {
 		if (birtStyle != null) {
 			CSSValue bgColour = birtStyle.getProperty(StylePropertyIndexes.STYLE_BACKGROUND_COLOR);
@@ -933,7 +1021,8 @@ public abstract class StyleManagerUtils {
 	/**
 	 * Prepare the margin dimensions on the sheet as per the BIRT page.
 	 *
-	 * @param page The BIRT page.
+	 * @param sheet Sheet
+	 * @param page  The BIRT page.
 	 */
 	public void prepareMarginDimensions(Sheet sheet, IPageContent page, boolean includeHeaderAndFooter) {
 
@@ -1129,6 +1218,8 @@ public abstract class StyleManagerUtils {
 	 * Place a border around a region on the current sheet. This is used to apply
 	 * borders to entire rows or entire tables.
 	 *
+	 * @param sm          Style manager
+	 * @param sheet       Sheet
 	 * @param colStart    The column marking the left-side boundary of the region.
 	 * @param colEnd      The column marking the right-side boundary of the region.
 	 * @param row         The row to get a bottom border.
@@ -1170,6 +1261,16 @@ public abstract class StyleManagerUtils {
 		}
 	}
 
+	/**
+	 * Apply the area border to cell
+	 *
+	 * @param knownAreaBorders Area borders collection
+	 * @param cell             cell instance
+	 * @param birtCellStyle    birt cell style
+	 * @param rowIndex         row index
+	 * @param colIndex         column index
+	 * @return Return the column index
+	 */
 	public int applyAreaBordersToCell(Collection<AreaBorders> knownAreaBorders, Cell cell, BirtStyle birtCellStyle,
 			int rowIndex, int colIndex) {
 		for (AreaBorders areaBorders : knownAreaBorders) {
@@ -1236,6 +1337,15 @@ public abstract class StyleManagerUtils {
 		return colIndex;
 	}
 
+	/**
+	 * Extend rows
+	 *
+	 * @param state    handler state
+	 * @param startRow start row
+	 * @param startCol start column
+	 * @param endRow   end row
+	 * @param endCol   end column
+	 */
 	public void extendRows(HandlerState state, int startRow, int startCol, int endRow, int endCol) {
 		for (int colNum = startCol; colNum < endCol; ++colNum) {
 			Cell lastCell = null;

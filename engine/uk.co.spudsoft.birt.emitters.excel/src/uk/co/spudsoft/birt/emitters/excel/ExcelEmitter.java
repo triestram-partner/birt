@@ -2,13 +2,13 @@
  * Copyright (c) 2011, 2012, 2013 James Talbut.
  *  jim-emitters@spudsoft.co.uk
  *
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * https://www.eclipse.org/legal/epl-2.0/.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     James Talbut - Initial implementation.
  ************************************************************************************/
@@ -54,49 +54,107 @@ import uk.co.spudsoft.birt.emitters.excel.framework.ExcelEmitterPlugin;
 import uk.co.spudsoft.birt.emitters.excel.framework.Logger;
 import uk.co.spudsoft.birt.emitters.excel.handlers.PageHandler;
 
-@SuppressWarnings("nls")
+/**
+ * Create the excel emitter for output
+ *
+ * @since 3.3
+ *
+ */
 public abstract class ExcelEmitter implements IContentEmitter {
 
+	/** property: ExcelEmitter.DEBUG */
 	public static final String DEBUG = "ExcelEmitter.DEBUG";
+
+	/** property: ExcelEmitter.RemoveBlankRows */
 	public static final String REMOVE_BLANK_ROWS = "ExcelEmitter.RemoveBlankRows";
+
+	/** property: ExcelEmitter.Rotation */
 	public static final String ROTATION_PROP = "ExcelEmitter.Rotation";
+
+	/** property: ExcelEmitter.ForceAutoColWidths */
 	public static final String FORCEAUTOCOLWIDTHS_PROP = "ExcelEmitter.ForceAutoColWidths";
 	public static final String AUTO_COL_WIDTHS_HEADER = "ExcelEmitter.AutoColWidthsIncludeTableHeader";
 	public static final String AUTO_COL_WIDTHS_FOOTER = "ExcelEmitter.AutoColWidthsIncludeTableFooter";
+	/** property: ExcelEmitter.SingleSheet */
 	public static final String SINGLE_SHEET = "ExcelEmitter.SingleSheet";
+
+	/** property: ExcelEmitter.SingleSheetWithPageBreaks */
 	public static final String SINGLE_SHEET_PAGE_BREAKS = "ExcelEmitter.SingleSheetWithPageBreaks";
+
+	/** property: ExcelEmitter.InsertPrintBreakAfter */
 	public static final String PRINT_BREAK_AFTER = "ExcelEmitter.InsertPrintBreakAfter";
+
+	/** property: ExcelEmitter.DisableGrouping */
 	public static final String DISABLE_GROUPING = "ExcelEmitter.DisableGrouping";
+
+	/** property: ExcelEmitter.StructuredHeader */
 	public static final String STRUCTURED_HEADER = "ExcelEmitter.StructuredHeader";
+
+	/** property: ExcelEmitter.CustomNumberFormat */
 	public static final String CUSTOM_NUMBER_FORMAT = "ExcelEmitter.CustomNumberFormat";
+
+	/** property: ExcelEmitter.AutoFilter */
 	public static final String AUTO_FILTER = "ExcelEmitter.AutoFilter";
+
+	/** property: ExcelEmitter.SheetProtectPassword */
 	public static final String SHEET_PASSWORD = "ExcelEmitter.SheetProtectPassword";
+
+	/** property: ExcelEmitter.GroupSummaryHeader */
 	public static final String GROUP_SUMMARY_HEADER = "ExcelEmitter.GroupSummaryHeader";
+
+	/** property: ExcelEmitter.FreezePanes */
 	public static final String FREEZE_PANES = "ExcelEmitter.FreezePanes";
+
+	/** property: ExcelEmitter.BlankRowAfterTopLevelTable */
 	public static final String BLANK_ROW_AFTER_TOP_LEVEL_TABLE = "ExcelEmitter.BlankRowAfterTopLevelTable";
+
+	/** property: ExcelEmitter.SpannedRowHeight */
 	public static final String SPANNED_ROW_HEIGHT = "ExcelEmitter.SpannedRowHeight";
+
+	/** property: ExcelEmitter.NestedTableInLastCell */
 	public static final String NEST_TABLE_IN_LAST_CELL = "ExcelEmitter.NestedTableInLastCell";
 	public static final String NO_STYLES = "ExcelEmitter.NoStyles";
+	/** property: spanned row height spread */
 	public static final int SPANNED_ROW_HEIGHT_SPREAD = 0;
+
+	/** property: spanned row height first */
 	public static final int SPANNED_ROW_HEIGHT_FIRST = 1;
+
+	/** property: spanned row height ignored */
 	public static final int SPANNED_ROW_HEIGHT_IGNORED = 2;
 
+	/** property: ExcelEmitter.PrintScale */
 	public static final String PRINT_SCALE = "ExcelEmitter.PrintScale";
+
+	/** property: ExcelEmitter.PrintPagesWide */
 	public static final String PRINT_PAGES_WIDE = "ExcelEmitter.PrintPagesWide";
+
+	/** property: ExcelEmitter.PrintPagesHigh */
 	public static final String PRINT_PAGES_HIGH = "ExcelEmitter.PrintPagesHigh";
 
+	/** property: ExcelEmitter.DisplayFormulas */
 	public static final String DISPLAYFORMULAS_PROP = "ExcelEmitter.DisplayFormulas";
+
+	/** property: ExcelEmitter.DisplayGridlines */
 	public static final String DISPLAYGRIDLINES_PROP = "ExcelEmitter.DisplayGridlines";
+
+	/** property: ExcelEmitter.DisplayRowColHeadings */
 	public static final String DISPLAYROWCOLHEADINGS_PROP = "ExcelEmitter.DisplayRowColHeadings";
+
+	/** property: ExcelEmitter.DisplayZeros */
 	public static final String DISPLAYZEROS_PROP = "ExcelEmitter.DisplayZeros";
 
 	public static final String VALUE_AS_FORMULA = "ExcelEmitter.ValueAsFormula";
 	public static final String FORMULA = "ExcelEmitter.Formula";
 
+	/** property: ExcelEmitter.TemplateFile */
 	public static final String TEMPLATE_FILE = "ExcelEmitter.TemplateFile";
 	public static final String FORCE_RECALCULATION = "ExcelEmitter.ForceRecalculation";
 
 	public static final String EXTRACT_MODE = "ExcelEmitter.ExtractMode";
+
+	/** property: ExcelEmitter.StreamingXlsx */
+	public static final String STREAMING_XLSX = "ExcelEmitter.StreamingXlsx";
 
 	/**
 	 * Logger.
@@ -105,22 +163,27 @@ public abstract class ExcelEmitter implements IContentEmitter {
 	/**
 	 * <p>
 	 * Output stream that the report is to be written to.
-	 * </p><p>
-	 * This is set in initialize() and reset in end() and must not be set anywhere else.
+	 * </p>
+	 * <p>
+	 * This is set in initialize() and reset in end() and must not be set anywhere
+	 * else.
 	 * </p>
 	 */
 	protected OutputStream reportOutputStream;
 	/**
 	 * <p>
-	 * Record of whether the emitter opened the report output stream itself, and it thus responsible for closing it.
+	 * Record of whether the emitter opened the report output stream itself, and it
+	 * thus responsible for closing it.
 	 * </p>
 	 */
 	protected boolean outputStreamOpened;
 	/**
 	 * <p>
 	 * Name of the file that the report is to be written to (for tracking only).
-	 * </p><p>
-	 * This is set in initialize() and reset in end() and must not be set anywhere else.
+	 * </p>
+	 * <p>
+	 * This is set in initialize() and reset in end() and must not be set anywhere
+	 * else.
 	 * </p>
 	 */
 	protected String reportOutputFilename;
@@ -175,6 +238,15 @@ public abstract class ExcelEmitter implements IContentEmitter {
 	/**
 	 * Constructs a new workbook to be processed by the emitter.
 	 *
+	 * @return The new (streaming) workbook.
+	 *
+	 * @since 4.14
+	 */
+	protected abstract Workbook createSWorkbook();
+
+	/**
+	 * Constructs a new workbook to be processed by the emitter.
+	 *
 	 * @param templateFile The file to open as a template for the output file
 	 * @return The new workbook.
 	 */
@@ -210,7 +282,7 @@ public abstract class ExcelEmitter implements IContentEmitter {
 		extractMode = EmitterServices.booleanOption(renderOptions, report, EXTRACT_MODE, false);
 		String templatePath = extractMode ? null : EmitterServices.stringOption(renderOptions, report, TEMPLATE_FILE, null);
 		Workbook wb;
-		if(templatePath != null) {
+		if (templatePath != null) {
 			URL templateURL = report.getReportContext().getResource(templatePath);
 			if(templateURL == null) {
 				throw new BirtException(EmitterServices.getPluginName()
@@ -232,7 +304,11 @@ public abstract class ExcelEmitter implements IContentEmitter {
 						"Unable to open template workbook for " + templateFile.toString(), ex);
 			}
 		} else {
-			wb = createWorkbook();
+			if (EmitterServices.booleanOption(renderOptions, report, ExcelEmitter.STREAMING_XLSX, false)) {
+				wb = createSWorkbook();
+			} else {
+				wb = createWorkbook();
+			}
 		}
 
 		if( EmitterServices.booleanOption( renderOptions, report, ExcelEmitter.FORCE_RECALCULATION, false ) ) {
@@ -247,7 +323,8 @@ public abstract class ExcelEmitter implements IContentEmitter {
 		handlerState = new HandlerState(this, log, smu, wb, sm, renderOptions);
 		handlerState.setHandler(new PageHandler(log, null));
 
-		if (EmitterServices.booleanOption(handlerState.getRenderOptions(), report, ExcelEmitter.SINGLE_SHEET_PAGE_BREAKS, false)) {
+		if (EmitterServices.booleanOption(handlerState.getRenderOptions(), report,
+				ExcelEmitter.SINGLE_SHEET_PAGE_BREAKS, false)) {
 			handlerState.getRenderOptions().setOption(ExcelEmitter.SINGLE_SHEET, Boolean.TRUE);
 		}
 	}

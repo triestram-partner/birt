@@ -39,7 +39,12 @@ import uk.co.spudsoft.birt.emitters.excel.FilteredSheet;
 import uk.co.spudsoft.birt.emitters.excel.HandlerState;
 import uk.co.spudsoft.birt.emitters.excel.framework.Logger;
 
-@SuppressWarnings("nls")
+/**
+ * Abstract real table handler
+ *
+ * @since 3.3
+ *
+ */
 public class AbstractRealTableHandler extends AbstractHandler implements ITableHandler, NestedTableContainer {
 
 	protected int startRow;
@@ -60,6 +65,13 @@ public class AbstractRealTableHandler extends AbstractHandler implements ITableH
 
 	private List< NestedTableHandler > nestedTables;
 
+	/**
+	 * Constructor
+	 *
+	 * @param log    log object
+	 * @param parent parent handler
+	 * @param table  table content
+	 */
 	public AbstractRealTableHandler(Logger log, IHandler parent, ITableContent table) {
 		super(log, parent, table);
 	}

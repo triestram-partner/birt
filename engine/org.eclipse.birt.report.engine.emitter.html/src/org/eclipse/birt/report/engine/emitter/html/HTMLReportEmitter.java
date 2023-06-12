@@ -577,29 +577,28 @@ public class HTMLReportEmitter extends ContentEmitterAdapter {
 		writer.writeCode("</script>"); //$NON-NLS-1$
 	}
 
-	protected void addCellDiagonalSpecial() {
+	protected void addCellDiagonalSpecialJs() {
 		writer.writeCode("<script type=\"text/javascript\">");
-
-		String fctDiagonal = "";
-		fctDiagonal += "\nfunction combineBgImageAndDiagonal(id, diagUri) {";
-		fctDiagonal += "\n	var nTd = document.getElementById(id);";
-		fctDiagonal += "\n	if (nTd) {";
-		fctDiagonal += "\n		var nStyle = getComputedStyle(nTd);";
-		fctDiagonal += "\n		if (nStyle && nStyle.backgroundImage) {";
-		fctDiagonal += "\n			var bgStyle = '';";
-		fctDiagonal += "\n			bgStyle += 'background-image:' + diagUri + ', ' + nStyle.backgroundImage + ';'	;";
-		fctDiagonal += "\n			bgStyle += 'background-size:100% 100%, ' + nStyle.backgroundSize + ';'			;";
-		fctDiagonal += "\n			bgStyle += 'background-repeat:no-repeat, ' + nStyle.backgroundRepeat + ';'		;";
-		fctDiagonal += "\n			bgStyle += 'background-position: center, ' + nStyle.backgroundPosition + ';'	;";
-		fctDiagonal += "\n			bgStyle += 'background-position-x:' + nStyle.backgroundPositionY + ';'			;";
-		fctDiagonal += "\n			bgStyle += 'background-position-y:' + nStyle.backgroundPositionX + ';'			;";
-		fctDiagonal += "\n			bgStyle += 'background-attachment:' + nStyle.backgroundAttachment + ';'			;";
-		fctDiagonal += "\n			bgStyle += 'overflow:hidden;';";
-		fctDiagonal += "\n			nTd.setAttribute('style' , bgStyle);";
-		fctDiagonal += "\n		}";
-		fctDiagonal += "\n	}";
-		fctDiagonal += "\n}";
-		writer.writeCode(fctDiagonal);
+		writer.writeCode(" //<![CDATA["); //$NON-NLS-1$
+		writer.writeCode("   function combineBgImageAndDiagonal(id, diagUri) {");
+		writer.writeCode("     var nTd = document.getElementById(id);");
+		writer.writeCode("     if (nTd) {");
+		writer.writeCode("       var nStyle = getComputedStyle(nTd);");
+		writer.writeCode("       if (nStyle && nStyle.backgroundImage) {");
+		writer.writeCode("         var bgStyle = '';");
+		writer.writeCode("         bgStyle += 'background-image:' + diagUri + ', ' + nStyle.backgroundImage + ';'	;");
+		writer.writeCode("         bgStyle += 'background-size:100% 100%, ' + nStyle.backgroundSize + ';'			;");
+		writer.writeCode("         bgStyle += 'background-repeat:no-repeat, ' + nStyle.backgroundRepeat + ';'		;");
+		writer.writeCode("         bgStyle += 'background-position: center, ' + nStyle.backgroundPosition + ';'	;");
+		writer.writeCode("         bgStyle += 'background-position-x:' + nStyle.backgroundPositionY + ';'			;");
+		writer.writeCode("         bgStyle += 'background-position-y:' + nStyle.backgroundPositionX + ';'			;");
+		writer.writeCode("         bgStyle += 'background-attachment:' + nStyle.backgroundAttachment + ';'			;");
+		writer.writeCode("         bgStyle += 'overflow:hidden;';");
+		writer.writeCode("         nTd.setAttribute('style' , bgStyle);");
+		writer.writeCode("       }");
+		writer.writeCode("     }");
+		writer.writeCode("   }");
+		writer.writeCode(" //]]>"); //$NON-NLS-1$
 		writer.writeCode("</script>"); //$NON-NLS-1$
 	}
 
@@ -712,18 +711,25 @@ public class HTMLReportEmitter extends ContentEmitterAdapter {
 			htmlEmitter = new HTMLVisionOptimize(this, writer, fixedReport, enableInlineStyle, htmlRtLFlag,
 					browserVersion);
 		}
-		// diagonal & antidiagonal special function
-		addCellDiagonalSpecial();
 
+		/*
+		 * if the BIRT-preview called the emitter then the scripts will be added on a
+		 * div-tag (there won't be created a full HTML-document)
+		 */
 		if (isEmbeddable) {
 			outputCSSStyles(reportDesign, designHandle);
+
 			if (needFixTransparentPNG) {
 				fixTransparentPNG();
 			}
+			// diagonal & antidiagonal special function
+			addCellDiagonalSpecialJs();
+
 			fixRedirect();
 
 			openRootTag();
 			writeBidiFlag();
+
 			// output the report default style
 			if (report != null) {
 				String defaultStyleName = report.getDesign().getRootStyleName();
@@ -753,6 +759,7 @@ public class HTMLReportEmitter extends ContentEmitterAdapter {
 		writeBidiFlag();
 		writer.openTag(HTMLTags.TAG_HEAD);
 
+		
 		// write the title of the report in html.
 		outputReportTitle(report);
 
@@ -776,11 +783,14 @@ public class HTMLReportEmitter extends ContentEmitterAdapter {
 			}
 		}
 
+		
 		outputCSSStyles(reportDesign, designHandle);
 
 		if (needFixTransparentPNG) {
 			fixTransparentPNG();
 		}
+		// diagonal & antidiagonal special function
+		addCellDiagonalSpecialJs();
 
 		fixRedirect();
 		// client initialize
@@ -1528,7 +1538,7 @@ public class HTMLReportEmitter extends ContentEmitterAdapter {
 		StringBuffer sb = new StringBuffer();
 		sb.append("width:").append(pageWidth).append(";");
 		sb.append("height:").append(pageHeight).append(";");
-		AttributeBuilder.buildBackground(sb, style, this);
+		AttributeBuilder.buildBackground(sb, style, this, null);
 		sb.append("background-size:").append(backgroundWidth).append(" ").append(backgroundHeight).append(";");
 		writer.attribute(HTMLTags.ATTR_STYLE, sb.toString());
 	}
@@ -2397,7 +2407,7 @@ public class HTMLReportEmitter extends ContentEmitterAdapter {
 		htmlEmitter.buildTextStyle(text, styleBuffer, display);
 		writer.attribute(HTMLTags.ATTR_STYLE, styleBuffer.toString());
 
-		htmlEmitter.handleVerticalAlignBegin(text);
+		htmlEmitter.handleTextVerticalAlignBegin(text);
 
 		String url = validate(text.getHyperlinkAction());
 		if (url != null && !isBlank) {
@@ -2524,7 +2534,7 @@ public class HTMLReportEmitter extends ContentEmitterAdapter {
 		String rawType = foreign.getRawType();
 		boolean isHtml = IForeignContent.HTML_TYPE.equalsIgnoreCase(rawType);
 		if (isHtml) {
-			htmlEmitter.handleVerticalAlignBegin(foreign);
+			htmlEmitter.handleTextVerticalAlignBegin(foreign);
 			String url = validate(foreign.getHyperlinkAction());
 			if (url != null) {
 				outputAction(foreign.getHyperlinkAction(), url);
@@ -2651,7 +2661,7 @@ public class HTMLReportEmitter extends ContentEmitterAdapter {
 
 				if (attrValue != null) {
 					if ("img".equalsIgnoreCase(nodeName) && "src".equalsIgnoreCase(attrName)) {
-						String attrValueTrue = handleStyleImage(attrValue);
+						String attrValueTrue = handleStyleImage(attrValue).getUri();
 						if (attrValueTrue != null) {
 							attrValue = attrValueTrue;
 						}
@@ -2675,7 +2685,7 @@ public class HTMLReportEmitter extends ContentEmitterAdapter {
 				buffer.append(key);
 				buffer.append(":");
 				if ("background-image".equalsIgnoreCase(key)) {
-					String valueTrue = handleStyleImage(value, true);
+					String valueTrue = handleStyleImage(value, true).getUri();
 					if (valueTrue != null) {
 						value = valueTrue;
 					}
@@ -3103,12 +3113,6 @@ public class HTMLReportEmitter extends ContentEmitterAdapter {
 
 	protected int checkElementType(DimensionType x, DimensionType y, DimensionType width, DimensionType height,
 			IStyle style, StringBuffer styleBuffer) {
-		// if ( x != null || y != null )
-		// {
-		// styleBuffer.append( "position: absolute;" ); //$NON-NLS-1$
-		// AttributeBuilder.buildSize( styleBuffer, HTMLTags.ATTR_LEFT, x );
-		// AttributeBuilder.buildSize( styleBuffer, HTMLTags.ATTR_TOP, y );
-		// }
 		return getElementType(x, y, width, height, style);
 	}
 
@@ -3228,7 +3232,7 @@ public class HTMLReportEmitter extends ContentEmitterAdapter {
 	 * @param uri uri in style image
 	 * @return Return the image URI
 	 */
-	public String handleStyleImage(String uri) {
+	public BackgroundImageInfo handleStyleImage(String uri) {
 		return handleStyleImage(uri, false, null);
 	}
 
@@ -3239,7 +3243,7 @@ public class HTMLReportEmitter extends ContentEmitterAdapter {
 	 * @param isBackground Is this image a used for a background?
 	 * @return Return the image URI
 	 */
-	public String handleStyleImage(String uri, boolean isBackground) {
+	public BackgroundImageInfo handleStyleImage(String uri, boolean isBackground) {
 		return handleStyleImage(uri, isBackground, null);
 	}
 
@@ -3250,7 +3254,7 @@ public class HTMLReportEmitter extends ContentEmitterAdapter {
 	 * @param isBackground Is this image a used for a background?
 	 * @return Return the image URI
 	 */
-	public String handleStyleImage(IStyle style, boolean isBackground) {
+	public BackgroundImageInfo handleStyleImage(IStyle style, boolean isBackground) {
 		return handleStyleImage(null, isBackground, style);
 	}
 
@@ -3261,34 +3265,35 @@ public class HTMLReportEmitter extends ContentEmitterAdapter {
 	/**
 	 * Handle the style of image
 	 *
-	 * @param uri          uri in style image
+	 * @param uri          URI in style image
 	 * @param isBackground Is this image a used for a background?
 	 * @param imageStyle   Style of the image
 	 * @return Return the image URI
 	 */
-	public String handleStyleImage(String uri, boolean isBackground, IStyle imageStyle) {
+	public BackgroundImageInfo handleStyleImage(String uri, boolean isBackground, IStyle imageStyle) {
 
 		ReportDesignHandle design = (ReportDesignHandle) runnable.getDesignHandle();
 		URL url = design.findResource(uri, IResourceLocator.IMAGE, reportContext.getAppContext());
 		String fileExtension = null;
 
-		Module module = null;
+		Module module = design.getModule();
 		BackgroundImageInfo backgroundImage = null;
 
 		if (isBackground && imageStyle != null) {
-			module = design.getModule();
 			ResourceLocatorWrapper rl = null;
 			ExecutionContext exeContext = ((ReportContent) this.report).getExecutionContext();
 			if (exeContext != null) {
 				rl = exeContext.getResourceLocator();
 			}
-
 			String uriString = EmitterUtil.getBackgroundImageUrl(imageStyle, design,
 					this.report.getReportContext() == null ? null : this.report.getReportContext().getAppContext());
 
 			backgroundImage = new BackgroundImageInfo(uriString,
-					imageStyle.getProperty(StyleConstants.STYLE_BACKGROUND_REPEAT), 0, 0, 0, 0, rl, module,
-					imageStyle.getProperty(StyleConstants.STYLE_BACKGROUND_IMAGE_TYPE));
+					imageStyle.getProperty(StyleConstants.STYLE_BACKGROUND_REPEAT),
+					PropertyUtil.getDimensionValue(imageStyle.getProperty(StyleConstants.STYLE_BACKGROUND_POSITION_X)),
+					PropertyUtil.getDimensionValue(imageStyle.getProperty(StyleConstants.STYLE_BACKGROUND_POSITION_Y)),
+					0, 0, rl, module, imageStyle.getProperty(StyleConstants.STYLE_BACKGROUND_IMAGE_TYPE));
+			backgroundImage.setImageSize(imageStyle);
 
 			if (backgroundImage.getSourceType().equalsIgnoreCase(CSSConstants.CSS_EMBED_VALUE)) {
 				uri = backgroundImage.getDataUrl();
@@ -3300,7 +3305,7 @@ public class HTMLReportEmitter extends ContentEmitterAdapter {
 			fileExtension = uri.substring(uri.lastIndexOf(".") + 1);
 		}
 		if (url == null) {
-			return uri;
+			return backgroundImage;
 		}
 		uri = url.toExternalForm();
 		Image image = null;
@@ -3343,8 +3348,9 @@ public class HTMLReportEmitter extends ContentEmitterAdapter {
 			default:
 				assert (false);
 			}
+			backgroundImage.setUri(imgUri);
 		}
-		return imgUri;
+		return backgroundImage;
 	}
 
 	/**

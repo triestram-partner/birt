@@ -38,7 +38,9 @@ import org.w3c.dom.css.CSSValue;
 import uk.co.spudsoft.birt.emitters.excel.framework.Logger;
 
 /**
- * StyleManagerHUtils is an extension of the StyleManagerUtils to provide HSSFWorkbook specific functionality.
+ * StyleManagerHUtils is an extension of the StyleManagerUtils to provide
+ * HSSFWorkbook specific functionality.
+ *
  * @author Jim Talbut
  *
  */
@@ -48,11 +50,17 @@ public class StyleManagerHUtils extends StyleManagerUtils {
 	private static short minPaletteIndex = 40;
 
 	private static Factory factory = new StyleManagerUtils.Factory() {
+		@Override
 		public StyleManagerUtils create(Logger log) {
 			return new StyleManagerHUtils(log);
 		}
 	};
 
+	/**
+	 * Get factory object
+	 *
+	 * @return Return a factory object
+	 */
 	public static Factory getFactory() {
 		return factory;
 	}
@@ -139,9 +147,8 @@ public class StyleManagerHUtils extends StyleManagerUtils {
 				--paletteIndex;
 				palette.setColorAtIndex(paletteIndex, rgbByte[0], rgbByte[1], rgbByte[2]);
 				return paletteIndex;
-			} else {
-				result = palette.findSimilarColor(rgbByte[0], rgbByte[1], rgbByte[2]);
 			}
+			result = palette.findSimilarColor(rgbByte[0], rgbByte[1], rgbByte[2]);
 		}
 		return result.getIndex();
 	}
@@ -252,9 +259,8 @@ public class StyleManagerHUtils extends StyleManagerUtils {
 			addedStyle.setColor( contrastColour( bgRgb ) );
 
 			return fm.getFontWithExtraStyle( font, addedStyle );
-		} else {
-			return font;
 		}
+		return font;
 	}
 
 	@Override

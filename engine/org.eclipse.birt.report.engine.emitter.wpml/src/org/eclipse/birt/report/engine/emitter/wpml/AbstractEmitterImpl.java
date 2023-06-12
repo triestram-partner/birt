@@ -31,10 +31,10 @@ import org.eclipse.birt.core.exception.BirtException;
 import org.eclipse.birt.report.engine.api.EngineException;
 import org.eclipse.birt.report.engine.api.HTMLRenderOption;
 import org.eclipse.birt.report.engine.api.IHTMLActionHandler;
+import org.eclipse.birt.report.engine.api.IHTMLRenderOption;
 import org.eclipse.birt.report.engine.api.IRenderOption;
 import org.eclipse.birt.report.engine.api.IReportRunnable;
 import org.eclipse.birt.report.engine.api.InstanceID;
-import org.eclipse.birt.report.engine.api.RenderOption;
 import org.eclipse.birt.report.engine.api.script.IReportContext;
 import org.eclipse.birt.report.engine.content.IAutoTextContent;
 import org.eclipse.birt.report.engine.content.IBandContent;
@@ -65,6 +65,7 @@ import org.eclipse.birt.report.engine.css.engine.StyleConstants;
 import org.eclipse.birt.report.engine.css.engine.value.DataFormatValue;
 import org.eclipse.birt.report.engine.css.engine.value.FloatValue;
 import org.eclipse.birt.report.engine.css.engine.value.birt.BIRTConstants;
+import org.eclipse.birt.report.engine.css.engine.value.css.CSSValueConstants;
 import org.eclipse.birt.report.engine.emitter.EmitterUtil;
 import org.eclipse.birt.report.engine.emitter.IEmitterServices;
 import org.eclipse.birt.report.engine.i18n.EngineResourceHandle;
@@ -91,18 +92,46 @@ import org.w3c.dom.css.CSSValueList;
 
 import com.ibm.icu.util.ULocale;
 
-@SuppressWarnings("nls")
+/**
+ * Abstract emitter implementation of word emitter 
+ * 
+ * @since 3.3
+ *
+ */
 public abstract class AbstractEmitterImpl {
 
+	/** static flag: normal */
 	public final static int NORMAL = -1;
 	public final static int CUSTOM_FIELD = -2;
 
+	/**
+	 * Enumeration definition of the inline flag
+	 *
+	 * @since 3.3
+	 */
 	public enum InlineFlag {
-		FIRST_INLINE, MIDDLE_INLINE, BLOCK
+		/** inline flag: first inline */
+		FIRST_INLINE
+		/** inline flag: middle inline */
+		, MIDDLE_INLINE
+		/** inline flag: block */
+		, BLOCK 
 	}
 
+	/**
+	 * Enumeration definition of the text flag
+	 *
+	 * @since 3.3
+	 */
 	public enum TextFlag {
-		START, MIDDLE, END, WHOLE
+		/** text flag: text orientation start */
+		START
+		/** text flag: text orientation middle */
+		, MIDDLE
+		/** text flag: text orientation end */
+		, END
+		/** text flag: text orientation whole */
+		,WHOLE
 	}
 
 	private static Set<Integer> nonInherityStyles = new HashSet<>();
@@ -112,28 +141,27 @@ public abstract class AbstractEmitterImpl {
 	private static final String PROP_NAME_FIELDFUNCTION = "WordEmitter.FieldFunction"; //$NON-NLS-1$
 	protected static final String PROP_NAME_NESTED_TABLE = "WordEmitter.NestedTable"; //$NON-NLS-1$
 
-	static
-	{
-		nonInherityStyles.add(IStyle.STYLE_BORDER_BOTTOM_COLOR);
-		nonInherityStyles.add(IStyle.STYLE_BORDER_BOTTOM_STYLE);
-		nonInherityStyles.add(IStyle.STYLE_BORDER_BOTTOM_WIDTH);
-		nonInherityStyles.add(IStyle.STYLE_BORDER_TOP_COLOR);
-		nonInherityStyles.add(IStyle.STYLE_BORDER_TOP_STYLE);
-		nonInherityStyles.add(IStyle.STYLE_BORDER_TOP_WIDTH);
-		nonInherityStyles.add(IStyle.STYLE_BORDER_LEFT_COLOR);
-		nonInherityStyles.add(IStyle.STYLE_BORDER_LEFT_STYLE);
-		nonInherityStyles.add(IStyle.STYLE_BORDER_LEFT_WIDTH);
-		nonInherityStyles.add(IStyle.STYLE_BORDER_RIGHT_COLOR);
-		nonInherityStyles.add(IStyle.STYLE_BORDER_RIGHT_STYLE);
-		nonInherityStyles.add(IStyle.STYLE_BORDER_RIGHT_WIDTH);
-		nonInherityStyles.add(IStyle.STYLE_BORDER_DIAGONAL_NUMBER);
-		nonInherityStyles.add(IStyle.STYLE_BORDER_DIAGONAL_COLOR);
-		nonInherityStyles.add(IStyle.STYLE_BORDER_DIAGONAL_STYLE);
-		nonInherityStyles.add(IStyle.STYLE_BORDER_DIAGONAL_WIDTH);
-		nonInherityStyles.add(IStyle.STYLE_BORDER_ANTIDIAGONAL_NUMBER);
-		nonInherityStyles.add(IStyle.STYLE_BORDER_ANTIDIAGONAL_COLOR);
-		nonInherityStyles.add(IStyle.STYLE_BORDER_ANTIDIAGONAL_STYLE);
-		nonInherityStyles.add(IStyle.STYLE_BORDER_ANTIDIAGONAL_WIDTH);
+	static {
+		nonInherityStyles.add(StyleConstants.STYLE_BORDER_BOTTOM_COLOR);
+		nonInherityStyles.add(StyleConstants.STYLE_BORDER_BOTTOM_STYLE);
+		nonInherityStyles.add(StyleConstants.STYLE_BORDER_BOTTOM_WIDTH);
+		nonInherityStyles.add(StyleConstants.STYLE_BORDER_TOP_COLOR);
+		nonInherityStyles.add(StyleConstants.STYLE_BORDER_TOP_STYLE);
+		nonInherityStyles.add(StyleConstants.STYLE_BORDER_TOP_WIDTH);
+		nonInherityStyles.add(StyleConstants.STYLE_BORDER_LEFT_COLOR);
+		nonInherityStyles.add(StyleConstants.STYLE_BORDER_LEFT_STYLE);
+		nonInherityStyles.add(StyleConstants.STYLE_BORDER_LEFT_WIDTH);
+		nonInherityStyles.add(StyleConstants.STYLE_BORDER_RIGHT_COLOR);
+		nonInherityStyles.add(StyleConstants.STYLE_BORDER_RIGHT_STYLE);
+		nonInherityStyles.add(StyleConstants.STYLE_BORDER_RIGHT_WIDTH);
+		nonInherityStyles.add(StyleConstants.STYLE_BORDER_DIAGONAL_NUMBER);
+		nonInherityStyles.add(StyleConstants.STYLE_BORDER_DIAGONAL_COLOR);
+		nonInherityStyles.add(StyleConstants.STYLE_BORDER_DIAGONAL_STYLE);
+		nonInherityStyles.add(StyleConstants.STYLE_BORDER_DIAGONAL_WIDTH);
+		nonInherityStyles.add(StyleConstants.STYLE_BORDER_ANTIDIAGONAL_NUMBER);
+		nonInherityStyles.add(StyleConstants.STYLE_BORDER_ANTIDIAGONAL_COLOR);
+		nonInherityStyles.add(StyleConstants.STYLE_BORDER_ANTIDIAGONAL_STYLE);
+		nonInherityStyles.add(StyleConstants.STYLE_BORDER_ANTIDIAGONAL_WIDTH);
 	}
 
 	private static final HashMap<String, String> genericFontMapping = new HashMap<>();
@@ -239,11 +267,17 @@ public abstract class AbstractEmitterImpl {
 
 	protected static final String EMPTY_FOOTER = " ";
 
+	/**
+	 * Initialize of the service
+	 * 
+	 * @param service emitter service
+	 * @throws EngineException engine exception
+	 */
 	public void initialize(IEmitterServices service) throws EngineException {
 		if (service != null) {
 			this.out = EmitterUtil.getOuputStream(service, "report." + getOutputFormat());
 			this.reportRunnable = service.getReportRunnable();
-			this.actionHandler = (IHTMLActionHandler) service.getOption(RenderOption.ACTION_HANDLER);
+			this.actionHandler = (IHTMLActionHandler) service.getOption(IRenderOption.ACTION_HANDLER);
 			reportContext = service.getReportContext();
 			ULocale locale = null;
 			if (reportContext != null) {
@@ -266,6 +300,11 @@ public abstract class AbstractEmitterImpl {
 		context = new EmitterContext();
 	}
 
+	/**
+	 * Start the rendering process
+	 * 
+	 * @param report report content
+	 */ 
 	public void start(IReportContent report) {
 		Object dpi = report.getReportContext().getRenderOption().getOption(IRenderOption.RENDER_DPI);
 		int renderDpi = 0;
@@ -279,15 +318,22 @@ public abstract class AbstractEmitterImpl {
 			if (designHandle != null) {
 				String reportLayoutPreference = designHandle.getLayoutPreference();
 				if (DesignChoiceConstants.REPORT_LAYOUT_PREFERENCE_FIXED_LAYOUT.equals(reportLayoutPreference)) {
-					layoutPreference = HTMLRenderOption.LAYOUT_PREFERENCE_FIXED;
+					layoutPreference = IHTMLRenderOption.LAYOUT_PREFERENCE_FIXED;
 				} else if (DesignChoiceConstants.REPORT_LAYOUT_PREFERENCE_AUTO_LAYOUT.equals(reportLayoutPreference)) {
-					layoutPreference = HTMLRenderOption.LAYOUT_PREFERENCE_AUTO;
+					layoutPreference = IHTMLRenderOption.LAYOUT_PREFERENCE_AUTO;
 				}
 			}
-			fixedLayout = HTMLRenderOption.LAYOUT_PREFERENCE_FIXED.equals(layoutPreference);
+			fixedLayout = IHTMLRenderOption.LAYOUT_PREFERENCE_FIXED.equals(layoutPreference);
 		}
 	}
 
+	/**
+	 * Start of the page rendering
+	 * 
+	 * @param page page object
+	 * @throws IOException io exception
+	 * @throws BirtException birt exception
+	 */
 	public void startPage(IPageContent page) throws IOException, BirtException {
 		if (previousPage != null) {
 			outputPrePageProperties();
@@ -323,6 +369,13 @@ public abstract class AbstractEmitterImpl {
 		wordWriter.endPage();
 	}
 
+	/**
+	 * End the rendering
+	 * 
+	 * @param report report object
+	 * @throws IOException io exception
+	 * @throws BirtException birt exception
+	 */
 	public void end(IReportContent report) throws IOException, BirtException {
 		if (previousPage != null) {
 			adjustInline();
@@ -332,22 +385,60 @@ public abstract class AbstractEmitterImpl {
 		}
 	}
 
+	/**
+	 * End of the container element
+	 * 
+	 * @param container container element
+	 */
 	public void endContainer(IContainerContent container) {
 		// Do nothing.
 	}
 
+	/**
+	 * Start of the container element
+	 * 
+	 * @param container container element
+	 */
 	public void startContainer(IContainerContent container) {
 		// Do nothing.
 	}
 
+	/**
+	 * End of the table element
+	 * 
+	 * @param table table element
+	 */
 	public abstract void endTable(ITableContent table);
 
+	/**
+	 * Start of handling of the foreign content
+	 * 
+	 * @param foreign foreign content
+	 * @throws BirtException birt exception
+	 */
 	public abstract void startForeign(IForeignContent foreign) throws BirtException;
 
+	/**
+	 * Write the content of the element
+	 * 
+	 * @param type type of the element
+	 * @param txt text of the content
+	 * @param content content element
+	 */
 	protected abstract void writeContent(int type, String txt, IContent content);
 
+	/**
+	 * Get the output format
+	 * 
+	 * @return Return the output format
+	 */
 	public abstract String getOutputFormat();
 
+	/**
+	 * Calculate the page properties
+	 * 
+	 * @param page page content element
+	 */
 	public void computePageProperties(IPageContent page) {
 		// Default height/width is the width/height of A4, the width 595.275pt *
 		// PT_TWIPS, the height is 841.889 * PT_TWIPS
@@ -415,10 +506,20 @@ public abstract class AbstractEmitterImpl {
 		writeContent(autoText.getType(), autoText.getText(), autoText);
 	}
 
+	/**
+	 * Start the data content handling
+	 * 
+	 * @param data data content
+	 */
 	public void startData(IDataContent data) {
 		writeContent(AbstractEmitterImpl.NORMAL, data.getText(), data);
 	}
 
+	/**
+	 * Start the label content handling
+	 * 
+	 * @param label label content
+	 */
 	public void startLabel(ILabelContent label) {
 		String txt = label.getText() == null ? label.getLabelText() : label.getText();
 		txt = txt == null ? "" : txt;
@@ -431,10 +532,20 @@ public abstract class AbstractEmitterImpl {
 		writeContent(type, txt, label);
 	}
 
+	/**
+	 * Start the text content handling
+	 * 
+	 * @param text text content
+	 */
 	public void startText(ITextContent text) {
 		writeContent(AbstractEmitterImpl.NORMAL, text.getText(), text);
 	}
 
+	/**
+	 * Start the list content handling
+	 * 
+	 * @param list list content
+	 */
 	public void startList(IListContent list) {
 		adjustInline();
 
@@ -466,6 +577,11 @@ public abstract class AbstractEmitterImpl {
 		}
 	}
 
+	/**
+	 * Start the list band content handling
+	 * 
+	 * @param listBand list band content
+	 */
 	public void startListBand(IListBandContent listBand) {
 		if (!listLayouts.empty() && LAYOUTMODE_NONE.equals(listLayouts.peek())) {
 			;
@@ -479,10 +595,20 @@ public abstract class AbstractEmitterImpl {
 		}
 	}
 
+	/**
+	 * Start the list group content handling
+	 * 
+	 * @param group list group content
+	 */
 	public void startListGroup(IListGroupContent group) {
 		setGroupToc(group);
 	}
 
+	/**
+	 * Start the row content handling
+	 * 
+	 * @param row row content
+	 */
 	public void startRow(IRowContent row) {
 		if (!isHidden(row)) {
 			writeBookmark(row);
@@ -506,13 +632,28 @@ public abstract class AbstractEmitterImpl {
 		}
 	}
 
+	/**
+	 * Start the content handling
+	 * 
+	 * @param content content
+	 */
 	public void startContent(IContent content) {
 	}
 
+	/**
+	 * Start the group content handling
+	 * 
+	 * @param group group content
+	 */
 	public void startGroup(IGroupContent group) {
 		setGroupToc(group);
 	}
 
+	/**
+	 * Start the cell content handling
+	 * 
+	 * @param cell cell content
+	 */
 	public void startCell(ICellContent cell) {
 		rowFilledFlag = true;
 		context.startCell();
@@ -715,6 +856,11 @@ public abstract class AbstractEmitterImpl {
 		return ((IRowContent) parent).getHeight();
 	}
 
+	/**
+	 * Start the table content handling
+	 * 
+	 * @param table table content
+	 */
 	public void startTable(ITableContent table) {
 		adjustInline();
 		styles.push(table.getComputedStyle());
@@ -751,9 +897,19 @@ public abstract class AbstractEmitterImpl {
 		return tableWidth;
 	}
 
+	/**
+	 * Start the table band content handling
+	 * 
+	 * @param band table band content
+	 */
 	public void startTableBand(ITableBandContent band) {
 	}
 
+	/**
+	 * Start the table group content handling
+	 * 
+	 * @param group table group content
+	 */
 	public void startTableGroup(ITableGroupContent group) {
 		setGroupToc(group);
 	}
@@ -783,6 +939,11 @@ public abstract class AbstractEmitterImpl {
 		}
 	}
 
+	/**
+	 * End of the cell content handling
+	 * 
+	 * @param cell cell content
+	 */
 	public void endCell(ICellContent cell) {
 		adjustInline();
 		context.removeWidth();
@@ -790,13 +951,28 @@ public abstract class AbstractEmitterImpl {
 		context.endCell();
 	}
 
+	/**
+	 * End of the content handling
+	 * 
+	 * @param content content
+	 */
 	public void endContent(IContent content) {
 	}
 
+	/**
+	 * End of the group content handling
+	 * 
+	 * @param group group content
+	 */
 	public void endGroup(IGroupContent group) {
 		decreaseTOCLevel(group);
 	}
 
+	/**
+	 * End of the list content handling
+	 * 
+	 * @param list list content
+	 */
 	public void endList(IListContent list) {
 		String layoutMode = null;
 		if (!listLayouts.isEmpty()) {
@@ -815,6 +991,11 @@ public abstract class AbstractEmitterImpl {
 		}
 	}
 
+	/**
+	 * End of the list band content handling
+	 * 
+	 * @param listBand list band content
+	 */
 	public void endListBand(IListBandContent listBand) {
 		adjustInline();
 		if (!listLayouts.empty() && LAYOUTMODE_NONE.equals(listLayouts.peek())) {
@@ -826,10 +1007,20 @@ public abstract class AbstractEmitterImpl {
 		}
 	}
 
+	/**
+	 * End of the list group content handling
+	 * 
+	 * @param group list group content
+	 */
 	public void endListGroup(IListGroupContent group) {
 		decreaseTOCLevel(group);
 	}
 
+	/**
+	 * End of the row content handling
+	 * 
+	 * @param row row content
+	 */
 	public void endRow(IRowContent row) {
 		if (!isHidden(row)) {
 			if (!styles.isEmpty()) {
@@ -857,16 +1048,36 @@ public abstract class AbstractEmitterImpl {
 		}
 	}
 
+	/**
+	 * End of the table band content handling
+	 * 
+	 * @param band table band content
+	 */
 	public void endTableBand(ITableBandContent band) {
 	}
 
+	/**
+	 * End of the table group content handling
+	 * 
+	 * @param group table group content
+	 */
 	public void endTableGroup(ITableGroupContent group) {
 		decreaseTOCLevel(group);
 	}
 
+	/**
+	 * End of the page content handling
+	 * 
+	 * @param page page content
+	 */
 	public void endPage(IPageContent page) {
 	}
 
+	/**
+	 * Start of the image content handling
+	 * 
+	 * @param image image content
+	 */
 	public void startImage(IImageContent image) {
 		IStyle style = image.getComputedStyle();
 		InlineFlag inlineFlag = getInlineFlag(style);
@@ -959,8 +1170,8 @@ public abstract class AbstractEmitterImpl {
 		writeHeaderFooter();
 		// the border width /8*20 means to convert an eighth of a point to twips.
 		wordWriter.writePageProperties(pageHeight, pageWidth, headerHeight, footerHeight,
-				topMargin + (int) (pageTopBorderWidth / 8 * 20), bottomMargin + (int) (pageBottomBorderWidth / 8 * 20),
-				leftMargin + (int) (pageLeftBorderWidth / 8 * 20), rightMargin + (int) (pageRightBorderWidth / 8 * 20),
+				topMargin + pageTopBorderWidth / 8 * 20, bottomMargin + pageBottomBorderWidth / 8 * 20,
+				leftMargin + pageLeftBorderWidth / 8 * 20, rightMargin + pageRightBorderWidth / 8 * 20,
 				orientation);
 		wordWriter.writePageBorders(previousPage.getComputedStyle(), topMargin, bottomMargin, leftMargin, rightMargin);
 		wordWriter.endSectionInParagraph();
@@ -970,8 +1181,8 @@ public abstract class AbstractEmitterImpl {
 		wordWriter.startSection();
 		writeHeaderFooter();
 		wordWriter.writePageProperties(pageHeight, pageWidth, headerHeight, footerHeight,
-				topMargin + (int) (pageTopBorderWidth / 8 * 20), bottomMargin + (int) (pageBottomBorderWidth / 8 * 20),
-				leftMargin + (int) (pageLeftBorderWidth / 8 * 20), rightMargin + (int) (pageRightBorderWidth / 8 * 20),
+				topMargin + pageTopBorderWidth / 8 * 20, bottomMargin + pageBottomBorderWidth / 8 * 20,
+				leftMargin + pageLeftBorderWidth / 8 * 20, rightMargin + pageRightBorderWidth / 8 * 20,
 				orientation);
 		wordWriter.writePageBorders(previousPage.getComputedStyle(), topMargin, bottomMargin, leftMargin, rightMargin);
 		wordWriter.endSection();
@@ -1020,10 +1231,9 @@ public abstract class AbstractEmitterImpl {
 		String bookmark = content.getBookmark();
 		if (set.contains(bookmark)) {
 			return true;
-		} else {
-			set.add(bookmark);
-			return false;
 		}
+		set.add(bookmark);
+		return false;
 	}
 
 	protected void writeBookmark(IContent content) {
@@ -1142,9 +1352,8 @@ public abstract class AbstractEmitterImpl {
 		String fontName = genericFontMapping.get(font);
 		if (fontName == null) {
 			return font;
-		} else {
-			return fontName;
 		}
+		return fontName;
 	}
 
 	private FontSplitter getFontSplitter(IContent content, String text) {
@@ -1157,7 +1366,7 @@ public abstract class AbstractEmitterImpl {
 	private boolean isHidden(IContent content) {
 		if (content != null) {
 			IStyle style = content.getStyle();
-			if (!IStyle.NONE_VALUE.equals(style.getProperty(IStyle.STYLE_DISPLAY))) {
+			if (!CSSValueConstants.NONE_VALUE.equals(style.getProperty(StyleConstants.STYLE_DISPLAY))) {
 				return isHiddenByVisibility(content);
 			}
 			return true;
@@ -1178,7 +1387,7 @@ public abstract class AbstractEmitterImpl {
 	}
 
 	private boolean contains(String formats, String format) {
-		if (formats != null && (formats.indexOf(EngineIRConstants.FORMAT_TYPE_VIEWER) >= 0
+		if (formats != null && (formats.indexOf(DesignChoiceConstants.FORMAT_TYPE_VIEWER) >= 0
 				|| formats.indexOf(BIRTConstants.BIRT_ALL_VALUE) >= 0 || formats.indexOf(format) >= 0)) {
 			return true;
 		}
@@ -1303,8 +1512,8 @@ public abstract class AbstractEmitterImpl {
 	}
 
 	private int getCellWidth(int cellWidth, IStyle style) {
-		int leftPadding = getPadding(style.getProperty(IStyle.STYLE_PADDING_LEFT));
-		int rightPadding = getPadding(style.getProperty(IStyle.STYLE_PADDING_RIGHT));
+		int leftPadding = getPadding(style.getProperty(StyleConstants.STYLE_PADDING_LEFT));
+		int rightPadding = getPadding(style.getProperty(StyleConstants.STYLE_PADDING_RIGHT));
 
 		if (leftPadding > cellWidth) {
 			leftPadding = 0;
@@ -1318,7 +1527,7 @@ public abstract class AbstractEmitterImpl {
 			rightPadding = 0;
 		}
 
-		return (int) (cellWidth - leftPadding - rightPadding);
+		return cellWidth - leftPadding - rightPadding;
 	}
 
 	private int getPadding(CSSValue padding) {
@@ -1348,10 +1557,20 @@ public abstract class AbstractEmitterImpl {
 		return EmitterUtil.resizeTableColumn(tblWidth, tblColumns, count, total);
 	}
 
+	/**
+	 * Get the word version
+	 * 
+	 * @return Return the word version
+	 */
 	public int getWordVersion() {
 		return wordVersion;
 	}
 
+	/**
+	 * Set the word version
+	 * 
+	 * @param wordVersion set the word version
+	 */
 	public void setWordVersion(int wordVersion) {
 		this.wordVersion = wordVersion;
 	}

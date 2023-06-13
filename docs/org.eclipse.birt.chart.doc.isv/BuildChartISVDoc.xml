@@ -249,7 +249,7 @@
 			doctitle="BIRT Eclipse ChartEngine&lt;br&gt;API Specification v ${doc.version}" 
 			windowtitle="BIRT Chart Engine API" 
 			destdir="${chartengine.javadoc.dir}" 
-                        source="1.8" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false"
+                        nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false"
                         additionalparam="-Xmaxwarns 5 -Xdoclint:none"
 		packagenames="
 					org.eclipse.birt.chart.api,

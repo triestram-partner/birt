@@ -16,6 +16,9 @@ package org.eclipse.birt.report.engine.emitter.wpml;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -266,6 +269,12 @@ public abstract class AbstractEmitterImpl {
 	private int wordVersion = 2010;
 
 	protected static final String EMPTY_FOOTER = " ";
+
+	private static final String URL_PROTOCOL_TYPE_DATA = "data:";
+
+	private static final String URL_PROTOCOL_TYPE_FILE = "file:";
+
+	private static final String URL_PROTOCOL_URL_ENCODED_SPACE = "%20";
 
 	/**
 	 * Initialize of the service
@@ -1081,13 +1090,15 @@ public abstract class AbstractEmitterImpl {
 	public void startImage(IImageContent image) {
 		IStyle style = image.getComputedStyle();
 		InlineFlag inlineFlag = getInlineFlag(style);
-		String uri = image.getURI();
+		String uri = this.verifyURI(image.getURI());
 		String mimeType = image.getMIMEType();
 		String extension = image.getExtension();
 		String altText = image.getAltText();
-		double height = WordUtil.convertImageSize(image.getHeight(), 0, reportDpi);
-		int parentWidth = (int) (WordUtil.twipToPt(context.getCurrentWidth()) * reportDpi / 72);
-		double width = WordUtil.convertImageSize(image.getWidth(), parentWidth, reportDpi);
+		int referenceWidth = (int) (WordUtil.twipToPt(context.getCurrentWidth()) * reportDpi / 72);
+		int referenceHeight = 0;
+		
+		double width = WordUtil.convertImageSize(image.getWidth(), referenceWidth, reportDpi);
+		double height = WordUtil.convertImageSize(image.getHeight(), referenceHeight, reportDpi);
 		context.addContainer(false);
 
 		if (FlashFile.isFlash(mimeType, uri, extension)) {
@@ -1123,6 +1134,20 @@ public abstract class AbstractEmitterImpl {
 			} else if (image.getHeight() == null) {
 				float scale = ((float) imageInfo.getHeight()) / ((float) imageInfo.getWidth());
 				height = width * scale;
+			}
+			if (image.getWidth() != null && DimensionType.UNITS_PERCENTAGE.equalsIgnoreCase(image.getWidth().getUnits())) {
+				referenceWidth = imageInfo.getWidth();
+				width = WordUtil.convertImageSize(image.getWidth(), referenceWidth,	PropertyUtil.getImageDpi(image, imageFileWidthDpi, 0));
+			}
+			if (image.getHeight() != null && DimensionType.UNITS_PERCENTAGE.equalsIgnoreCase(image.getHeight().getUnits())) {
+				referenceHeight = imageInfo.getHeight();
+				height = WordUtil.convertImageSize(image.getHeight(), referenceHeight, PropertyUtil.getImageDpi(image, imageFileHeightDpi, 0));
+			}
+			if (image.getWidth() == null && height > 0) {
+				width = height;
+			}
+			if (width > 0 && image.getHeight() == null) {
+				height = width;
 			}
 
 			writeBookmark(image);
@@ -1584,4 +1609,26 @@ public abstract class AbstractEmitterImpl {
 			this.tocLevel = tocLevel;
 		}
 	}
+
+	/**
+	 * Check the URL to be valid and fall back try it like file-URL
+	 */
+	private String verifyURI(String uri) {
+		if (uri != null && !uri.toLowerCase().startsWith(URL_PROTOCOL_TYPE_DATA)) {
+			String tmpUrl = uri.replaceAll(" ", URL_PROTOCOL_URL_ENCODED_SPACE);
+			try {
+				new URL(tmpUrl).toURI();
+			} catch (MalformedURLException | URISyntaxException excUrl) {
+				// invalid URI try it like "file:"
+				try {
+					tmpUrl = URL_PROTOCOL_TYPE_FILE + "///" + uri;
+					new URL(tmpUrl).toURI();
+					uri = tmpUrl;
+				} catch (MalformedURLException | URISyntaxException excFile) {
+				}
+			}
+		}
+		return uri;
+	}
+
 }

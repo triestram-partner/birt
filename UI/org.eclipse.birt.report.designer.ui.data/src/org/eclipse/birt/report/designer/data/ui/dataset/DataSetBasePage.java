@@ -28,7 +28,6 @@ import java.util.Map;
 
 import org.eclipse.birt.report.designer.data.ui.util.DTPUtil;
 import org.eclipse.birt.report.designer.data.ui.util.DataSetProvider;
-import org.eclipse.birt.report.designer.data.ui.util.DataUIConstants;
 import org.eclipse.birt.report.designer.data.ui.util.IHelpConstants;
 import org.eclipse.birt.report.designer.data.ui.util.Utility;
 import org.eclipse.birt.report.designer.internal.ui.util.ExceptionHandler;

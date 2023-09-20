@@ -1,12 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2013 Actuate Corporation.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * https://www.eclipse.org/legal/epl-2.0/.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
  *
  * Contributors:
  *  Actuate Corporation  - initial API and implementation
@@ -32,38 +31,38 @@ import org.eclipse.birt.report.engine.emitter.config.docx.i18n.Messages;
  * This class is a descriptor of word emitter.
  */
 public class DocxEmitterDescriptor extends AbstractEmitterDescriptor {
-	protected static final String CHART_DPI = "ChartDpi"; //$NON-NLS-1$
-	protected static final String EMBED_HTML = "EmbedHtml"; //$NON-NLS-1$
-	protected static final String WORD_VERSION = "WordVersion"; //$NON-NLS-1$
+	protected static final String CHART_DPI = "ChartDpi";
+	protected static final String EMBED_HTML = "EmbedHtml";
+	protected static final String WORD_VERSION = "WordVersion";
 
 	@Override
 	protected void initOptions() {
-		loadDefaultValues("org.eclipse.birt.report.engine.emitter.config.docx"); //$NON-NLS-1$
+		loadDefaultValues("org.eclipse.birt.report.engine.emitter.config.docx");
 		// Initializes the option for chart DPI.
 		ConfigurableOption chartDpi = new ConfigurableOption(CHART_DPI);
 		chartDpi.setDisplayName(getMessage("OptionDisplayValue.ChartDpi")); //$NON-NLS-1$
 		chartDpi.setDataType(IConfigurableOption.DataType.INTEGER);
 		chartDpi.setDisplayType(IConfigurableOption.DisplayType.TEXT);
-		chartDpi.setDefaultValue(new Integer(192));
-		chartDpi.setToolTip(getMessage("Tooltip.ChartDpi")); //$NON-NLS-1$
+		chartDpi.setDefaultValue(Integer.valueOf(192));
+		chartDpi.setToolTip(getMessage("Tooltip.ChartDpi"));
 		chartDpi.setDescription(getMessage("OptionDescription.ChartDpi")); //$NON-NLS-1$
 
 		ConfigurableOption embedHtml = new ConfigurableOption(EMBED_HTML);
 		embedHtml.setDisplayName(getMessage("OptionDisplayValue.EmbedHtml")); //$NON-NLS-1$
 		embedHtml.setDataType(IConfigurableOption.DataType.BOOLEAN);
 		embedHtml.setDisplayType(IConfigurableOption.DisplayType.CHECKBOX);
-		embedHtml.setDefaultValue(new Boolean(Boolean.TRUE));
-		embedHtml.setToolTip(getMessage("Tooltip.EmbedHtml")); //$NON-NLS-1$
+		embedHtml.setDefaultValue(Boolean.valueOf(true));
+		embedHtml.setToolTip(getMessage("Tooltip.EmbedHtml"));
 		embedHtml.setDescription(getMessage("OptionDescription.EmbedHtml")); //$NON-NLS-1$
 
 		ConfigurableOption wordVersion = new ConfigurableOption(WORD_VERSION);
 		wordVersion.setDisplayName(getMessage("OptionDisplayValue.WordVersion")); //$NON-NLS-1$
 		wordVersion.setDataType(IConfigurableOption.DataType.INTEGER);
 		wordVersion.setDisplayType(IConfigurableOption.DisplayType.TEXT);
-		wordVersion.setDefaultValue(new Integer(2016));
+		wordVersion.setDefaultValue(Integer.valueOf(2016));
 		IOptionValue[] choices = { new OptionValue(2010), new OptionValue(2016) };
 		wordVersion.setChoices(choices);
-		wordVersion.setToolTip(getMessage("Tooltip.WordVersion")); //$NON-NLS-1$
+		wordVersion.setToolTip(getMessage("Tooltip.WordVersion"));
 		wordVersion.setDescription(getMessage("OptionDescription.WordVersion")); //$NON-NLS-1$
 
 		options = new IConfigurableOption[] { chartDpi, embedHtml, wordVersion };
@@ -111,6 +110,12 @@ public class DocxEmitterDescriptor extends AbstractEmitterDescriptor {
 		return "org.eclipse.birt.report.engine.emitter.docx"; //$NON-NLS-1$
 	}
 
+	/**
+	 * Get render option name
+	 *
+	 * @param name name of the render option
+	 * @return Return the render option name
+	 */
 	public String getRenderOptionName(String name) {
 		assert name != null;
 		if (CHART_DPI.equals(name)) {

@@ -4,6 +4,7 @@
     <stringAttribute key="application" value="org.eclipse.birt.report.designer.ui.rcp.DesignerApplication"/>
     <booleanAttribute key="askclear" value="true"/>
     <booleanAttribute key="automaticAdd" value="false"/>
+    <booleanAttribute key="automaticIncludeRequirements" value="true"/>
     <booleanAttribute key="automaticValidate" value="true"/>
     <stringAttribute key="bootstrap" value=""/>
     <stringAttribute key="checked" value="[NONE]"/>

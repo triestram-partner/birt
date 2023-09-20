@@ -13,10 +13,13 @@
 
 package org.eclipse.birt.report.engine.emitter.html;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +34,8 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
+
 import org.eclipse.birt.core.exception.BirtException;
 import org.eclipse.birt.report.engine.api.EngineConstants;
 import org.eclipse.birt.report.engine.api.EngineException;
@@ -42,6 +47,7 @@ import org.eclipse.birt.report.engine.api.IImage;
 import org.eclipse.birt.report.engine.api.IMetadataFilter;
 import org.eclipse.birt.report.engine.api.IRenderOption;
 import org.eclipse.birt.report.engine.api.IReportRunnable;
+import org.eclipse.birt.report.engine.api.ImageSize;
 import org.eclipse.birt.report.engine.api.impl.Action;
 import org.eclipse.birt.report.engine.api.impl.Image;
 import org.eclipse.birt.report.engine.api.script.IReportContext;
@@ -362,6 +368,10 @@ public class HTMLReportEmitter extends ContentEmitterAdapter {
 	 */
 	private static int DEFAULT_IMAGE_PX_HEIGHT = 200;
 
+	private static final String URL_PROTOCOL_TYPE_FILE = "file:";
+	private static final String URL_PROTOCOL_TYPE_DATA = "data:";
+	private static final String URL_PROTOCOL_URL_ENCODED_SPACE = "%20";
+
 	/**
 	 * the constructor
 	 */
@@ -381,14 +391,6 @@ public class HTMLReportEmitter extends ContentEmitterAdapter {
 		this.services = services;
 
 		this.out = EmitterUtil.getOuputStream(services, REPORT_FILE);
-
-		// FIXME: code review: solve the deprecated problem.
-		/*
-		 * Object emitterConfig = services.getEmitterConfig().get("html"); //$NON-NLS-1$
-		 * if (emitterConfig instanceof HTMLEmitterConfig) { imageHandler =
-		 * ((HTMLEmitterConfig) emitterConfig).getImageHandler(); actionHandler =
-		 * ((HTMLEmitterConfig) emitterConfig).getActionHandler(); }
-		 */
 
 		// usage of HTMLRenderOption instead of deprecated HTMLEmitterConfig
 		Object im = services.getOption(IRenderOption.IMAGE_HANDLER);
@@ -759,7 +761,7 @@ public class HTMLReportEmitter extends ContentEmitterAdapter {
 		writeBidiFlag();
 		writer.openTag(HTMLTags.TAG_HEAD);
 
-		
+
 		// write the title of the report in html.
 		outputReportTitle(report);
 
@@ -783,7 +785,7 @@ public class HTMLReportEmitter extends ContentEmitterAdapter {
 			}
 		}
 
-		
+
 		outputCSSStyles(reportDesign, designHandle);
 
 		if (needFixTransparentPNG) {
@@ -2661,9 +2663,13 @@ public class HTMLReportEmitter extends ContentEmitterAdapter {
 
 				if (attrValue != null) {
 					if ("img".equalsIgnoreCase(nodeName) && "src".equalsIgnoreCase(attrName)) {
-						String attrValueTrue = handleStyleImage(attrValue).getUri();
-						if (attrValueTrue != null) {
-							attrValue = attrValueTrue;
+						BackgroundImageInfo img = handleStyleImage(attrValue);
+						String attrValueTrue = null;
+						if (img != null) {
+							attrValueTrue = img.getUri();
+							if (attrValueTrue != null) {
+								attrValue = attrValueTrue;
+							}
 						}
 					}
 					writer.attribute(attrName, attrValue);
@@ -2820,9 +2826,7 @@ public class HTMLReportEmitter extends ContentEmitterAdapter {
 			outputImageStyleClassBookmark(image, HTMLTags.TAG_IMAGE);
 
 			String ext = image.getExtension();
-
 			String imgUri = getImageURI(image);
-			// FIXME special process, such as encoding etc
 			writer.attribute(HTMLTags.ATTR_SRC, imgUri);
 
 			if (hasImageMap) {
@@ -2984,17 +2988,40 @@ public class HTMLReportEmitter extends ContentEmitterAdapter {
 	}
 
 	/**
-	 * gets the image's URI
+	 * Get the image URI
 	 *
 	 * @param image the image content
-	 * @return image's URI
+	 * @return Return the image URI
 	 */
 	protected String getImageURI(IImageContent image) {
 		String imgUri = null;
+		String tmpImgUri = null;
 		if (imageHandler != null) {
-			if (image.getImageSource() == IImageContent.IMAGE_URL) {
-				return image.getURI();
+			imgUri = image.getURI();
+
+			// embedded images w/o URI check
+			if (image.getImageSource() != IImageContent.IMAGE_NAME) {
+				tmpImgUri = this.verifyURI(imgUri);
+				if (imgUri != tmpImgUri) {
+					imgUri = tmpImgUri;
+					image.setURI(tmpImgUri);
+				}
 			}
+
+			// image URI with http/https
+			if (image.getImageSource() == IImageContent.IMAGE_URL && !imgUri.contains(URL_PROTOCOL_TYPE_FILE)) {
+
+				try {
+					// fetch the raw image size
+					URL url = new URL(imgUri);
+					BufferedImage bImg = ImageIO.read(url);
+					image.setImageRawSize(new ImageSize("px", bImg.getWidth(), bImg.getHeight()));
+				} catch (Exception ex) {
+					image.setImageRawSize(new ImageSize("px", DEFAULT_IMAGE_PX_WIDTH, DEFAULT_IMAGE_PX_HEIGHT));
+				}
+				return imgUri;
+			}
+
 			Image img = new Image(image);
 			img.setRenderOption(renderOption);
 			img.setReportRunnable(runnable);
@@ -3017,8 +3044,8 @@ public class HTMLReportEmitter extends ContentEmitterAdapter {
 			case IImage.INVALID_IMAGE:
 				break;
 			}
+			image.setImageRawSize(img.getImageRawSize());
 		}
-
 		return imgUri;
 	}
 
@@ -3554,6 +3581,27 @@ public class HTMLReportEmitter extends ContentEmitterAdapter {
 				htmlOption.setHtmlRtLFlag(htmlRtLFlag); // not necessary though
 			}
 		}
+	}
+
+	/**
+	 * Check the URL to be valid and fall back try it like file-URL
+	 */
+	private String verifyURI(String uri) {
+		if (uri != null && !uri.toLowerCase().startsWith(URL_PROTOCOL_TYPE_DATA)) {
+			String tmpUrl = uri.replaceAll(" ", URL_PROTOCOL_URL_ENCODED_SPACE);
+			try {
+				new URL(tmpUrl).toURI();
+			} catch (MalformedURLException | URISyntaxException excUrl) {
+				// invalid URI try it like "file:"
+				try {
+					tmpUrl = URL_PROTOCOL_TYPE_FILE + "///" + uri;
+					new URL(tmpUrl).toURI();
+					uri = tmpUrl;
+				} catch (MalformedURLException | URISyntaxException excFile) {
+				}
+			}
+		}
+		return uri;
 	}
 }
 

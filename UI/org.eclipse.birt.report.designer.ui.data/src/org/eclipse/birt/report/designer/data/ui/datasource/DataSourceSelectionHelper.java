@@ -14,14 +14,11 @@
 package org.eclipse.birt.report.designer.data.ui.datasource;
 
 import org.eclipse.birt.report.designer.data.ui.util.DataSetProvider;
-import org.eclipse.birt.report.designer.data.ui.util.DataUIConstants;
 import org.eclipse.birt.report.designer.data.ui.util.Utility;
 import org.eclipse.birt.report.designer.nls.Messages;
 import org.eclipse.birt.report.model.api.DataSourceHandle;
 import org.eclipse.birt.report.model.api.OdaDataSourceHandle;
 import org.eclipse.birt.report.model.api.ScriptDataSourceHandle;
-import org.eclipse.birt.report.model.api.activity.SemanticException;
-import org.eclipse.birt.report.model.api.core.UserPropertyDefn;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.datatools.connectivity.oda.design.ui.designsession.DesignSessionUtil;
 import org.eclipse.datatools.connectivity.oda.util.manifest.ExtensionManifest;

@@ -226,11 +226,14 @@ United States, other countries, or both.
       <feature id="org.eclipse.datatools.doc.user" installMode="root"/>
       <feature id="org.eclipse.datatools.enablement.apache.derby.feature" installMode="root"/>
       <feature id="org.eclipse.datatools.enablement.feature" installMode="root"/>
+      <feature id="org.eclipse.datatools.enablement.ibm.feature" installMode="root"/>
+      <feature id="org.eclipse.datatools.enablement.ingres.feature" installMode="root"/>
       <feature id="org.eclipse.datatools.enablement.jdbc.feature" installMode="root"/>
       <feature id="org.eclipse.datatools.enablement.jdt.feature" installMode="root"/>
       <feature id="org.eclipse.datatools.enablement.oda.designer.feature" installMode="root"/>
       <feature id="org.eclipse.datatools.enablement.oda.feature" installMode="root"/>
       <feature id="org.eclipse.datatools.enablement.oracle.feature" installMode="root"/>
+      <feature id="org.eclipse.datatools.enablement.sqlite.feature" installMode="root"/>
       <feature id="org.eclipse.datatools.intro" installMode="root"/>
       <feature id="org.eclipse.datatools.modelbase.feature" installMode="root"/>
       <feature id="org.eclipse.datatools.sqldevtools.data.feature" installMode="root"/>
@@ -244,10 +247,6 @@ United States, other countries, or both.
       <feature id="org.eclipse.datatools.sqltools.doc.user" installMode="root"/>
       <feature id="org.eclipse.draw2d" installMode="root"/>
       <feature id="org.eclipse.e4.rcp" installMode="root"/>
-      <feature id="org.eclipse.ecf.core.feature" installMode="root"/>
-      <feature id="org.eclipse.ecf.core.ssl.feature" installMode="root"/>
-      <feature id="org.eclipse.ecf.filetransfer.feature" installMode="root"/>
-      <feature id="org.eclipse.ecf.filetransfer.ssl.feature" installMode="root"/>
       <feature id="org.eclipse.emf.codegen.ecore.ui" installMode="root"/>
       <feature id="org.eclipse.emf.codegen.ecore" installMode="root"/>
       <feature id="org.eclipse.emf.codegen.ui" installMode="root"/>

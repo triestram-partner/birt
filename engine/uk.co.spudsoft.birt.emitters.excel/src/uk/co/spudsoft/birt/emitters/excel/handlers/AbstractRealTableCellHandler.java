@@ -269,6 +269,7 @@ public class AbstractRealTableCellHandler extends CellContentHandler {
 		int colSpan = ((ICellContent) element).getColSpan();
 		ITableHandler tableHandler = getAncestor(ITableHandler.class);
 		if ((tableHandler != null) && (tableHandler.getColumnCount() == colSpan)
+				&& list.getParent() instanceof CellContent
 				&& (1 == ((CellDesign) ((CellContent) list.getParent()).getGenerateBy()).getContentCount())) {
 
 			containsTable = true;

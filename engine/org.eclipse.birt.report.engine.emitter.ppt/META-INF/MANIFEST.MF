@@ -17,5 +17,5 @@ Export-Package: org.eclipse.birt.report.engine.emitter.ppt,
  org.eclipse.birt.report.engine.emitter.ppt.device;x-internal:=true,
  org.eclipse.birt.report.engine.emitter.ppt.plugin;x-internal:=true,
  org.eclipse.birt.report.engine.emitter.ppt.util
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: org.eclipse.birt.report.engine.emitter.ppt

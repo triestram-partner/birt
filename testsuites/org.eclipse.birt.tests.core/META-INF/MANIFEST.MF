@@ -9,6 +9,6 @@ Require-Bundle: org.junit;bundle-version="4.13.0",
 Export-Package: utility
 Bundle-ClassPath: .,
  utility.jar
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Vendor: %Bundle-Vendor
 Automatic-Module-Name: org.eclipse.birt.tests.core

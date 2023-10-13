@@ -4,7 +4,7 @@ Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eclipse.birt.jetty.overlay;singleton:=true
 Bundle-Version: 4.14.0.qualifier
 Fragment-Host: system.bundle
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.mortbay.util;version="6.1.23"
 Bundle-Vendor: %Bundle-Vendor
 Automatic-Module-Name: org.eclipse.birt.jetty.overlay

@@ -8,7 +8,7 @@
       source="http://www.eclipse.org/oomph/setup/BrandingInfo">
     <detail
         key="imageURI">
-      <value>https://raw.githubusercontent.com/eclipse/birt/master/build/org.eclipse.birt/eclipse32.png</value>
+    <value>https://raw.githubusercontent.com/triestram-partner/birt/tup_main/build/org.eclipse.birt/eclipse32.png</value>
     </detail>
   </annotation>
   <installation
@@ -22,7 +22,7 @@
       name="birt.workspace"
       label="BIRT Workspace">
     <stream
-        href="index:/org.eclipse.setup#//@projectCatalogs[name='org.eclipse']/@projects[name='birt']/@streams[name='master']"/>
+        href="index:/org.eclipse.setup#//@projectCatalogs[name='org.eclipse']/@projects[name='birt']/@streams[name='tup_main']"/>
     <description>The workspace needed for BIRT development.</description>
   </workspace>
   <description>
@@ -31,8 +31,7 @@
     for the complete set of source projects used by the BIRT developers.
     &lt;/p>
     &lt;p>
-    All the source projects from &lt;a href=&quot;https://github.com/eclipse-birt/birt&quot;>BIRT's Git Repository&lt;/a>
-    are available, organized into working sets, and ready for contribution.
+    For contributiing, please use &lt;a href=&quot;https://github.com/eclipse-birt/birt&quot;>official Eclipse BIRT's Git Repository&lt;/a> instead of this.
     &lt;/p>
     &lt;/p>
     Please &lt;a href=&quot;https://wiki.eclipse.org/Eclipse_Platform_SDK_Provisioning&quot;>read the analogous tutorial instructions&lt;/a> for the Eclipse Platform SDK's configuration for more details.

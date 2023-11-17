@@ -233,7 +233,7 @@ public class PDFPage extends AbstractPage {
 
 		// Not cached yet
 		if (SvgFile.isSvg(null, null, extension)) {
-			template = generateTemplateFromSVG(null, imageData, imageX, imageY, height, width, helpText);
+			template = generateTemplateFromSVG(imageData, height, width);
 		} else {
 			// PNG/JPG/BMP... images:
 			Image image = Image.getInstance(imageData);
@@ -464,9 +464,24 @@ public class PDFPage extends AbstractPage {
 		BaseFont font = getBaseFont(fontInfo);
 		float fontSize = fontInfo.getFontSize();
 		try {
+			// PDF/A: if font not embeddable then use the configured PDF/A fallback font
+			if (this.pageDevice.isPdfAFormat() && fontInfo.getBaseFont() != null
+					&& !fontInfo.getBaseFont().isEmbedded()) {
+				try {
+					String defaultFontPdfA = this.pageDevice.getDefaultFontPdfA();
+					if (defaultFontPdfA != null) {
+						font = BaseFont.createFont(defaultFontPdfA, "", true);
+					}
+					logger.log(Level.WARNING,
+							"PDF/A: " + fontInfo.getFontName() + " not embeddable, fallback font used.");
+				} catch (Exception e) {
+					logger.log(Level.WARNING,
+							"PDF/A: " + fontInfo.getFontName() + " not embeddable." + e.getMessage());
+				}
+			}
 			contentByte.setFontAndSize(font, fontSize);
-		} catch (IllegalArgumentException e) {
-			logger.log(Level.WARNING, e.getMessage());
+		} catch (IllegalArgumentException iae) {
+			logger.log(Level.WARNING, iae.getMessage());
 			// close to zero , increase by one MIN_FONT_SIZE step
 			contentByte.setFontAndSize(font, MIN_FONT_SIZE * 2);
 		}
@@ -648,13 +663,13 @@ public class PDFPage extends AbstractPage {
 		contentByte.restoreState();
 	}
 
-	protected PdfTemplate generateTemplateFromSVG(String svgPath, byte[] svgData, float x, float y, float height,
-			float width, String helpText) throws Exception {
-		return transSVG(null, svgData, x, y, height, width, helpText);
+	protected PdfTemplate generateTemplateFromSVG(byte[] svgData, float height, float width)
+			throws Exception {
+		return transSVG(null, svgData, height, width);
 	}
 
-	protected PdfTemplate transSVG(String svgPath, byte[] svgData, float x, float y, float height, float width,
-			String helpText) throws IOException, DocumentException {
+	protected PdfTemplate transSVG(String svgPath, byte[] svgData, float height, float width)
+			throws DocumentException {
 		PdfTemplate template = contentByte.createTemplate(width, height);
 		Graphics2D g2D = template.createGraphics(width, height);
 

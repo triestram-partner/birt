@@ -276,6 +276,42 @@ public class StringUtil {
 	}
 
 	/**
+	 * This is a helper for vertical tab sizes in UserPorperties only.
+	 *
+	 * It does not support all the CSS units.
+	 *
+	 * @param userPropertyValue
+	 * @return the value converted to internal units (one unit = 1/72000 inch).
+	 */
+	public static int parseAndConvertToInternalUnits(String userPropertyValue) {
+		try {
+			DimensionValue value = parse(userPropertyValue);
+			if (value != null) {
+				float v = (float) value.getMeasure();
+				String unit = value.getUnits();
+				if ("pt".equals(unit)) {
+					return (int) (v * 1000);
+				}
+				if ("mm".equals(unit)) {
+					return (int) (v * 7200 / 2.54);
+				}
+				if ("cm".equals(unit)) {
+					return (int) (v * 72000 / 2.54);
+				}
+				if ("in".equals(unit)) {
+					return (int) (v * 72000);
+				}
+				if ("pc".equals(unit)) {
+					return (int) (v * 12 * 1000);
+				}
+			}
+		} catch (PropertyValueException pve) {
+			// For the time being, just ignore invalid values.
+		}
+		return 0;
+	}
+
+	/**
 	 * Parses a dimension string in locale-dependent way. The input can be in
 	 * localized value. The measure part use the decimal separator from the locale.
 	 * e,g. "123,456.78" for English ; "123.456,78" for German.

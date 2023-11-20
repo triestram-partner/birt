@@ -25,6 +25,7 @@ import org.eclipse.birt.report.engine.css.engine.value.css.CSSConstants;
 import org.eclipse.birt.report.engine.css.engine.value.css.CSSValueConstants;
 import org.eclipse.birt.report.engine.nLayout.LayoutContext;
 import org.eclipse.birt.report.engine.nLayout.area.IArea;
+import org.eclipse.birt.report.model.api.util.StringUtil;
 
 /**
  * Definition of the table row area
@@ -232,7 +233,7 @@ public class RowArea extends ContainerArea {
 			cArea.flipPositionForRtl();
 		}
 		// Variante 2 . Die Property muss bei einer Cell gesetzt werden.
-		// Eine mögliche Struktur:
+		// Eine moegliche Struktur:
 		// Tabelle
 		// Header
 		// Details
@@ -243,20 +244,21 @@ public class RowArea extends ContainerArea {
 			if (verticalTab != null) {
 				Logger log = Logger.getLogger(getClass().getName());
 				log.info("VerticalTab=" + verticalTab);
-				int grenze = getDimensionValue(verticalTab);
-				log.info("Detected UserProperty VerticalTab=" + grenze + ", currentBP=" + currentBP);
-				int absBP = getAbsoluteBP();
-				log.info("absBP=" + absBP);
-				if (absBP > grenze) {
-					log.warning("Page break required");
-				} else if (absBP < grenze) {
-					log.info("Setting paddingTop and allocatedHeight...");
-					cArea.localProperties.paddingTop += (grenze - absBP);
-					cArea.setAllocatedHeight(cArea.getAllocatedHeight() + (grenze - absBP));
+				int grenze = StringUtil.parseAndConvertToInternalUnits(verticalTab);
+				if (grenze > 0) {
+					log.info("Detected UserProperty VerticalTab=" + grenze + ", currentBP=" + currentBP);
+					int absBP = getAbsoluteBP();
+					log.info("absBP=" + absBP);
+					if (absBP > grenze) {
+						log.warning("Page break required");
+					} else if (absBP < grenze) {
+						log.info("Setting paddingTop and allocatedHeight...");
+						cArea.localProperties.paddingTop += (grenze - absBP);
+						cArea.setAllocatedHeight(cArea.getAllocatedHeight() + (grenze - absBP));
+					}
 				}
 			}
 		}
-		
 	}
 
 	@Override

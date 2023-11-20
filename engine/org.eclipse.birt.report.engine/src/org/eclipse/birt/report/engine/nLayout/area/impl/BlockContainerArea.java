@@ -31,6 +31,7 @@ import org.eclipse.birt.report.engine.nLayout.area.IArea;
 import org.eclipse.birt.report.engine.nLayout.area.IContainerArea;
 import org.eclipse.birt.report.engine.nLayout.area.style.BoxStyle;
 import org.eclipse.birt.report.engine.util.BidiAlignmentResolver;
+import org.eclipse.birt.report.model.api.util.StringUtil;
 import org.w3c.dom.css.CSSValue;
 
 /**
@@ -85,14 +86,17 @@ public class BlockContainerArea extends ContainerArea implements IContainerArea 
 				if (fixYPosition != null) {
 					Logger log = Logger.getLogger(getClass().getName());
 					log.info("FixYPosition(a)=" + fixYPosition);
-					int grenze = getDimensionValue(fixYPosition);
-					int absBP = getAbsoluteBP();
-					log.info("Detected UserProperty FixYPosition=" + grenze + ", currentBP=" + currentBP + ", absBP=" + absBP);
-					if (absBP > grenze) {
-						log.fine("Page break required");
-					} else if (absBP < grenze) {
-						log.info("Increment currentBP");
-						currentBP += (grenze - absBP);
+					int grenze = StringUtil.parseAndConvertToInternalUnits(fixYPosition);
+					if (grenze > 0) {
+						int absBP = getAbsoluteBP();
+						log.info("Detected UserProperty FixYPosition=" + grenze + ", currentBP=" + currentBP
+								+ ", absBP=" + absBP);
+						if (absBP > grenze) {
+							log.fine("Page break required");
+						} else if (absBP < grenze) {
+							log.info("Increment currentBP");
+							currentBP += (grenze - absBP);
+						}
 					}
 				}
 			}

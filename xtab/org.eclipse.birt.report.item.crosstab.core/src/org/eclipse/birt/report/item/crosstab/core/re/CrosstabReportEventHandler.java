@@ -16,9 +16,9 @@ package org.eclipse.birt.report.item.crosstab.core.re;
 
 import org.eclipse.birt.core.exception.BirtException;
 import org.eclipse.birt.report.engine.content.ITableContent;
+import org.eclipse.birt.report.engine.executor.ExecutionContext;
 import org.eclipse.birt.report.engine.extension.IOnCreateEvent;
 import org.eclipse.birt.report.engine.extension.IOnRenderEvent;
-import org.eclipse.birt.report.engine.extension.IReportEventContext;
 import org.eclipse.birt.report.engine.extension.ReportEventHandlerBase;
 import org.eclipse.birt.report.engine.script.internal.instance.RunningState;
 import org.eclipse.birt.report.item.crosstab.core.de.CrosstabReportItemHandle;
@@ -43,7 +43,7 @@ public class CrosstabReportEventHandler extends ReportEventHandlerBase {
 		CrosstabReportItemHandle crosstab = (CrosstabReportItemHandle) ((ExtendedItemHandle) modelHandle)
 				.getReportItem();
 
-		IReportEventContext context = event.getContext();
+		ExecutionContext context = event.getContext();
 
 		CrosstabCreationHandler handler = new CrosstabCreationHandler((ExtendedItemHandle) modelHandle,
 				context.getApplicationClassLoader());
@@ -62,7 +62,7 @@ public class CrosstabReportEventHandler extends ReportEventHandlerBase {
 		CrosstabReportItemHandle crosstab = (CrosstabReportItemHandle) ((ExtendedItemHandle) modelHandle)
 				.getReportItem();
 
-		IReportEventContext context = event.getContext();
+		ExecutionContext context = event.getContext();
 
 		CrosstabRenderingHandler handler = new CrosstabRenderingHandler((ExtendedItemHandle) modelHandle,
 				context.getApplicationClassLoader());

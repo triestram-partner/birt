@@ -14,6 +14,7 @@
 
 package org.eclipse.birt.report.engine.extension;
 
+import org.eclipse.birt.report.engine.executor.ExecutionContext;
 import org.eclipse.birt.report.model.api.DesignElementHandle;
 
 public interface IReportEvent {
@@ -30,5 +31,5 @@ public interface IReportEvent {
 
 	DesignElementHandle getHandle();
 
-	IReportEventContext getContext();
+	ExecutionContext getContext();
 }

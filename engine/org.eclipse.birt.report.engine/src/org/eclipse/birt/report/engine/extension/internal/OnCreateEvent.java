@@ -2,8 +2,8 @@
 package org.eclipse.birt.report.engine.extension.internal;
 
 import org.eclipse.birt.report.engine.content.IContent;
+import org.eclipse.birt.report.engine.executor.ExecutionContext;
 import org.eclipse.birt.report.engine.extension.IOnCreateEvent;
-import org.eclipse.birt.report.engine.extension.IReportEventContext;
 import org.eclipse.birt.report.model.api.DesignElementHandle;
 import org.eclipse.birt.report.model.api.ReportElementHandle;
 
@@ -20,10 +20,10 @@ public class OnCreateEvent extends ReportEvent implements IOnCreateEvent {
 
 	DesignElementHandle handle;
 	IContent content;
-	IReportEventContext context;
+	ExecutionContext context;
 
-	public OnCreateEvent(IReportEventContext context, DesignElementHandle handle, IContent content) {
-		super(ON_CREATE_EVENT);
+	public OnCreateEvent(ExecutionContext context, DesignElementHandle handle, IContent content) {
+		super(content, context, ON_CREATE_EVENT);
 
 		this.context = context;
 		this.handle = handle;
@@ -49,11 +49,11 @@ public class OnCreateEvent extends ReportEvent implements IOnCreateEvent {
 	}
 
 	@Override
-	public IReportEventContext getContext() {
+	public ExecutionContext getContext() {
 		return this.context;
 	}
 
-	public void setContext(IReportEventContext context) {
+	public void setContext(ExecutionContext context) {
 		this.context = context;
 	}
 }

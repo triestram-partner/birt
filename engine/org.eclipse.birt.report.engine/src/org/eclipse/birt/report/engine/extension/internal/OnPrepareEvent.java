@@ -14,17 +14,18 @@
 
 package org.eclipse.birt.report.engine.extension.internal;
 
+import org.eclipse.birt.report.engine.content.IContent;
+import org.eclipse.birt.report.engine.executor.ExecutionContext;
 import org.eclipse.birt.report.engine.extension.IOnPrepareEvent;
-import org.eclipse.birt.report.engine.extension.IReportEventContext;
 import org.eclipse.birt.report.model.api.DesignElementHandle;
 
 public class OnPrepareEvent extends ReportEvent implements IOnPrepareEvent {
 
 	DesignElementHandle handle;
-	IReportEventContext context;
+	ExecutionContext context;
 
-	public OnPrepareEvent(IReportEventContext context, DesignElementHandle handle) {
-		super(ON_PREPARE_EVENT);
+	public OnPrepareEvent(ExecutionContext context, IContent content, DesignElementHandle handle) {
+		super(content, context, ON_PREPARE_EVENT);
 
 		this.context = context;
 		this.handle = handle;
@@ -40,11 +41,11 @@ public class OnPrepareEvent extends ReportEvent implements IOnPrepareEvent {
 	}
 
 	@Override
-	public IReportEventContext getContext() {
+	public ExecutionContext getContext() {
 		return context;
 	}
 
-	public void setContext(IReportEventContext context) {
+	public void setContext(ExecutionContext context) {
 		this.context = context;
 	}
 }

@@ -15,9 +15,9 @@
 package org.eclipse.birt.report.item.crosstab.core.script.internal.handler;
 
 import org.eclipse.birt.core.exception.BirtException;
-import org.eclipse.birt.report.engine.api.script.IReportContext;
 import org.eclipse.birt.report.engine.content.ICellContent;
 import org.eclipse.birt.report.engine.content.ITableContent;
+import org.eclipse.birt.report.engine.executor.ExecutionContext;
 import org.eclipse.birt.report.engine.script.internal.instance.RunningState;
 import org.eclipse.birt.report.item.crosstab.core.ICrosstabReportItemConstants;
 import org.eclipse.birt.report.item.crosstab.core.de.CrosstabCellHandle;
@@ -47,7 +47,7 @@ public class CrosstabCreationHandler extends BaseCrosstabEventHandler {
 				contextLoader);
 	}
 
-	public void handleCrosstab(CrosstabReportItemHandle crosstab, ITableContent content, IReportContext context,
+	public void handleCrosstab(CrosstabReportItemHandle crosstab, ITableContent content, ExecutionContext context,
 			RunningState runningState) throws BirtException {
 		if (handler == null || crosstab == null) {
 			return;
@@ -58,7 +58,8 @@ public class CrosstabCreationHandler extends BaseCrosstabEventHandler {
 		handler.callFunction(CrosstabScriptHandler.ON_CREATE_CROSSTAB, crosstabInst, context);
 	}
 
-	public void handleCell(CrosstabCellHandle cell, ICellContent content, IReportContext context) throws BirtException {
+	public void handleCell(CrosstabCellHandle cell, ICellContent content, ExecutionContext context)
+			throws BirtException {
 		if (handler == null || cell == null) {
 			return;
 		}

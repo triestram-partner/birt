@@ -14,14 +14,23 @@
 
 package org.eclipse.birt.report.engine.extension.internal;
 
+import org.eclipse.birt.report.engine.content.IContent;
+import org.eclipse.birt.report.engine.executor.ExecutionContext;
 import org.eclipse.birt.report.engine.extension.IReportEvent;
+import org.eclipse.birt.report.engine.script.internal.instance.ReportItemInstance;
+import org.eclipse.birt.report.engine.script.internal.instance.RunningState;
 
-abstract class ReportEvent implements IReportEvent {
+abstract class ReportEvent extends ReportItemInstance implements IReportEvent {
 
 	protected int eventType;
 
-	ReportEvent(int type) {
-		eventType = type;
+	// See IReportEvent constants
+	static final RunningState translateState[] = { RunningState.CREATE, RunningState.CREATE, RunningState.CREATE,
+			RunningState.PAGEBREAK, RunningState.RENDER };
+
+	public ReportEvent(IContent content, ExecutionContext context, int eventType) {
+		super(content, context, translateState[eventType]);
+		this.eventType = eventType;
 	}
 
 	@Override

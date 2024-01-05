@@ -16,10 +16,10 @@ package org.eclipse.birt.report.item.crosstab.core.script.internal;
 
 import org.eclipse.birt.core.data.ExpressionUtil;
 import org.eclipse.birt.core.exception.BirtException;
-import org.eclipse.birt.report.engine.api.script.IReportContext;
 import org.eclipse.birt.report.engine.api.script.ScriptException;
 import org.eclipse.birt.report.engine.api.script.instance.IScriptStyle;
 import org.eclipse.birt.report.engine.content.ICellContent;
+import org.eclipse.birt.report.engine.executor.ExecutionContext;
 import org.eclipse.birt.report.item.crosstab.core.de.AggregationCellHandle;
 import org.eclipse.birt.report.item.crosstab.core.script.ICrosstabCellInstance;
 import org.eclipse.birt.report.model.api.ExtendedItemHandle;
@@ -33,13 +33,13 @@ import org.eclipse.birt.report.model.api.extension.IReportItem;
  */
 public class CrosstabCellInstanceImpl implements ICrosstabCellInstance {
 
-	private IReportContext context;
+	private ExecutionContext context;
 	private ICellContent content;
 	private ExtendedItemHandle modelHandle;
 	private long id = -1;
 	private String type = TYPE_HEADER;
 
-	public CrosstabCellInstanceImpl(ICellContent content, ExtendedItemHandle modelHandle, IReportContext context) {
+	public CrosstabCellInstanceImpl(ICellContent content, ExtendedItemHandle modelHandle, ExecutionContext context) {
 		this.content = content;
 		this.modelHandle = modelHandle;
 		this.context = context;

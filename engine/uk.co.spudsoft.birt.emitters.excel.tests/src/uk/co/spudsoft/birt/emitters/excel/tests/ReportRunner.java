@@ -58,7 +58,6 @@ import org.junit.Rule;
 import org.junit.rules.TestName;
 
 import uk.co.spudsoft.birt.emitters.bugfix.FixedRenderTask;
-import uk.co.spudsoft.birt.emitters.bugfix.FixedRunTask;
 import uk.co.spudsoft.birt.emitters.excel.ExcelEmitter;
 import uk.co.spudsoft.birt.emitters.excel.tests.framework.Activator;
 

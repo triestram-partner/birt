@@ -15,6 +15,8 @@
 package org.eclipse.birt.report.data.oda.jdbc;
 
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
+import java.sql.Types;
 import java.util.logging.Logger;
 
 import org.eclipse.birt.report.data.oda.i18n.ResourceConstants;
@@ -102,6 +104,8 @@ public class ParameterMetaData implements IParameterMetaData {
 				result = IParameterMetaData.parameterModeInOut;
 			}
 			return result;
+		} catch (SQLFeatureNotSupportedException nse) {
+			return IParameterMetaData.parameterModeUnknown;
 		} catch (SQLException e) {
 			throw new JDBCException(ResourceConstants.PARAMETER_MODE_CANNOT_GET, e);
 		} catch (Exception e) {
@@ -137,9 +141,11 @@ public class ParameterMetaData implements IParameterMetaData {
 		try {
 			/* redirect the call to JDBC ParameterMetaData.getParameterType(int) */
 			return paraMetadata.getParameterType(param);
+		} catch (SQLFeatureNotSupportedException nse) {
+			return Types.NULL;
 		} catch (SQLException e) {
 			if ("S1C00".equals(e.getSQLState())) {
-				return -1;
+				return Types.NULL;
 			}
 			throw new JDBCException(ResourceConstants.PARAMETER_TYPE_CANNOT_GET, e);
 		} catch (Exception e) {
@@ -164,9 +170,13 @@ public class ParameterMetaData implements IParameterMetaData {
 			 * redirect the call to JDBC ParameterMetaData.getParameterTypeName(int)
 			 */
 			return paraMetadata.getParameterTypeName(param);
+		} catch (SQLFeatureNotSupportedException nse) {
+			logger.logp(java.util.logging.Level.FINEST, ParameterMetaData.class.getName(), "getParameterTypeName",
+					"SQLFeatureNotSupported");
+			return "";
 		} catch (SQLException e) {
 			if ("S1C00".equals(e.getSQLState())) {
-				return "VARCHAR";
+				return "VARCHAR"; // FIXME Shouldn't this be an empty string instead?
 			}
 			throw new JDBCException(ResourceConstants.PARAMETER_TYPE_NAME_CANNOT_GET, e);
 		} catch (Exception e) {
@@ -188,9 +198,11 @@ public class ParameterMetaData implements IParameterMetaData {
 		try {
 			/* redirect the call to JDBC ParameterMetaData.getPrecision(int) */
 			return paraMetadata.getPrecision(param);
+		} catch (SQLFeatureNotSupportedException nse) {
+			return -1; // This means "not applicable" according to the Javadoc of IParameterMetaData.
 		} catch (SQLException e) {
 			if ("S1C00".equals(e.getSQLState())) {
-				return 0;
+				return -1; // This means "not applicable" according to the Javadoc of IParameterMetaData.
 			}
 			throw new JDBCException(ResourceConstants.PARAMETER_PRECISION_CANNOT_GET, e);
 		} catch (Exception e) {
@@ -212,9 +224,12 @@ public class ParameterMetaData implements IParameterMetaData {
 		try {
 			/* redirect the call to JDBC ParameterMetaData.getScale(int) */
 			return paraMetadata.getScale(param);
+		} catch (SQLFeatureNotSupportedException nse) {
+			// throw new UnsupportedOperationException(nse);
+			return -1; // This means "not applicable" according to the Javadoc of IParameterMetaData.
 		} catch (SQLException e) {
 			if ("S1C00".equals(e.getSQLState())) {
-				return 0;
+				return -1; // This means "not applicable" according to the Javadoc of IParameterMetaData.
 			}
 			throw new JDBCException(ResourceConstants.PARAMETER_SCALE_CANNOT_GET, e);
 		} catch (Exception e) {
@@ -240,6 +255,8 @@ public class ParameterMetaData implements IParameterMetaData {
 			} else if (paraMetadata.isNullable(param) == java.sql.ParameterMetaData.parameterNoNulls) {
 				result = IParameterMetaData.parameterNoNulls;
 			}
+			return result;
+		} catch (SQLFeatureNotSupportedException nse) {
 			return result;
 		} catch (SQLException e) {
 			if ("S1C00".equals(e.getSQLState())) {

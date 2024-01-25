@@ -1143,10 +1143,10 @@ public abstract class AbstractEmitterImpl {
 				referenceHeight = imageInfo.getHeight();
 				height = WordUtil.convertImageSize(image.getHeight(), referenceHeight, PropertyUtil.getImageDpi(image, imageFileHeightDpi, 0));
 			}
-			if (image.getWidth() == null && height > 0) {
+			if (image.getWidth() == null && width == 0 && height > 0) {
 				width = height;
 			}
-			if (width > 0 && image.getHeight() == null) {
+			if (width > 0 && image.getHeight() == null && height == 0) {
 				height = width;
 			}
 
@@ -1461,7 +1461,6 @@ public abstract class AbstractEmitterImpl {
 		String backgroundWidth = style.getBackgroundWidth();
 
 		SimpleMasterPageDesign master = (SimpleMasterPageDesign) previousPage.getGenerateBy();
-
 		boolean showHeaderOnFirst = true;
 
 		if (previousPage.getPageHeader() != null || backgroundHeight != null || backgroundWidth != null) {

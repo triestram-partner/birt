@@ -27,6 +27,10 @@
 	<packaging>pom</packaging>
 
 	<modules>
+		<module>com.tp.birt.report.engine.emitter.config.docx</module>
+		<module>com.tp.birt.report.engine.emitter.config.wpml</module>
+		<module>com.tp.birt.report.engine.emitter.docx</module>
+		<module>com.tp.birt.report.engine.emitter.wpml</module>
 		<module>org.eclipse.birt.report.engine</module>
 		<module>org.eclipse.birt.report.engine.dataextraction</module>
 		<module>org.eclipse.birt.report.engine.dataextraction.csv</module>

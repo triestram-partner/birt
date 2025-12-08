@@ -42,4 +42,23 @@
 		<module>birt-nl</module>
 		<module>birt-runtime-test</module>
 	</modules>
+	
+	<build>
+		<plugins>
+		    <plugin>
+		        <groupId>org.cyclonedx</groupId>
+		        <artifactId>cyclonedx-maven-plugin</artifactId>
+		        <version>2.9.1</version>
+		        <executions>
+		            <execution>
+		                <phase>package</phase>
+		                <goals>
+		                    <goal>makeAggregateBom</goal>
+		                </goals>
+		            </execution>
+		        </executions>
+		    </plugin>
+		</plugins>
+	</build>
+	
 </project>

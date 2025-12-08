@@ -387,4 +387,20 @@
          id="org.eclipse.birt.report.designer.ui.preview"
          version="0.0.0"/>
 
+   <plugin
+         id="com.tp.birt.report.engine.emitter.config.docx"
+         version="0.0.0"/>
+
+   <plugin
+         id="com.tp.birt.report.engine.emitter.config.wpml"
+         version="0.0.0"/>
+
+   <plugin
+         id="com.tp.birt.report.engine.emitter.docx"
+         version="0.0.0"/>
+
+   <plugin
+         id="com.tp.birt.report.engine.emitter.wpml"
+         version="0.0.0"/>
+
 </feature>

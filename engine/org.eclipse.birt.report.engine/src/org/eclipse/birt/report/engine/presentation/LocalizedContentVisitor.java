@@ -579,6 +579,11 @@ public class LocalizedContentVisitor {
 
 		if (IForeignContent.VALUE_TYPE.equals(rawFormat)) {
 			IDataContent dataContent = reportContent.createDataContent(foreignContent);
+			
+			// Part of a fix for BIRT issue #2445,
+			// but actually I think this is not the right place for it.
+			dataContent.setTagType(foreignContent.getTagType());
+			
 			dataContent.setParent(foreignContent.getParent());
 			dataContent.setValue(rawValue);
 			processData(dataContent);

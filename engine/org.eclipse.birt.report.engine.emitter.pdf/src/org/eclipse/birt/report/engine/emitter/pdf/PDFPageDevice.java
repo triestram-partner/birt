@@ -314,9 +314,14 @@ public class PDFPageDevice implements IPageDevice {
 				if (localeString == null || localeString.isEmpty()) {
 					throw new BirtException("The report needs a locale property for PDF/UA!");
 				}
-				Locale locale = new Locale(localeString); // Locale.of() requires Java 19+
-				String language = locale.toString();
-				language = language.replace('_', '-'); // 'de_de' is invalid, it should be 'de-DE'.
+				String language = null;
+				if (false) {
+					Locale locale = Locale.of(localeString);
+					language = locale.toString();
+					language = language.replace('_', '-'); // 'de_de' is invalid, it should be 'de-DE'.
+				} else {
+					language = localeString.replace('_', '-');
+				}
 				doc.setDocumentLanguage(language);
 				// In order to declare the main language of the document,
 				// we need to use the extraCatalog. That way we don't need to
@@ -1443,6 +1448,9 @@ public class PDFPageDevice implements IPageDevice {
 			properties.put(PdfNames.SUBTYPE, PdfNames.FOOTER);
 			currentPage.beginArtifact(properties);
 			break;
+		case PdfTag.ARTIFACT:
+			currentPage.beginArtifact(new PdfDictionary());
+			break;
 		default:
 			if (area instanceof ContainerArea && ((ContainerArea) area).isArtifact()) {
 				properties = new PdfDictionary();
@@ -1469,9 +1477,8 @@ public class PDFPageDevice implements IPageDevice {
 								// setStructureElement is used for page-break bookkeeping only.
 								// The structure element was already created successfully, so we
 								// just log the error and continue with the current node.
-								logger.log(Level.WARNING,
-										"Could not store structure element for container (tagType=" + tagType + "): "
-												+ be.getMessage());
+								logger.log(Level.WARNING, "Could not store structure element for container (tagType="
+										+ tagType + "): " + be.getMessage());
 							}
 						}
 					} else {
@@ -1519,6 +1526,7 @@ public class PDFPageDevice implements IPageDevice {
 	 * @param row the RowArea.
 	 */
 	private void beforeOpenTableSectionTag(final ContainerArea row) {
+		assert structureCurrentNode != null;
 		PdfName currentTag = structureCurrentNode.getAsName(PdfName.S);
 		RowContent rowContent = (RowContent) row.getContent();
 		PdfName inject = null;
@@ -1575,6 +1583,7 @@ public class PDFPageDevice implements IPageDevice {
 			logger.warning("safeCreateStructureElement: parent or role is null, skipping (role=" + role + ")");
 			return null;
 		}
+		assert parent.getIndRef() != null;
 		// Fix: if K is already set to a single non-array object, wrap it in a PdfArray
 		// so that OpenPDF can append the new child without throwing.
 		PdfObject kField = parent.get(PdfName.K);
@@ -1703,6 +1712,8 @@ public class PDFPageDevice implements IPageDevice {
 		} else if ("pageFooter".equals(tagType)) {
 			currentPage.endArtifact();
 		} else if (area instanceof ContainerArea && ((ContainerArea) area).isArtifact()) {
+			currentPage.endArtifact();
+		} else if (PdfTag.ARTIFACT.equals(tagType)) {
 			currentPage.endArtifact();
 		} else if (currentPage.isInArtifact()) {
 			// do nothing

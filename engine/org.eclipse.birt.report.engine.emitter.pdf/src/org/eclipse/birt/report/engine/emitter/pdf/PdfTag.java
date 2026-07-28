@@ -39,4 +39,11 @@ public final class PdfTag {
 
 	/** PDF tag used for table data cells. */
 	public static final String TD = "TD";
+
+	/**
+	 * PDF tag used for artifacts. This is not an official PDF tag, but it results
+	 * in treating the content as an artifact.
+	 */
+	public static final String ARTIFACT = "artifact";
+
 }

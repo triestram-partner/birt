@@ -46,4 +46,9 @@ public final class PdfTag {
 	 */
 	public static final String ARTIFACT = "artifact";
 
+	/**
+	 * Explicitly do NOT generate a tag. This is not an official PDF tag.
+	 */
+	public static final String NONE = "none";
+
 }

@@ -59,6 +59,12 @@ public class TextLineArea extends LineArea {
 	}
 
 	@Override
+	public String getTagType() {
+		final String tag = super.getTagType();
+		return (tag != null) ? tag : "Span";
+	}
+
+	@Override
 	public SplitResult split(int height, boolean force) {
 		if (force) {
 			TextLineArea newArea = cloneArea();
